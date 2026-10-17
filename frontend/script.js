@@ -8,6 +8,7 @@ const districts = [
     "Bogura",
     "Brahmanbaria",
     "Chandpur",
+    "Chapai Nawabganj",
     "Chattogram",
     "Chuadanga",
     "Cumilla",
@@ -69,40 +70,92 @@ const districtGrid = document.getElementById("districtGrid");
 const districtSearch = document.getElementById("districtSearch");
 const districtMessage = document.getElementById("districtMessage");
 
+// Load saved favorites from localStorage
+function getFavorites() {
+    try {
+        return JSON.parse(
+            localStorage.getItem("travelKoriFavorites") || "[]"
+        );
+    } catch (error) {
+        return [];
+    }
+}
+
+// Save favorites to localStorage
+function saveFavorites(favorites) {
+    localStorage.setItem(
+        "travelKoriFavorites",
+        JSON.stringify(favorites)
+    );
+}
+
 // Display district cards
 function displayDistricts(districtList) {
     districtGrid.innerHTML = "";
 
     districtList.forEach(function (district) {
-        
-const card = document.createElement("article");
-card.className = "destination-card";
-card.tabIndex = 0;
-card.setAttribute("role", "link");
-card.setAttribute("aria-label", "View details for " + district);
+        const card = document.createElement("article");
+        card.className = "destination-card";
 
-const title = document.createElement("h3");
-title.textContent = district;
+        const title = document.createElement("h3");
+        title.textContent = district;
 
-card.appendChild(title);
+        const favoriteButton = document.createElement("button");
+        favoriteButton.type = "button";
+        favoriteButton.className = "favorite-btn";
 
-// Open the district details page
-function openDistrict() {
-    window.location.href =
-        "district-details.html?name=" + encodeURIComponent(district);
-}
+        function updateFavoriteButton() {
+            const favorites = getFavorites();
+            const isFavorite = favorites.includes(district);
 
-card.addEventListener("click", openDistrict);
+            favoriteButton.textContent = isFavorite ? "★ Favorited" : "☆ Favorite";
+            favoriteButton.setAttribute(
+                "aria-label",
+                isFavorite
+                    ? "Remove " + district + " from favorites"
+                    : "Add " + district + " to favorites"
+            );
+            favoriteButton.setAttribute(
+                "aria-pressed",
+                String(isFavorite)
+            );
+        }
 
-card.addEventListener("keydown", function (event) {
-    if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openDistrict();
-    }
-});
+        favoriteButton.addEventListener("click", function (event) {
+            event.stopPropagation();
 
-districtGrid.appendChild(card);
+            let favorites = getFavorites();
 
+            if (favorites.includes(district)) {
+                favorites = favorites.filter(function (item) {
+                    return item !== district;
+                });
+            } else {
+                favorites.push(district);
+            }
+
+            saveFavorites(favorites);
+            updateFavoriteButton();
+        });
+
+        const openButton = document.createElement("button");
+        openButton.type = "button";
+        openButton.className = "details-btn";
+        openButton.textContent = "Explore District";
+
+        openButton.addEventListener("click", function () {
+            window.location.href =
+                "district-details.html?name=" +
+                encodeURIComponent(district);
+        });
+
+        updateFavoriteButton();
+
+        card.appendChild(title);
+        card.appendChild(favoriteButton);
+        card.appendChild(openButton);
+
+        districtGrid.appendChild(card);
     });
 
     districtMessage.textContent =
@@ -117,20 +170,20 @@ districtSearch.addEventListener("input", function () {
         return district.toLowerCase().includes(searchText);
     });
 
-    
-if (filteredDistricts.length === 0) {
-    districtMessage.textContent = "No districts found. Try another name.";
-} else {
-    districtMessage.textContent =
-        filteredDistricts.length + " district(s) found.";
-}
-
-
     displayDistricts(filteredDistricts);
+
+    if (filteredDistricts.length === 0) {
+        districtMessage.textContent =
+            "No districts found. Try another name.";
+    } else {
+        districtMessage.textContent =
+            filteredDistricts.length + " district(s) found.";
+    }
 });
 
-// Display all 64 districts when the page loads
+// Display all districts when the page loads
 displayDistricts(districts);
 
 // Check district count in the browser console
 console.log("Total districts:", districts.length);
+console.log("Saved favorites:", getFavorites());
