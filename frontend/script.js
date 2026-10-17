@@ -74,14 +74,35 @@ function displayDistricts(districtList) {
     districtGrid.innerHTML = "";
 
     districtList.forEach(function (district) {
-        const card = document.createElement("article");
-        card.className = "destination-card";
+        
+const card = document.createElement("article");
+card.className = "destination-card";
+card.tabIndex = 0;
+card.setAttribute("role", "link");
+card.setAttribute("aria-label", "View details for " + district);
 
-        const title = document.createElement("h3");
-        title.textContent = district;
+const title = document.createElement("h3");
+title.textContent = district;
 
-        card.appendChild(title);
-        districtGrid.appendChild(card);
+card.appendChild(title);
+
+// Open the district details page
+function openDistrict() {
+    window.location.href =
+        "district-details.html?name=" + encodeURIComponent(district);
+}
+
+card.addEventListener("click", openDistrict);
+
+card.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openDistrict();
+    }
+});
+
+districtGrid.appendChild(card);
+
     });
 
     districtMessage.textContent =
