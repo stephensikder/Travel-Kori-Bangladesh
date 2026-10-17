@@ -302,3 +302,90 @@ footer {
     text-decoration: underline;
 }
 
+
+/* Login and Signup Pages */
+.auth-container {
+    min-height: 75vh;
+    padding: 50px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f8f5;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 35px;
+    background-color: white;
+    border: 1px solid #e0e9e4;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+}
+
+.auth-card h1 {
+    margin: 12px 0;
+    color: #18332c;
+    font-size: 30px;
+}
+
+.auth-card > p {
+    color: #62766d;
+    line-height: 1.7;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.auth-card label {
+    color: #18332c;
+    font-weight: bold;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d5dfda;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+.auth-card input:focus {
+    outline: 2px solid #78d8ad;
+    border-color: #087f5b;
+}
+
+.auth-card button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.auth-card a {
+    color: #087f5b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.auth-card a:hover {
+    text-decoration: underline;
+}
+
+#loginMessage {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 25px 20px;
+    }
+
+    .auth-card h1 {
+        font-size: 25px;
+    }
+}
+
