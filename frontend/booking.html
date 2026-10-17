@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Your Trip | Travel Kori Bangladesh</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            TK <span>Travel Kori</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- Booking Form -->
+    <main class="section booking-section">
+
+        <p class="section-label">PLAN YOUR JOURNEY</p>
+
+        <h1>Book Your Trip</h1>
+
+        <p>
+            Choose your destination and submit your travel request.
+        </p>
+
+        <form id="bookingForm" class="booking-form">
+
+            <label for="district">District</label>
+            <input
+                type="text"
+                id="district"
+                name="district"
+                placeholder="Example: Dhaka"
+                required
+            >
+
+            <label for="touristSpot">Tourist Spot</label>
+            <input
+                type="text"
+                id="touristSpot"
+                name="touristSpot"
+                placeholder="Example: Lalbagh Fort"
+                required
+            >
+
+            <label for="visitDate">Visit Date</label>
+            <input
+                type="date"
+                id="visitDate"
+                name="visitDate"
+                required
+            >
+
+            <label for="people">Number of Visitors</label>
+            <input
+                type="number"
+                id="people"
+                name="people"
+                min="1"
+                max="50"
+                value="1"
+                required
+            >
+
+            <button type="submit" class="signup-btn">
+                Submit Booking Request
+            </button>
+
+            <p id="bookingMessage" aria-live="polite"></p>
+
+        </form>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Travel Kori Bangladesh</p>
+        <p>Explore Bangladesh with confidence.</p>
+    </footer>
+
+    <script src="booking.js"></script>
+</body>
+</html>

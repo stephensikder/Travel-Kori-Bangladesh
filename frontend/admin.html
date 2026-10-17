@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Booking Management | Travel Kori Bangladesh</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            TK <span>Travel Kori</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <button id="adminLogoutBtn" class="signup-btn" type="button">
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <main class="section dashboard-main">
+
+        <p class="section-label">ADMIN PANEL</p>
+
+        <h1>Booking Management</h1>
+
+        <p>View travel requests and manage their booking status.</p>
+
+        <section class="dashboard-bookings">
+
+            <div class="admin-booking-summary">
+                <div class="dashboard-card">
+                    <h3>Total Bookings</h3>
+                    <p id="totalBookings">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Pending</h3>
+                    <p id="pendingBookings">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Confirmed</h3>
+                    <p id="confirmedBookings">0</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Cancelled</h3>
+                    <p id="cancelledBookings">0</p>
+                </div>
+            </div>
+
+            <p id="adminMessage" aria-live="polite">
+                Loading bookings...
+            </p>
+
+            <div id="adminBookings" class="destination-grid"></div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Travel Kori Bangladesh</p>
+        <p>Explore Bangladesh with confidence.</p>
+    </footer>
+
+    <script src="admin.js"></script>
+</body>
+</html>

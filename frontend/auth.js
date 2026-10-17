@@ -42,21 +42,26 @@ if (loginForm) {
             }
 
             // Store logged-in user information
-            sessionStorage.setItem(
-                "travelKoriUser",
-                JSON.stringify({
-                    id: data.user.id,
-                    fullName: data.user.fullName,
-                    email: data.user.email
-                })
-            );
+           sessionStorage.setItem(
+    "travelKoriUser",
+    JSON.stringify({
+        id: data.user.id,
+        fullName: data.user.fullName,
+        email: data.user.email,
+        userType: data.user.userType || "traveler"
+    })
+);
 
             loginMessage.textContent =
                 "Login successful! Redirecting to dashboard...";
             loginMessage.style.color = "#087f5b";
 
             // Redirect only once
-            window.location.href = "dashboard.html";
+            if (data.user.userType === "admin") {
+    window.location.href = "admin.html";
+} else {
+    window.location.href = "dashboard.html";
+}
 
         } catch (error) {
             console.error("Login error:", error);
