@@ -43,9 +43,24 @@ if (loginForm) {
                 throw new Error(data.message || "Login failed.");
             }
 
-            loginMessage.textContent =
-                "Welcome, " + data.user.fullName + "! Login successful.";
-            loginMessage.style.color = "#087f5b";
+            
+loginMessage.textContent =
+    "Welcome, " + data.user.fullName + "! Login successful.";
+
+loginMessage.style.color = "#087f5b";
+
+
+        // Save basic user information for the dashboard
+        sessionStorage.setItem(
+            "travelKoriUser",
+            JSON.stringify({
+                fullName: data.user.fullName,
+                email: data.user.email
+            })
+        );
+
+        // Redirect to the dashboard after successful login
+        window.location.href = "dashboard.html";
 
         } catch (error) {
             loginMessage.textContent =
@@ -57,6 +72,7 @@ if (loginForm) {
         }
     });
 }
+
 
 // Sign Up form
 const signupForm = document.getElementById("signupForm");
