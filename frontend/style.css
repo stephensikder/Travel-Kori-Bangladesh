@@ -1055,3 +1055,441 @@ footer {
 .nav-links .hotel-nav-link:hover {
     color: #087f5b;
 }
+
+
+/* =========================
+   TRANSPORT SEARCH PAGE
+   ========================= */
+
+.transport-page {
+    width: min(1150px, 92%);
+    margin: 0 auto;
+    padding-bottom: 60px;
+}
+
+.transport-hero {
+    text-align: center;
+    padding: 60px 0 35px;
+}
+
+.transport-hero h1 {
+    color: #17352d;
+    font-size: clamp(32px, 5vw, 46px);
+    margin: 12px 0;
+}
+
+.transport-hero p:last-child {
+    color: #64748b;
+    line-height: 1.7;
+}
+
+.transport-panel,
+.transport-booking-panel {
+    padding: 28px;
+    margin: 24px 0 40px;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+}
+
+.transport-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.transport-tab {
+    padding: 12px 22px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: #fff;
+    color: #17352d;
+    cursor: pointer;
+    font: inherit;
+}
+
+.transport-tab.active {
+    background: #17352d;
+    border-color: #17352d;
+    color: #fff;
+}
+
+.transport-search-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.transport-search-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.transport-search-grid label,
+.transport-booking-panel label {
+    font-weight: 600;
+    color: #17352d;
+}
+
+.transport-search-grid select,
+.transport-search-grid input,
+.transport-booking-panel input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #17352d;
+    font: inherit;
+}
+
+.transport-results-section {
+    margin: 44px 0;
+}
+
+.transport-results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.transport-results-heading h2,
+.transport-booking-panel h2 {
+    color: #17352d;
+}
+
+.transport-results-heading p {
+    color: #64748b;
+}
+
+#resultCount {
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.transport-results {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.transport-result-card {
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+.transport-result-card h3 {
+    margin-top: 0;
+    color: #17352d;
+}
+
+.transport-result-card p {
+    line-height: 1.6;
+    color: #64748b;
+}
+
+.transport-result-card .transport-fare {
+    font-size: 20px;
+    font-weight: 700;
+    color: #087f5b;
+}
+
+.transport-result-card button {
+    margin-top: 10px;
+}
+
+.transport-booking-panel form {
+    display: grid;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.transport-booking-panel form button {
+    justify-self: start;
+    margin-top: 10px;
+}
+
+#selectedJourney {
+    padding: 16px;
+    border-radius: 10px;
+    background: #f0f7f4;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+#transportMessage,
+#transportBookingMessage {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.transport-disclaimer {
+    margin: 32px 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+@media (max-width: 850px) {
+    .transport-search-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .transport-results {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    .transport-panel,
+    .transport-booking-panel {
+        padding: 18px;
+    }
+
+    .transport-search-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .transport-results-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* =========================
+   BUS AND TRAIN SEAT LAYOUT
+   ========================= */
+
+.seat-selection {
+    margin: 24px 0;
+    padding: 24px;
+    border: 1px solid #dce5e2;
+    border-radius: 14px;
+    background: #f8fbfa;
+}
+
+.seat-selection h3 {
+    margin-top: 0;
+    color: #17352d;
+}
+
+.seat-selection p {
+    line-height: 1.6;
+}
+
+#coachSelect {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    background: white;
+}
+
+.seat-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 22px 0;
+    font-size: 13px;
+}
+
+.seat-legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.seat-example {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    border-radius: 5px;
+    border: 1px solid #b8c8c2;
+}
+
+.seat-example.available {
+    background: white;
+}
+
+.seat-example.chosen {
+    background: #087f5b;
+    border-color: #087f5b;
+}
+
+.seat-example.occupied {
+    background: #d5dadd;
+    border-color: #d5dadd;
+}
+
+.vehicle-layout {
+    max-width: 440px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 22px;
+    background: #fff;
+}
+
+.vehicle-front {
+    margin: 0 auto 24px;
+    padding: 12px;
+    max-width: 160px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+    color: #17352d;
+    background: #e4f4ed;
+    border-radius: 9px;
+}
+
+.seat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) 28px repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    align-items: center;
+}
+
+.seat {
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 1;
+    border: 1px solid #b8c8c2;
+    border-radius: 8px 8px 5px 5px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.seat.available {
+    color: #17352d;
+    background: white;
+}
+
+.seat.available:hover {
+    background: #e4f4ed;
+    border-color: #087f5b;
+}
+
+.seat.chosen {
+    color: white;
+    background: #087f5b;
+    border-color: #087f5b;
+}
+
+.seat.occupied {
+    color: #64748b;
+    background: #d5dadd;
+    border-color: #d5dadd;
+    cursor: not-allowed;
+}
+
+.seat-aisle {
+    min-height: 35px;
+}
+
+.selected-seat-info {
+    color: #17352d;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.selected-seat-fare {
+    color: #087f5b;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+@media (max-width: 500px) {
+    .seat-selection {
+        padding: 14px;
+    }
+
+    .vehicle-layout {
+        padding: 12px;
+    }
+
+    .seat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) 18px repeat(2, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .seat {
+        font-size: 10px;
+    }
+
+    .seat-legend {
+        gap: 10px;
+    }
+}
+
+/* Bus and train seat selection */
+.seat-selection { margin: 24px 0; padding: 24px; border: 1px solid #dce5e2; border-radius: 14px; background: #f8fbfa; }
+.seat-selection h3 { margin-top: 0; color: #17352d; }
+.seat-selection p { line-height: 1.6; }
+#coachSelect { margin: 10px; padding: 10px; border: 1px solid #cbd5e1; border-radius: 7px; background: white; }
+.seat-legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 22px 0; font-size: 13px; }
+.seat-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.seat-example { display: inline-block; width: 17px; height: 17px; border-radius: 5px; border: 1px solid #b8c8c2; }
+.seat-example.available { background: white; }
+.seat-example.chosen { background: #087f5b; border-color: #087f5b; }
+.seat-example.occupied { background: #d5dadd; border-color: #d5dadd; }
+.vehicle-layout { max-width: 440px; margin: 20px auto; padding: 20px; border: 2px solid #cbd5e1; border-radius: 22px; background: #fff; }
+.vehicle-front { margin: 0 auto 24px; padding: 12px; max-width: 160px; text-align: center; font-weight: 700; font-size: 12px; color: #17352d; background: #e4f4ed; border-radius: 9px; }
+.seat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) 28px repeat(2, minmax(0, 1fr)); gap: 9px; align-items: center; }
+.seat { width: 100%; min-width: 0; aspect-ratio: 1; border: 1px solid #b8c8c2; border-radius: 8px 8px 5px 5px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .15s ease; }
+.seat.available { color: #17352d; background: white; }
+.seat.available:hover { background: #e4f4ed; border-color: #087f5b; }
+.seat.chosen { color: white; background: #087f5b; border-color: #087f5b; }
+.seat.occupied { color: #64748b; background: #d5dadd; border-color: #d5dadd; cursor: not-allowed; }
+.seat-aisle { min-height: 35px; }
+.selected-seat-info { color: #17352d; font-weight: 600; overflow-wrap: anywhere; }
+.selected-seat-fare { color: #087f5b; font-weight: 700; font-size: 18px; }
+@media (max-width: 500px) {
+    .seat-selection { padding: 14px; }
+    .vehicle-layout { padding: 12px; }
+    .seat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) 18px repeat(2, minmax(0, 1fr)); gap: 6px; }
+    .seat { font-size: 10px; }
+    .seat-legend { gap: 10px; }
+}
+
+
+/* Aircraft cabin: three seats, aisle, three seats */
+.seat-grid.flight-seat-grid {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr))
+        30px
+        repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.flight-seat-grid .seat {
+    aspect-ratio: 1 / 1;
+    font-size: 11px;
+}
+
+@media (max-width: 500px) {
+    .seat-grid.flight-seat-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr))
+            14px
+            repeat(3, minmax(0, 1fr));
+        gap: 4px;
+    }
+
+    .flight-seat-grid .seat {
+        font-size: 9px;
+        padding: 2px;
+    }
+}

@@ -896,6 +896,247 @@ app.get("/api/hotel-bookings/:userId", async function (req, res) {
 });
 
 
+// =========================
+// TRANSPORT BOOKING API
+// =========================
+
+app.post("/api/transport-bookings", async function (req, res) {
+    try {
+        const {
+            userId,
+            journeyId,
+            journeyDate,
+            passengers,
+            seatNumbers,
+            passengerName,
+            passengerPhone
+        } = req.body;
+
+        if (!userId || !ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please log in with a valid account."
+            });
+        }
+
+        if (
+            typeof journeyId !== "string" ||
+            typeof journeyDate !== "string" ||
+            !/^\d{4}-\d{2}-\d{2}$/.test(journeyDate) ||
+            !Number.isInteger(passengers) ||
+            passengers < 1 ||
+            passengers > 10 ||
+            !Array.isArray(seatNumbers) ||
+            seatNumbers.length !== passengers ||
+            new Set(seatNumbers).size !== seatNumbers.length ||
+            !seatNumbers.every(seat => typeof seat === "string") ||
+            typeof passengerName !== "string" ||
+            !passengerName.trim() ||
+            passengerName.trim().length > 100 ||
+            typeof passengerPhone !== "string" ||
+            !passengerPhone.trim() ||
+            passengerPhone.trim().length > 20
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide valid passenger, journey and seat details."
+            });
+        }
+
+        const chosenDate = new Date(`${journeyDate}T00:00:00.000Z`);
+        const today = new Date().toISOString().slice(0, 10);
+
+        if (
+            Number.isNaN(chosenDate.getTime()) ||
+            chosenDate.toISOString().slice(0, 10) !== journeyDate ||
+            journeyDate < today
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please select a valid future journey date."
+            });
+        }
+
+        const user = await db.collection("users").findOne({
+            _id: new ObjectId(userId)
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User account not found."
+            });
+        }
+
+        // Server-controlled demonstration journey data.
+        const demoJourneys = {
+            "BUS-DAC-CTG-01": {
+                type: "Bus", operator: "Demo Express",
+                from: "Dhaka", to: "Chattogram", fare: 900
+            },
+            "BUS-DAC-COX-01": {
+                type: "Bus", operator: "Demo Coastal Coach",
+                from: "Dhaka", to: "Cox's Bazar", fare: 1400
+            },
+            "BUS-DAC-SYL-01": {
+                type: "Bus", operator: "Demo Green Coach",
+                from: "Dhaka", to: "Sylhet", fare: 750
+            },
+            "BUS-CTG-COX-01": {
+                type: "Bus", operator: "Demo Bay Coach",
+                from: "Chattogram", to: "Cox's Bazar", fare: 500
+            },
+            "TRAIN-DAC-CTG-01": {
+                type: "Train", operator: "Demo Intercity Train",
+                from: "Dhaka", to: "Chattogram", fare: 450
+            },
+            "TRAIN-DAC-SYL-01": {
+                type: "Train", operator: "Demo Intercity Train",
+                from: "Dhaka", to: "Sylhet", fare: 400
+            },
+            "TRAIN-DAC-RJH-01": {
+                type: "Train", operator: "Demo Intercity Train",
+                from: "Dhaka", to: "Rajshahi", fare: 420
+            },
+            "FLIGHT-DAC-CTG-01": {
+                type: "Flight", operator: "Demo Bangladesh Air",
+                from: "Dhaka", to: "Chattogram", fare: 4500
+            },
+            "FLIGHT-DAC-COX-01": {
+                type: "Flight", operator: "Demo Bangladesh Air",
+                from: "Dhaka", to: "Cox's Bazar", fare: 6500
+            },
+            "FLIGHT-DAC-SYL-01": {
+                type: "Flight", operator: "Demo Bangladesh Air",
+                from: "Dhaka", to: "Sylhet", fare: 4200
+            }
+        };
+
+        const journey = demoJourneys[journeyId];
+
+        if (!journey) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid demonstration journey."
+            });
+        }
+
+        // Validate seat labels against the selected transport type.
+        if (journey.type === "Train") {
+            const validTrainSeat = seat => /^[ABC](?:[1-9]|[1-3]\d|40)$/.test(seat);
+            if (!seatNumbers.every(validTrainSeat)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid train coach or seat."
+                });
+            }
+        } else if (journey.type === "Bus") {
+            const validBusSeat = seat => /^B(?:[1-9]|[12]\d|3[0-2])$/.test(seat);
+            if (!seatNumbers.every(validBusSeat)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid bus seat."
+                });
+            }
+        } else if (journey.type === "Flight") {
+            // Demo aircraft seat labels: 1A-5F (six seats per row).
+            const validFlightSeat = seat => /^[1-5][A-F]$/.test(seat);
+            if (!seatNumbers.every(validFlightSeat)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid flight seat."
+                });
+            }
+        }
+
+        const reference =
+            "TKT-" +
+            journeyDate.replace(/-/g, "") +
+            "-" +
+            require("crypto").randomBytes(4).toString("hex").toUpperCase();
+
+        const booking = {
+            reference,
+            userId: user._id,
+            journeyId,
+            transportType: journey.type,
+            operator: journey.operator,
+            from: journey.from,
+            to: journey.to,
+            journeyDate,
+            passengers,
+            seatNumbers,
+            coach: journey.type === "Train" ? seatNumbers[0].charAt(0) : null,
+            passengerName: passengerName.trim(),
+            passengerPhone: passengerPhone.trim(),
+            farePerPassenger: journey.fare,
+            totalPrice: journey.fare * passengers,
+            currency: "BDT",
+            status: "Pending",
+            bookingType: "transport",
+            createdAt: new Date()
+        };
+
+        const result = await db.collection("transportBookings").insertOne(booking);
+
+        res.status(201).json({
+            success: true,
+            message: "Transport booking request submitted.",
+            booking: {
+                ...booking,
+                id: result.insertedId.toString(),
+                userId: user._id.toString()
+            }
+        });
+
+    } catch (error) {
+        console.error("Transport booking error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to submit transport booking."
+        });
+    }
+});
+
+
+app.get("/api/transport-bookings/:userId", async function (req, res) {
+    try {
+        const { userId } = req.params;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID."
+            });
+        }
+
+        const bookings = await db.collection("transportBookings")
+            .find({ userId: new ObjectId(userId) })
+            .sort({ createdAt: -1 })
+            .toArray();
+
+        res.json({
+            success: true,
+            bookings: bookings.map(function (booking) {
+                return {
+                    ...booking,
+                    id: booking._id.toString(),
+                    userId: booking.userId.toString()
+                };
+            })
+        });
+
+    } catch (error) {
+        console.error("Get transport bookings error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to load transport bookings."
+        });
+    }
+});
+
 
 // =========================
 // CONNECT TO MONGODB

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus, Train & Flight Search | Travel Kori Bangladesh</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="transport-seat.css">
+    <style>
+        .transport-page { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+        .transport-search, .transport-booking-panel { margin: 28px 0; padding: 28px; border: 1px solid #dce5e2; border-radius: 16px; background: #fff; box-shadow: 0 8px 24px rgba(20, 50, 42, .05); }
+        .transport-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end; }
+        .transport-fields label, .passenger-fields label { display: block; font-weight: 600; margin-bottom: 8px; }
+        .transport-fields select, .transport-fields input, .passenger-fields input { width: 100%; padding: 13px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; background: white; }
+        .transport-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+        .transport-tab { border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px 22px; background: #fff; cursor: pointer; font: inherit; }
+        .transport-tab.active { color: #fff; background: #087f5b; border-color: #087f5b; }
+        .transport-results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin: 24px 0; }
+        .transport-result-card { border: 1px solid #dce5e2; border-radius: 14px; padding: 24px; box-shadow: 0 8px 24px rgba(20, 50, 42, .05); }
+        .transport-result-card h3 { margin-top: 0; }
+        .transport-fare { color: #087f5b; font-weight: 700; font-size: 20px; }
+        .transport-booking-panel[hidden] { display: none; }
+        .passenger-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+        #transportBookingMessage, #transportMessage { line-height: 1.6; }
+        @media (max-width: 760px) { .transport-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 520px) { .transport-page { padding: 28px 14px; } .transport-search, .transport-booking-panel { padding: 18px; } .transport-fields, .passenger-fields { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">TK <span>Travel Kori</span></a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="hotel-booking.html">Hotel Booking</a>
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="transport-page">
+        <p class="section-label">PLAN YOUR JOURNEY</p>
+        <h1>Bus, Train & Flight Search</h1>
+        <p>Search demonstration schedules, select seats for buses and trains, and submit a booking request.</p>
+
+        <div class="transport-tabs" role="tablist" aria-label="Transport type">
+            <button class="transport-tab active" type="button" data-type="Bus">Bus</button>
+            <button class="transport-tab" type="button" data-type="Train">Train</button>
+            <button class="transport-tab" type="button" data-type="Flight">Flight</button>
+        </div>
+
+        <form id="transportSearchForm" class="transport-search">
+            <div class="transport-fields">
+                <div>
+                    <label for="fromCity">From</label>
+                    <select id="fromCity" required>
+                        <option value="">Select origin</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="toCity">To</label>
+                    <select id="toCity" required>
+                        <option value="">Select destination</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="journeyDate">Journey date</label>
+                    <input id="journeyDate" type="date" required>
+                </div>
+                <div>
+                    <label for="passengers">Passengers</label>
+                    <input id="passengers" type="number" min="1" max="10" value="1" required>
+                </div>
+            </div>
+            <button class="primary-btn" type="submit" style="margin-top:20px;">Search Journeys</button>
+        </form>
+
+        <section aria-labelledby="resultsTitle">
+            <h2 id="resultsTitle">Available Bus Options</h2>
+            <p id="resultsSubtitle">Select your route and journey date.</p>
+            <p id="resultCount"></p>
+            <div id="transportResults" class="transport-results-grid"></div>
+            <p id="transportMessage" aria-live="polite"></p>
+        </section>
+
+        <section id="transportBookingPanel" class="transport-booking-panel" hidden>
+            <h2>Confirm Your Booking Request</h2>
+            <div id="selectedJourney"></div>
+
+            <form id="transportBookingForm">
+                <div class="passenger-fields">
+                    <div>
+                        <label for="passengerName">Passenger name</label>
+                        <input id="passengerName" type="text" maxlength="100" required>
+                    </div>
+                    <div>
+                        <label for="passengerPhone">Contact phone</label>
+                        <input id="passengerPhone" type="tel" maxlength="20" required>
+                    </div>
+                </div>
+
+                <button id="confirmTransportBtn" class="signup-btn" type="submit">
+                    Submit Booking Request
+                </button>
+                <p id="transportBookingMessage" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <p><small>Demo only: schedules, operators, fares and unavailable seats are illustrative, not live data. No real ticket is issued.</small></p>
+    </main>
+
+    <footer>
+        <p>© 2026 Travel Kori Bangladesh</p>
+        <p>Explore Bangladesh with confidence.</p>
+    </footer>
+
+    <script src="transport.js"></script>
+</body>
+</html>
