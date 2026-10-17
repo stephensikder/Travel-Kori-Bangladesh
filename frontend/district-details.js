@@ -1,95 +1,89 @@
 
-const districtData = {
-    "Dhaka": {
-        description: "Dhaka is the capital of Bangladesh, famous for its history, architecture and vibrant city life.",
-        attractions: [
-            { name: "Lalbagh Fort", description: "A historic Mughal-era fort in Old Dhaka." },
-            { name: "Ahsan Manzil", description: "A historic pink palace beside the Buriganga River." },
-            { name: "National Parliament House", description: "A famous architectural landmark designed by Louis Kahn." }
-        ]
-    },
-
-    "Cox's Bazar": {
-        description: "Cox's Bazar is famous for its long sandy sea beach and coastal scenery.",
-        attractions: [
-            { name: "Cox's Bazar Sea Beach", description: "A popular destination known for its long sandy shoreline." },
-            { name: "Himchari National Park", description: "A natural area known for hills, forest and coastal views." },
-            { name: "Inani Beach", description: "A scenic beach known for its rocky coral stones." }
-        ]
-    },
-
-    "Sylhet": {
-        description: "Sylhet is known for its tea gardens, hills, rivers and natural landscapes.",
-        attractions: [
-            { name: "Jaflong", description: "A scenic area known for hills, rivers and stone collection." },
-            { name: "Ratargul Swamp Forest", description: "A freshwater swamp forest with trees growing in water during the rainy season." },
-            { name: "Lalakhal", description: "A beautiful river destination known for its clear blue-green water." }
-        ]
-    },
-
-    "Chattogram": {
-        description: "Chattogram is a major port city surrounded by hills and beaches.",
-        attractions: [
-            { name: "Patenga Sea Beach", description: "A popular seaside destination near Chattogram city." },
-            { name: "Foy's Lake", description: "An artificial lake surrounded by hills and greenery." },
-            { name: "Sitakunda", description: "An area known for hills, trails and natural scenery." }
-        ]
-    },
-
-    "Rangamati": {
-        description: "Rangamati is famous for its hills, indigenous culture and Kaptai Lake.",
-        attractions: [
-            { name: "Kaptai Lake", description: "A large lake surrounded by green hills." },
-            { name: "Hanging Bridge", description: "A well-known bridge and popular sightseeing spot." },
-            { name: "Shuvolong Waterfall", description: "A waterfall that is especially attractive during the rainy season." }
-        ]
-    },
-
-    "Khulna": {
-        description: "Khulna is an important gateway to the Sundarbans mangrove forest.",
-        attractions: [
-            { name: "Sundarbans", description: "A vast mangrove forest famous for its unique wildlife." },
-            { name: "Khan Jahan Ali Bridge", description: "A notable bridge over the Rupsha River." },
-            { name: "Rabindra Complex", description: "A cultural and historical site associated with Rabindranath Tagore." }
-        ]
-    },
-
-    "Rajshahi": {
-        description: "Rajshahi is known for mangoes, silk and historical landmarks.",
-        attractions: [
-            { name: "Varendra Research Museum", description: "A museum preserving archaeological and historical collections." },
-            { name: "Puthia Temple Complex", description: "A group of historic temples known for their architecture." },
-            { name: "Bagha Mosque", description: "A historic mosque known for its terracotta ornamentation." }
-        ]
-    },
-
-    "Bogura": {
-        description: "Bogura is a historic district known for archaeological heritage and yogurt.",
-        attractions: [
-            { name: "Mahasthangarh", description: "One of the oldest known urban archaeological sites in Bangladesh." },
-            { name: "Gokul Medh", description: "An archaeological mound associated with local historical legends." },
-            { name: "Nawab Palace", description: "A historic palace associated with Bogura's local heritage." }
-        ]
-    },
-
-    "Bandarban": {
-        description: "Bandarban is known for mountain scenery, waterfalls and green forests.",
-        attractions: [
-            { name: "Nilgiri", description: "A hilltop destination offering panoramic mountain views." },
-            { name: "Boga Lake", description: "A scenic lake surrounded by hills." },
-            { name: "Chimbuk Hill", description: "A popular hill destination known for wide-ranging views." }
-        ]
-    },
-
-    "Sunamganj": {
-        description: "Sunamganj is famous for wetlands, natural beauty and Baul music heritage.",
-        attractions: [
-            { name: "Tanguar Haor", description: "A large wetland ecosystem rich in birds and aquatic life." },
-            { name: "Jadukata River", description: "A scenic river known for its clear water and surrounding landscape." },
-            { name: "Shimul Garden", description: "A garden area known for its seasonal red Shimul blossoms." }
-        ]
-    }
+const districtSpots = {
+    "Bagerhat": ["Sixty Dome Mosque", "Khan Jahan Ali Shrine", "Sundarbans"],
+    "Bandarban": ["Nilgiri", "Boga Lake", "Chimbuk Hill"],
+    "Barguna": ["Bibichini Shahi Mosque", "Haringhata Forest", "Fatrar Char"],
+    "Barishal": ["Oxford Mission Church", "Durga Sagar", "Floating Guava Market"],
+    "Bhola": ["Monpura Island", "Char Kukri Mukri", "Dhal Char"],
+    "Bogura": ["Mahasthangarh", "Gokul Medh", "Nawab Palace"],
+    "Brahmanbaria": ["Arifail Mosque", "Haripur Zamindar Bari", "Titas River"],
+    "Chandpur": ["Three River Confluence", "Meghna Riverbank", "Rupsha Zamindar Bari"],
+    "Chapai Nawabganj": ["Choto Sona Mosque", "Darasbari Mosque", "Kansat Mango Market"],
+    "Chattogram": ["Patenga Sea Beach", "Foy's Lake", "Sitakunda"],
+    "Chuadanga": ["Carew and Company", "Darsana", "Local Heritage Sites"],
+    "Cox's Bazar": ["Cox's Bazar Sea Beach", "Himchari National Park", "Inani Beach"],
+    "Cumilla": ["Shalban Vihara", "Mainamati Museum", "Dharmasagar"],
+    "Dhaka": ["Lalbagh Fort", "Ahsan Manzil", "National Parliament House"],
+    "Dinajpur": ["Kantajew Temple", "Ramsagar National Park", "Nayabad Mosque"],
+    "Faridpur": ["Mathurapur Deul", "Padma Riverbank", "Kanaipur Zamindar Bari"],
+    "Feni": ["Bijoy Singh Dighi", "Muhuri Project", "Rajajhir Dighi"],
+    "Gaibandha": ["Brahmaputra Riverbank", "Ghagot River", "Local River Islands"],
+    "Gazipur": ["Bhawal National Park", "Nuhash Polli", "Safari Park"],
+    "Gopalganj": ["Tungipara Mausoleum", "Orakandi Thakur Bari", "Ujani Rajbari"],
+    "Habiganj": ["Rema-Kalenga Wildlife Sanctuary", "Satchari National Park", "Tea Gardens"],
+    "Jamalpur": ["Lauchapra Picnic Spot", "Jamuna Riverbank", "Gandhi Ashram"],
+    "Jashore": ["Chanchra Shiva Temple", "Sagardari", "Godkhali Flower Market"],
+    "Jhalokati": ["Gabkhan Channel", "Kirtipasha Zamindar Bari", "Bhitabaria"],
+    "Jhenaidah": ["Naldanga Temple", "Shailkupa Shahi Mosque", "Jor Bangla Mosque"],
+    "Joypurhat": ["Panchbibi Heritage Sites", "Local Archaeological Sites", "Historic Religious Sites"],
+    "Khagrachhari": ["Alutila Cave", "Richang Waterfall", "Hanging Bridge"],
+    "Khulna": ["Sundarbans", "Khan Jahan Ali Bridge", "Rabindra Complex"],
+    "Kishoreganj": ["Sholakia Eidgah", "Nikli Haor", "Pagla Mosque"],
+    "Kurigram": ["Dharla Bridge", "Chilmari River Port", "Brahmaputra Riverbank"],
+    "Kushtia": ["Lalon Shah Shrine", "Shilaidaha Kuthibari", "Tagore Lodge"],
+    "Lakshmipur": ["Dalal Bazar Zamindar Bari", "Meghna Riverbank", "Ramgati Coast"],
+    "Lalmonirhat": ["Tin Bigha Corridor", "Teesta Barrage", "Burimari Land Port"],
+    "Madaripur": ["Shakuni Lake", "Rajoir Heritage Sites", "Arial Khan Riverbank"],
+    "Magura": ["Sreepur Zamindar Bari", "Madhumati Riverbank", "Local Heritage Sites"],
+    "Manikganj": ["Baliati Palace", "Teota Zamindar Bari", "Padma Riverbank"],
+    "Meherpur": ["Mujibnagar Memorial Complex", "Amjhupi Nilkuthi", "Mujibnagar Memorial Museum"],
+    "Moulvibazar": ["Lawachara National Park", "Madhabkunda Waterfall", "Madhabpur Lake"],
+    "Munshiganj": ["Idrakpur Fort", "Baba Adam Mosque", "Bikrampur Heritage Sites"],
+    "Mymensingh": ["Shashi Lodge", "Muktagacha Zamindar Bari", "Brahmaputra Riverbank"],
+    "Naogaon": ["Paharpur Buddhist Monastery", "Kusumba Mosque", "Dibar Dighi"],
+    "Narail": ["SM Sultan Memorial", "Chitra Riverbank", "Local Heritage Sites"],
+    "Narayanganj": ["Sonargaon", "Panam City", "Goaldi Mosque"],
+    "Narsingdi": ["Wari-Bateshwar Archaeological Site", "Meghna Riverbank", "Local Heritage Sites"],
+    "Natore": ["Uttara Ganabhaban", "Rani Bhawani Rajbari", "Chalan Beel"],
+    "Netrokona": ["Birishiri", "Durgapur Clay Hills", "Someshwari River"],
+    "Nilphamari": ["Nilsagar", "Teesta Barrage", "Chini Mosque"],
+    "Noakhali": ["Nijhum Dweep", "Mushapur Closure", "Gandhi Ashram"],
+    "Pabna": ["Hardinge Bridge", "Jor Bangla Temple", "Pakshi Railway Bridge"],
+    "Panchagarh": ["Tetulia", "Maharaja Dighi", "Banglabandha Zero Point"],
+    "Patuakhali": ["Kuakata Sea Beach", "Fatra Forest", "Lebu Char"],
+    "Pirojpur": ["Rayerkathi Zamindar Bari", "Kaukhali Riverfront", "Bhandaria"],
+    "Rajbari": ["Goalanda Ghat", "Padma Riverbank", "Baliakandi Heritage Sites"],
+    "Rajshahi": ["Varendra Research Museum", "Puthia Temple Complex", "Bagha Mosque"],
+    "Rangamati": ["Kaptai Lake", "Hanging Bridge", "Shuvolong Waterfall"],
+    "Rangpur": ["Tajhat Palace", "Carmichael College", "Chikli Beel"],
+    "Satkhira": ["Sundarbans", "Shyamnagar Eco-Tourism Areas", "Jhaudanga Heritage Sites"],
+    "Shariatpur": ["Padma Riverbank", "Local River Islands", "Historic Religious Sites"],
+    "Sherpur": ["Madhutila Eco Park", "Gajni অবকাশ কেন্দ্র", "Garo Hills"],
+    "Sirajganj": ["Jamuna Bridge", "Hatikumrul Navaratna Temple", "Jamuna Riverbank"],
+    "Sunamganj": ["Tanguar Haor", "Jadukata River", "Shimul Garden"],
+    "Sylhet": ["Jaflong", "Ratargul Swamp Forest", "Lalakhal"],
+    "Tangail": ["Mohera Zamindar Bari", "Atia Mosque", "Madhupur National Park"],
+    "Thakurgaon": ["Baliadangi Surjapuri Mango Tree", "King Jangal", "Shalbagan"]
 };
+
+const districtData = {};
+
+Object.keys(districtSpots).forEach(function (districtName) {
+    districtData[districtName] = {
+        description:
+            "Explore the cultural heritage, natural beauty and attractions of " +
+            districtName + ", Bangladesh.",
+
+        attractions: districtSpots[districtName].map(function (spotName) {
+            return {
+                name: spotName,
+                description:
+                    spotName + " is a destination to explore in or around " +
+                    districtName + ", Bangladesh."
+            };
+        })
+    };
+});
 
 const params = new URLSearchParams(window.location.search);
 const districtName = params.get("name");
@@ -98,11 +92,13 @@ const nameElement = document.getElementById("districtName");
 const descriptionElement = document.getElementById("districtDescription");
 const attractionGrid = document.getElementById("attractionGrid");
 
-const district = districtData[districtName];
+if (districtName && districtData[districtName]) {
+    const district = districtData[districtName];
 
-if (district) {
     nameElement.textContent = districtName;
     descriptionElement.textContent = district.description;
+
+    attractionGrid.innerHTML = "";
 
     district.attractions.forEach(function (attraction) {
         const card = document.createElement("article");
@@ -118,7 +114,10 @@ if (district) {
         mapLink.textContent = "View on Google Maps";
         mapLink.href =
             "https://www.google.com/maps/search/?api=1&query=" +
-            encodeURIComponent(attraction.name + ", Bangladesh");
+            encodeURIComponent(
+                attraction.name + ", " + districtName + ", Bangladesh"
+            );
+
         mapLink.target = "_blank";
         mapLink.rel = "noopener noreferrer";
         mapLink.className = "map-link";
@@ -136,3 +135,4 @@ if (district) {
 }
 
 console.log("District details loaded:", districtName);
+console.log("Unique districts available:", Object.keys(districtData).length);
