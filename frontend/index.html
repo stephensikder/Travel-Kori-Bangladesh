@@ -55,38 +55,27 @@
     </section>
 
     
-<!-- Popular Destinations -->
+
+<!-- District Section -->
 <section id="destinations" class="section">
     <p class="section-label">EXPLORE BANGLADESH</p>
     <h2>Explore Our Districts</h2>
-    <p>Discover beautiful places across Bangladesh.</p>
+    <p>Discover beautiful places across all 64 districts.</p>
 
-    <div class="destination-grid">
-        <article class="destination-card">
-            <h3>Dhaka</h3>
-        </article>
+    <!-- District search -->
+    <input
+        type="text"
+        id="districtSearch"
+        placeholder="Search a district..."
+        aria-label="Search districts"
+    >
 
-        <article class="destination-card">
-            <h3>Chattogram</h3>
-        </article>
+    <!-- JavaScript will add district cards here -->
+    <div class="destination-grid" id="districtGrid"></div>
 
-        <article class="destination-card">
-            <h3>Cox's Bazar</h3>
-        </article>
-
-        <article class="destination-card">
-            <h3>Sylhet</h3>
-        </article>
-
-        <article class="destination-card">
-            <h3>Rangamati</h3>
-        </article>
-
-        <article class="destination-card">
-            <h3>Khulna</h3>
-        </article>
-    </div>
+    <p id="districtMessage"></p>
 </section>
+
 
 
     <!-- Features -->
