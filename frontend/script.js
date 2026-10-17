@@ -1,97 +1,125 @@
 
 const districts = [
-    "Bagerhat",
-    "Bandarban",
-    "Barguna",
-    "Barishal",
-    "Bhola",
-    "Bogura",
-    "Brahmanbaria",
-    "Chandpur",
-    "Chapai Nawabganj",
-    "Chattogram",
-    "Chuadanga",
-    "Cumilla",
-    "Cox's Bazar",
-    "Dhaka",
-    "Dinajpur",
-    "Faridpur",
-    "Feni",
-    "Gaibandha",
-    "Gazipur",
-    "Gopalganj",
-    "Habiganj",
-    "Jamalpur",
-    "Jashore",
-    "Jhalokati",
-    "Jhenaidah",
-    "Joypurhat",
-    "Khagrachhari",
-    "Khulna",
-    "Kishoreganj",
-    "Kurigram",
-    "Kushtia",
-    "Lakshmipur",
-    "Lalmonirhat",
-    "Madaripur",
-    "Magura",
-    "Manikganj",
-    "Meherpur",
-    "Moulvibazar",
-    "Munshiganj",
-    "Mymensingh",
-    "Naogaon",
-    "Narail",
-    "Narayanganj",
-    "Narsingdi",
-    "Natore",
-    "Netrokona",
-    "Nilphamari",
-    "Noakhali",
-    "Pabna",
-    "Panchagarh",
-    "Patuakhali",
-    "Pirojpur",
-    "Rajbari",
-    "Rajshahi",
-    "Rangamati",
-    "Rangpur",
-    "Satkhira",
-    "Shariatpur",
-    "Sherpur",
-    "Sirajganj",
-    "Sunamganj",
-    "Sylhet",
-    "Tangail",
-    "Thakurgaon"
+    "Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola",
+    "Bogura", "Brahmanbaria", "Chandpur", "Chapai Nawabganj",
+    "Chattogram", "Chuadanga", "Cumilla", "Cox's Bazar", "Dhaka",
+    "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur",
+    "Gopalganj", "Habiganj", "Jamalpur", "Jashore", "Jhalokati",
+    "Jhenaidah", "Joypurhat", "Khagrachhari", "Khulna", "Kishoreganj",
+    "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur",
+    "Magura", "Manikganj", "Meherpur", "Moulvibazar", "Munshiganj",
+    "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi",
+    "Natore", "Netrokona", "Nilphamari", "Noakhali", "Pabna",
+    "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi",
+    "Rangamati", "Rangpur", "Satkhira", "Shariatpur", "Sherpur",
+    "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
 ];
+
+const API_URL = "http://localhost:5000/api/favorites";
 
 const districtGrid = document.getElementById("districtGrid");
 const districtSearch = document.getElementById("districtSearch");
 const districtMessage = document.getElementById("districtMessage");
 
-// Load saved favorites from localStorage
-function getFavorites() {
+function getCurrentUser() {
     try {
-        return JSON.parse(
-            localStorage.getItem("travelKoriFavorites") || "[]"
-        );
+        return JSON.parse(sessionStorage.getItem("travelKoriUser"));
     } catch (error) {
-        return [];
+        return null;
     }
 }
 
-// Save favorites to localStorage
-function saveFavorites(favorites) {
-    localStorage.setItem(
-        "travelKoriFavorites",
-        JSON.stringify(favorites)
-    );
+async function getFavorites() {
+    const user = getCurrentUser();
+
+    if (!user || !user.id) {
+        return [];
+    }
+
+    try {
+        const response = await fetch(
+            API_URL + "/" + encodeURIComponent(user.id)
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to load favorites.");
+        }
+
+        return data.favorites || [];
+    } catch (error) {
+        console.error("Load favorites error:", error);
+        return null;
+    }
 }
 
-// Display district cards
-function displayDistricts(districtList) {
+async function toggleFavorite(district, button) {
+    const user = getCurrentUser();
+
+    if (!user || !user.id) {
+        alert("Please log in before saving favorite districts.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    button.disabled = true;
+
+    try {
+        const favorites = await getFavorites();
+
+        if (favorites === null) {
+            throw new Error("Could not load favorites. Please try again.");
+        }
+
+        let response;
+
+        if (favorites.includes(district)) {
+            response = await fetch(
+                API_URL + "/" +
+                encodeURIComponent(user.id) + "/" +
+                encodeURIComponent(district),
+                { method: "DELETE" }
+            );
+        } else {
+            response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    district: district
+                })
+            });
+        }
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Unable to update favorite.");
+        }
+
+        displayDistricts(
+            districts.filter(function (name) {
+                return name.toLowerCase().includes(
+                    districtSearch.value.trim().toLowerCase()
+                );
+            })
+        );
+
+    } catch (error) {
+        alert(error.message);
+        console.error("Update favorite error:", error);
+        button.disabled = false;
+    }
+}
+
+async function displayDistricts(districtList) {
     districtGrid.innerHTML = "";
+    districtMessage.textContent = "Loading districts...";
+
+    const favorites = await getFavorites();
 
     districtList.forEach(function (district) {
         const card = document.createElement("article");
@@ -104,57 +132,34 @@ function displayDistricts(districtList) {
         favoriteButton.type = "button";
         favoriteButton.className = "favorite-btn";
 
-        function updateFavoriteButton() {
-            const favorites = getFavorites();
+        if (favorites === null) {
+            favoriteButton.textContent = "Login / Retry Favorites";
+        } else {
             const isFavorite = favorites.includes(district);
-
-            favoriteButton.textContent = isFavorite ? "★ Favorited" : "☆ Favorite";
-            favoriteButton.setAttribute(
-                "aria-label",
-                isFavorite
-                    ? "Remove " + district + " from favorites"
-                    : "Add " + district + " to favorites"
-            );
-            favoriteButton.setAttribute(
-                "aria-pressed",
-                String(isFavorite)
-            );
+            favoriteButton.textContent = isFavorite
+                ? "★ Favorited"
+                : "☆ Favorite";
+            favoriteButton.setAttribute("aria-pressed", String(isFavorite));
         }
 
-        favoriteButton.addEventListener("click", function (event) {
-            event.stopPropagation();
-
-            let favorites = getFavorites();
-
-            if (favorites.includes(district)) {
-                favorites = favorites.filter(function (item) {
-                    return item !== district;
-                });
-            } else {
-                favorites.push(district);
-            }
-
-            saveFavorites(favorites);
-            updateFavoriteButton();
+        favoriteButton.addEventListener("click", function () {
+            toggleFavorite(district, favoriteButton);
         });
 
-        const openButton = document.createElement("button");
-        openButton.type = "button";
-        openButton.className = "details-btn";
-        openButton.textContent = "Explore District";
+        const detailsButton = document.createElement("button");
+        detailsButton.type = "button";
+        detailsButton.className = "details-btn";
+        detailsButton.textContent = "Explore District";
 
-        openButton.addEventListener("click", function () {
+        detailsButton.addEventListener("click", function () {
             window.location.href =
                 "district-details.html?name=" +
                 encodeURIComponent(district);
         });
 
-        updateFavoriteButton();
-
         card.appendChild(title);
         card.appendChild(favoriteButton);
-        card.appendChild(openButton);
-
+        card.appendChild(detailsButton);
         districtGrid.appendChild(card);
     });
 
@@ -162,7 +167,6 @@ function displayDistricts(districtList) {
         districtList.length + " of " + districts.length + " districts shown.";
 }
 
-// Search districts by name
 districtSearch.addEventListener("input", function () {
     const searchText = districtSearch.value.trim().toLowerCase();
 
@@ -171,19 +175,8 @@ districtSearch.addEventListener("input", function () {
     });
 
     displayDistricts(filteredDistricts);
-
-    if (filteredDistricts.length === 0) {
-        districtMessage.textContent =
-            "No districts found. Try another name.";
-    } else {
-        districtMessage.textContent =
-            filteredDistricts.length + " district(s) found.";
-    }
 });
 
-// Display all districts when the page loads
 displayDistricts(districts);
 
-// Check district count in the browser console
 console.log("Total districts:", districts.length);
-console.log("Saved favorites:", getFavorites());

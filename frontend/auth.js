@@ -50,14 +50,18 @@ loginMessage.textContent =
 loginMessage.style.color = "#087f5b";
 
 
-        // Save basic user information for the dashboard
-        sessionStorage.setItem(
-            "travelKoriUser",
-            JSON.stringify({
-                fullName: data.user.fullName,
-                email: data.user.email
-            })
-        );
+        
+sessionStorage.setItem(
+    "travelKoriUser",
+    JSON.stringify({
+        id: data.user.id,
+        fullName: data.user.fullName,
+        email: data.user.email
+    })
+);
+
+window.location.href = "dashboard.html";
+
 
         // Redirect to the dashboard after successful login
         window.location.href = "dashboard.html";
