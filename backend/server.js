@@ -909,7 +909,10 @@ app.post("/api/transport-bookings", async function (req, res) {
             passengers,
             seatNumbers,
             passengerName,
-            passengerPhone
+            passengerPhone,
+            paymentMethod,
+            paymentPhone,
+            transactionReference
         } = req.body;
 
         if (!userId || !ObjectId.isValid(userId)) {
@@ -965,6 +968,37 @@ app.post("/api/transport-bookings", async function (req, res) {
             return res.status(404).json({
                 success: false,
                 message: "User account not found."
+            });
+        }
+
+        const allowedPaymentMethods = ["bkash", "nagad", "cash", "card"];
+        if (!allowedPaymentMethods.includes(paymentMethod)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please select a valid payment method."
+            });
+        }
+
+        if (paymentMethod === "bkash" || paymentMethod === "nagad") {
+            if (
+                typeof paymentPhone !== "string" ||
+                !/^01[3-9]\\d{8}$/.test(paymentPhone.trim())
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Enter a valid 11-digit Bangladeshi mobile number for the demo wallet payment."
+                });
+            }
+        }
+
+        if (
+            transactionReference !== undefined &&
+            transactionReference !== null &&
+            (typeof transactionReference !== "string" || transactionReference.trim().length > 80)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid demo transaction reference."
             });
         }
 
@@ -1072,6 +1106,23 @@ app.post("/api/transport-bookings", async function (req, res) {
             farePerPassenger: journey.fare,
             totalPrice: journey.fare * passengers,
             currency: "BDT",
+            payment: {
+                method: paymentMethod,
+                status: paymentMethod === "cash" ? "Pay on travel day" : "Demo paid",
+                provider: paymentMethod === "bkash" ? "bKash (Demo)" :
+                          paymentMethod === "nagad" ? "Nagad (Demo)" :
+                          paymentMethod === "card" ? "Card (Demo)" : "Cash",
+                payerPhone: (paymentMethod === "bkash" || paymentMethod === "nagad")
+                    ? paymentPhone.trim()
+                    : null,
+                transactionReference: paymentMethod === "cash"
+                    ? null
+                    : (typeof transactionReference === "string" && transactionReference.trim()
+                        ? transactionReference.trim()
+                        : "DEMO-" + require("crypto").randomBytes(4).toString("hex").toUpperCase()),
+                paidAt: paymentMethod === "cash" ? null : new Date(),
+                isRealTransaction: false
+            },
             status: "Pending",
             bookingType: "transport",
             createdAt: new Date()

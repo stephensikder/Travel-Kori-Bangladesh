@@ -1,114 +1,418 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel Kori Bangladesh</title>
+
+    <title>Travel Kori Bangladesh | Explore Bangladesh</title>
+
+    <meta name="description"
+          content="Explore popular destinations, hotels, districts and transport options across Bangladesh with Travel Kori Bangladesh.">
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Navigation -->
-    <!-- Navigation -->
-<nav class="navbar">
-    <a href="#" class="logo">TK <span>Travel Kori</span></a>
-
-    <div class="nav-links">
-        <a href="#destinations">Destinations</a>
-        <a href="#features">Services</a>
-        <a href="hotel-booking.html" class="hotel-nav-link">
-            Hotel Booking
+    <nav class="navbar">
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh home">
+            <span class="brand-mark">TK</span>
+            <span class="brand-name">Travel Kori Bangladesh</span>
         </a>
-        <a href="transport.html">Bus / Train / Flight</a>
-        <button id="loginBtn">Login</button>
-        <button class="signup-btn" id="signupBtn">Sign Up</button>
-    </div>
-</nav>
 
-    <!-- Hero Section -->
+        <div class="nav-links">
+            <a href="#destinations">Destinations</a>
+            <a href="#features">Services</a>
+            <a href="hotel-booking.html" class="hotel-nav-link">
+                Hotel Booking
+            </a>
+            <a href="transport.html">Bus / Train / Flight</a>
+
+            <button id="loginBtn" type="button">Login</button>
+
+            <button class="signup-btn" id="signupBtn" type="button">
+                Sign Up
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
     <header class="hero">
         <div class="hero-content">
-            <p class="tagline">🇧🇩 Bangladesh's Travel Platform</p>
 
-            <h1>Explore Bangladesh,<br>
+            <p class="tagline">🇧🇩 Travel Kori Bangladesh</p>
+
+            <h1>
+                Explore Bangladesh,<br>
                 <span>Your Way.</span>
             </h1>
 
             <p class="hero-description">
-                Discover 64 districts, beautiful destinations,
-                comfortable hotels and convenient travel options.
+                Discover breathtaking destinations, explore local attractions,
+                find comfortable hotels and plan your journey across Bangladesh.
             </p>
 
             <a href="#destinations" class="primary-btn">
-                Explore Bangladesh
+                Explore Destinations
             </a>
 
-            
         </div>
     </header>
 
     <!-- Destination Search -->
-    <section class="search-section">
-        <label for="destination">Destination</label>
-        <input id="destination" type="text"
-               placeholder="Where do you want to go?">
+    <section class="search-section" id="destinationSearchSection">
 
-        <label for="travelDate">Travel Date</label>
-        <input id="travelDate" type="date">
+        <div class="search-heading">
+            <p class="section-label">PLAN YOUR NEXT ADVENTURE</p>
+            <h2>Where do you want to go?</h2>
+            <p>Find your next destination and start planning your trip.</p>
+        </div>
 
-        <button id="searchBtn" class="primary-btn">Search</button>
-        <p id="searchMessage"></p>
+        <form id="homepageSearchForm" class="homepage-search-form">
+
+            <div class="search-field">
+                <label for="destination">Destination</label>
+
+                <input
+                    id="destination"
+                    name="destination"
+                    type="text"
+                    list="popularDestinationSuggestions"
+                    placeholder="Search Cox's Bazar, Sylhet..."
+                    autocomplete="off"
+                    aria-label="Search destination"
+                >
+
+                <datalist id="popularDestinationSuggestions">
+                    <option value="Cox's Bazar"></option>
+                    <option value="Bandarban"></option>
+                    <option value="Rangamati"></option>
+                    <option value="Sylhet"></option>
+                    <option value="Sundarbans"></option>
+                    <option value="Saint Martin's Island"></option>
+                    <option value="Kuakata"></option>
+                    <option value="Sajek Valley"></option>
+                    <option value="Srimangal"></option>
+                    <option value="Dhaka"></option>
+                    <option value="Chattogram"></option>
+                    <option value="Bagerhat"></option>
+                </datalist>
+            </div>
+
+            <div class="search-field">
+                <label for="travelDate">Travel Date</label>
+
+                <input
+                    id="travelDate"
+                    name="travelDate"
+                    type="date"
+                    aria-label="Select travel date"
+                >
+            </div>
+
+            <button id="searchBtn" class="primary-btn" type="submit">
+                Search Destinations
+            </button>
+
+        </form>
+
+        <p id="searchMessage" role="status" aria-live="polite"></p>
+
+        <div class="quick-destinations">
+            <span>Popular searches:</span>
+
+            <button type="button" data-destination="Cox's Bazar">
+                Cox's Bazar
+            </button>
+
+            <button type="button" data-destination="Sylhet">
+                Sylhet
+            </button>
+
+            <button type="button" data-destination="Bandarban">
+                Bandarban
+            </button>
+
+            <button type="button" data-destination="Sundarbans">
+                Sundarbans
+            </button>
+        </div>
+
     </section>
 
-    
+    <!-- Popular Destinations -->
+    <section id="destinations" class="section popular-section">
 
-<!-- District Section -->
-<section id="destinations" class="section">
-    <p class="section-label">EXPLORE BANGLADESH</p>
-    <h2>Explore Our Districts</h2>
-    <p>Discover beautiful places across all 64 districts.</p>
+        <p class="section-label">EXPLORE BANGLADESH</p>
 
-    <!-- District search -->
-    <input
-        type="text"
-        id="districtSearch"
-        placeholder="Search a district..."
-        aria-label="Search districts"
-    >
+        <h2>Popular Destinations</h2>
 
-    <!-- JavaScript will add district cards here -->
-    <div class="destination-grid" id="districtGrid"></div>
+        <p class="section-description">
+            Discover some of Bangladesh's most loved travel destinations.
+        </p>
 
-    <p id="districtMessage"></p>
-</section>
+        <div class="popular-destination-grid">
 
+            <article class="popular-destination-card">
+                <div class="popular-destination-visual visual-coxs">
+                    <span class="destination-category">Sea Beach</span>
+                    <span class="destination-number">01</span>
+                </div>
 
+                <div class="popular-destination-content">
+                    <h3>Cox's Bazar</h3>
+                    <p>
+                        Experience the famous sandy beach and beautiful
+                        coastal scenery.
+                    </p>
 
-    <!-- Features -->
+                    <button type="button"
+                            class="destination-explore-btn"
+                            data-destination="Cox's Bazar">
+                        Explore Destination →
+                    </button>
+                </div>
+            </article>
+
+            <article class="popular-destination-card">
+                <div class="popular-destination-visual visual-sajek">
+                    <span class="destination-category">Hill Escape</span>
+                    <span class="destination-number">02</span>
+                </div>
+
+                <div class="popular-destination-content">
+                    <h3>Sajek Valley</h3>
+                    <p>
+                        Enjoy mountain scenery, peaceful surroundings
+                        and beautiful cloud-covered hills.
+                    </p>
+
+                    <button type="button"
+                            class="destination-explore-btn"
+                            data-destination="Rangamati">
+                        Explore Destination →
+                    </button>
+                </div>
+            </article>
+
+            <article class="popular-destination-card">
+                <div class="popular-destination-visual visual-sylhet">
+                    <span class="destination-category">Tea Gardens</span>
+                    <span class="destination-number">03</span>
+                </div>
+
+                <div class="popular-destination-content">
+                    <h3>Sylhet</h3>
+                    <p>
+                        Discover green tea gardens, rivers, waterfalls
+                        and natural attractions.
+                    </p>
+
+                    <button type="button"
+                            class="destination-explore-btn"
+                            data-destination="Sylhet">
+                        Explore Destination →
+                    </button>
+                </div>
+            </article>
+
+            <article class="popular-destination-card">
+                <div class="popular-destination-visual visual-bandarban">
+                    <span class="destination-category">Mountains</span>
+                    <span class="destination-number">04</span>
+                </div>
+
+                <div class="popular-destination-content">
+                    <h3>Bandarban</h3>
+                    <p>
+                        Explore scenic hills, mountain roads
+                        and spectacular viewpoints.
+                    </p>
+
+                    <button type="button"
+                            class="destination-explore-btn"
+                            data-destination="Bandarban">
+                        Explore Destination →
+                    </button>
+                </div>
+            </article>
+
+            <article class="popular-destination-card">
+                <div class="popular-destination-visual visual-sundarbans">
+                    <span class="destination-category">Wildlife</span>
+                    <span class="destination-number">05</span>
+                </div>
+
+                <div class="popular-destination-content">
+                    <h3>Sundarbans</h3>
+                    <p>
+                        Discover the world's largest mangrove forest
+                        and its remarkable natural environment.
+                    </p>
+
+                    <button type="button"
+                            class="destination-explore-btn"
+                            data-destination="Bagerhat">
+                        Explore Destination →
+                    </button>
+                </div>
+            </article>
+
+            <article class="popular-destination-card">
+                <div class="popular-destination-visual visual-kuakata">
+                    <span class="destination-category">Coastal Escape</span>
+                    <span class="destination-number">06</span>
+                </div>
+
+                <div class="popular-destination-content">
+                    <h3>Kuakata</h3>
+                    <p>
+                        Enjoy coastal landscapes and famous sunrise
+                        and sunset views over the sea.
+                    </p>
+
+                    <button type="button"
+                            class="destination-explore-btn"
+                            data-destination="Patuakhali">
+                        Explore Destination →
+                    </button>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- All Districts -->
+        <div class="all-districts-action">
+            <h3>Want to explore more?</h3>
+
+            <p>
+                Discover destinations from all 64 districts of Bangladesh.
+            </p>
+
+            <button
+                id="toggleDistrictsBtn"
+                class="primary-btn"
+                type="button"
+                aria-expanded="false"
+                aria-controls="allDistrictsPanel">
+                Explore All 64 Districts
+            </button>
+        </div>
+
+        <div id="allDistrictsPanel" hidden>
+            <h2>Explore All Districts</h2>
+
+            <p>Search for a district and discover places to visit.</p>
+
+            <input
+                type="text"
+                id="districtSearch"
+                placeholder="Search a district..."
+                aria-label="Search districts"
+            >
+
+            <div class="destination-grid" id="districtGrid"></div>
+
+            <p id="districtMessage" role="status" aria-live="polite"></p>
+        </div>
+
+    </section>
+
+    <!-- Services -->
     <section id="features" class="features">
+
+        <p class="section-label">TRAVEL MADE EASIER</p>
+
         <h2>Everything You Need in One Place</h2>
 
+        <p class="section-description">
+            Plan your Bangladesh trip with helpful travel services.
+        </p>
+
         <div class="feature-grid">
-            <div>
-                <h3>64 Districts</h3>
-                <p>Explore destinations across Bangladesh.</p>
-            </div>
 
-            <div>
-                <h3>Easy Transport</h3>
-                <p>Find bus, train and flight information.</p>
-            </div>
+            <!-- Explore Districts -->
+            <article class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 6.5 8.5 4l7 2.5L21 4v13.5L15.5 20l-7-2.5L3 20z"/>
+                        <path d="M8.5 4v13.5M15.5 6.5V20"/>
+                        <path d="M12 8.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                        <path d="M12 12.5v2"/>
+                    </svg>
+                </div>
 
-            <div>
-                <h3>Top Hotels</h3>
-                <p>Explore hotels and accommodation.</p>
-            </div>
+                <h3>Explore Districts</h3>
 
-            <div>
-                <h3>Local Guides</h3>
-                <p>Discover tour-guide services.</p>
-            </div>
+                <p>
+                    Discover tourist destinations and attractions
+                    across Bangladesh.
+                </p>
+
+                <a href="#destinations">Explore destinations →</a>
+            </article>
+
+            <!-- Transport -->
+            <article class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="4" y="3" width="16" height="16" rx="3"/>
+                        <path d="M4 12h16M7 7h10"/>
+                        <circle cx="8" cy="16" r="1"/>
+                        <circle cx="16" cy="16" r="1"/>
+                        <path d="M7 19v2M17 19v2"/>
+                    </svg>
+                </div>
+
+                <h3>Transport Options</h3>
+
+                <p>
+                    Explore available demo bus, train and flight
+                    journey options.
+                </p>
+
+                <a href="transport.html">Explore Transport →</a>
+            </article>
+
+            <!-- Hotel Booking -->
+            <article class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <rect x="5" y="3" width="14" height="18" rx="1"/>
+                        <path d="M9 7h2M14 7h2M9 11h2M14 11h2M9 15h2M14 15h2"/>
+                        <path d="M10 21v-3h4v3"/>
+                    </svg>
+                </div>
+
+                <h3>Hotel Booking</h3>
+
+                <p>
+                    Explore accommodation options and submit
+                    hotel booking requests.
+                </p>
+
+                <a href="hotel-booking.html">Explore Hotels →</a>
+            </article>
+
+            <!-- Favorites -->
+            <article class="feature-card">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8z"/>
+                    </svg>
+                </div>
+
+                <h3>Save Favorites</h3>
+
+                <p>
+                    Save your favorite districts and revisit
+                    destinations you want to explore.
+                </p>
+
+                <a href="#destinations">Find destinations →</a>
+            </article>
+
         </div>
     </section>
 
@@ -118,6 +422,103 @@
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
+    <!-- Existing project JavaScript -->
     <script src="script.js"></script>
+
+    <!-- Homepage interactions -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const dateInput = document.getElementById("travelDate");
+            const destinationInput = document.getElementById("destination");
+            const searchForm = document.getElementById("homepageSearchForm");
+            const searchMessage = document.getElementById("searchMessage");
+
+            const toggleButton = document.getElementById("toggleDistrictsBtn");
+            const districtsPanel = document.getElementById("allDistrictsPanel");
+
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+
+            dateInput.min = `${year}-${month}-${day}`;
+
+            // Fill the search box from popular destination buttons.
+            document.querySelectorAll("[data-destination]").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    destinationInput.value = button.dataset.destination;
+
+                    document.getElementById("destinationSearchSection")
+                        .scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+                    destinationInput.focus();
+                });
+            });
+
+            // Toggle the district list.
+            toggleButton.addEventListener("click", function () {
+                const isOpening = districtsPanel.hidden;
+
+                districtsPanel.hidden = !isOpening;
+
+                toggleButton.setAttribute(
+                    "aria-expanded",
+                    String(isOpening)
+                );
+
+                toggleButton.textContent = isOpening
+                    ? "Hide All Districts"
+                    : "Explore All 64 Districts";
+
+                if (isOpening) {
+                    districtsPanel.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                }
+            });
+
+            /*
+             * Avoid recursively clicking the submit button.
+             * The existing script.js may have its own search handler.
+             */
+            searchForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const destination = destinationInput.value.trim();
+                const travelDate = dateInput.value;
+
+                if (!destination) {
+                    searchMessage.textContent =
+                        "Please enter a destination to search.";
+                    destinationInput.focus();
+                    return;
+                }
+
+                if (travelDate && travelDate < dateInput.min) {
+                    searchMessage.textContent =
+                        "Please select today or a future travel date.";
+                    dateInput.focus();
+                    return;
+                }
+
+                searchMessage.textContent =
+                    "Searching for " + destination +
+                    (travelDate ? " on " + travelDate : "") + "...";
+
+                /*
+                 * Search behavior should be connected to the actual
+                 * destination data in script.js. This message alone
+                 * does not perform a database search.
+                 */
+            });
+
+        });
+    </script>
+
 </body>
 </html>

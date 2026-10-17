@@ -180,3 +180,21 @@ districtSearch.addEventListener("input", function () {
 displayDistricts(districts);
 
 console.log("Total districts:", districts.length);
+
+// Homepage Login and Sign Up Navigation
+document.addEventListener("DOMContentLoaded", function () {
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+
+    if (loginBtn) {
+        loginBtn.addEventListener("click", function () {
+            window.location.href = "login.html";
+        });
+    }
+
+    if (signupBtn) {
+        signupBtn.addEventListener("click", function () {
+            window.location.href = "signup.html";
+        });
+    }
+});

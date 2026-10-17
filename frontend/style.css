@@ -1493,3 +1493,832 @@ footer {
         padding: 2px;
     }
 }
+
+/* Payment section */
+.payment-methods {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 1px solid #dce5e2;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 24px 0;
+}
+
+.payment-methods legend {
+    display: block;
+    padding: 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #172b26;
+}
+
+.payment-note {
+    display: block;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #52616b;
+}
+
+/* Fix radio and text alignment */
+.payment-methods .payment-option {
+    display: grid !important;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: center;
+    justify-content: initial !important;
+    column-gap: 12px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 78px;
+    box-sizing: border-box;
+
+    padding: 14px;
+    margin: 10px 0;
+
+    border: 1px solid #dce5e2;
+    border-radius: 10px;
+    background: #ffffff;
+
+    cursor: pointer;
+    text-align: left;
+}
+
+/* Keep the radio button on the left */
+.payment-methods .payment-option input[type="radio"] {
+    display: block !important;
+    position: static !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px;
+    margin: 0 !important;
+    padding: 0 !important;
+    justify-self: start;
+    align-self: center;
+    accent-color: #087f5b;
+    cursor: pointer;
+}
+
+/* Keep text directly beside the radio */
+.payment-option-content {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 5px;
+
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+
+    text-align: left !important;
+    overflow-wrap: anywhere;
+}
+
+.payment-option-content strong {
+    display: block;
+    margin: 0;
+    color: #172b26;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.payment-option-content small {
+    display: block;
+    margin: 0;
+    color: #52616b;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.payment-methods .payment-option:has(input:checked) {
+    border-color: #087f5b;
+    background: #f0faf6;
+}
+
+/* Wallet input fields */
+.wallet-payment-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 16px;
+}
+
+.wallet-payment-fields[hidden] {
+    display: none !important;
+}
+
+.wallet-payment-fields label {
+    display: block;
+    width: 100%;
+    margin: 0;
+    font-weight: 600;
+    text-align: left;
+}
+
+.wallet-payment-fields input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    margin: 0 0 8px;
+    padding: 12px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+    text-align: left;
+}
+
+.wallet-payment-fields input:focus {
+    outline: 2px solid #087f5b;
+    outline-offset: 1px;
+    border-color: #087f5b;
+}
+
+@media (max-width: 600px) {
+    .payment-methods {
+        padding: 12px;
+    }
+
+    .payment-methods .payment-option {
+        grid-template-columns: 20px minmax(0, 1fr);
+        column-gap: 10px;
+        min-height: 72px;
+        padding: 12px;
+    }
+}
+
+/* ==========================================
+   DASHBOARD - RESPONSIVE LAYOUT FIX
+   ========================================== */
+
+/* Main dashboard container */
+.dashboard-main {
+    width: min(1200px, calc(100% - 48px));
+    max-width: 1200px;
+    min-height: 65vh;
+    margin: 0 auto;
+    padding: 36px 0 48px;
+}
+
+/* Dashboard welcome section */
+.dashboard-main > .section-label {
+    margin: 0 0 10px;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+}
+
+.dashboard-main > h1 {
+    margin: 8px 0 12px;
+    font-size: clamp(28px, 3vw, 36px);
+    line-height: 1.3;
+    color: #18332c;
+}
+
+.dashboard-main > p:not(.section-label) {
+    color: #62766d;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Section spacing */
+.dashboard-main > section {
+    margin-top: 32px;
+    margin-bottom: 36px;
+}
+
+.dashboard-main section h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #18332c;
+}
+
+.dashboard-main section > p {
+    margin: 0 0 16px;
+    color: #62766d;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Favorite district cards */
+.dashboard-favorites .destination-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+}
+
+/* Travel bookings */
+.dashboard-bookings .destination-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 18px;
+}
+
+/* All generated destination cards */
+.dashboard-main .destination-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid #dce7e2;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(24, 51, 44, 0.045);
+    overflow-wrap: anywhere;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-main .destination-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(24, 51, 44, 0.08);
+}
+
+.dashboard-main .destination-card h3 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #18332c;
+}
+
+.dashboard-main .destination-card p {
+    margin: 6px 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #62766d;
+}
+
+/* Links and buttons inside dashboard cards */
+.dashboard-main .destination-card a {
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.dashboard-main .destination-card button {
+    margin-top: 8px;
+}
+
+/* Booking action buttons */
+.dashboard-main > .dashboard-bookings > a.signup-btn {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 11px 18px;
+    border-radius: 7px;
+    background: #18332c;
+    color: #ffffff;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.dashboard-main > .dashboard-bookings > a.signup-btn:hover {
+    background: #087f5b;
+}
+
+/* Loading and empty-state messages */
+#favoriteMessage,
+#bookingListMessage,
+#hotelBookingsMessage {
+    margin: 14px 0 0;
+    color: #62766d;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Dashboard feature cards */
+.dashboard-main .dashboard-features {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 38px;
+}
+
+.dashboard-main .dashboard-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid #dce7e2;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(24, 51, 44, 0.05);
+    overflow-wrap: anywhere;
+}
+
+.dashboard-main .dashboard-card h3 {
+    margin: 0 0 12px;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.dashboard-main .dashboard-card p {
+    margin: 8px 0;
+    color: #62766d;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.dashboard-main .dashboard-card a {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Profile form */
+#profileEditForm {
+    margin-top: 18px;
+}
+
+#profileEditForm label {
+    display: block;
+    margin: 12px 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#profileEditForm input {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+#profileEditForm input:focus {
+    outline: 2px solid #78d8ad;
+    border-color: #087f5b;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+/* Navbar */
+.navbar {
+    min-height: 68px;
+    padding: 16px max(24px, calc((100% - 1200px) / 2));
+    gap: 20px;
+}
+
+.nav-links {
+    gap: 20px;
+}
+
+.nav-links a {
+    font-size: 14px;
+}
+
+/* Footer */
+body > footer {
+    margin-top: 20px;
+    padding: 24px 16px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .dashboard-main {
+        width: calc(100% - 36px);
+        padding-top: 28px;
+    }
+
+    .dashboard-bookings .destination-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-main .dashboard-features {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .dashboard-main {
+        width: calc(100% - 28px);
+        padding-top: 22px;
+        padding-bottom: 30px;
+    }
+
+    .dashboard-main > h1 {
+        font-size: 27px;
+    }
+
+    .dashboard-main section h2 {
+        font-size: 21px;
+    }
+
+    .dashboard-main > section {
+        margin-top: 26px;
+        margin-bottom: 28px;
+    }
+
+    .dashboard-favorites .destination-grid,
+    .dashboard-bookings .destination-grid,
+    .dashboard-main .dashboard-features {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+
+    .dashboard-main .destination-card,
+    .dashboard-main .dashboard-card {
+        padding: 17px;
+    }
+
+    .navbar {
+        padding: 16px 18px;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .nav-links {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    .profile-actions {
+        align-items: stretch;
+    }
+}
+
+/* Fix Favorite District action alignment */
+.dashboard-favorites .destination-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.dashboard-favorites .destination-card h3 {
+    margin: 0 0 4px;
+}
+
+.dashboard-favorites .destination-card a {
+    display: inline-block;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.dashboard-favorites .destination-card button {
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 9px 14px;
+    font-size: 14px;
+}
+
+/* Keep link and button on the same row with proper spacing */
+.dashboard-favorites .destination-card a,
+.dashboard-favorites .destination-card button {
+    vertical-align: middle;
+}
+
+.dashboard-favorites .destination-card {
+    gap: 12px;
+}
+
+/* Responsive favorite card actions */
+@media (max-width: 600px) {
+    .dashboard-favorites .destination-card {
+        padding: 18px;
+    }
+
+    .dashboard-favorites .destination-card button {
+        padding: 9px 12px;
+    }
+}
+
+/* Homepage redesign */
+[hidden] {
+    display: none !important;
+}
+
+.search-section {
+    width: min(1100px, calc(100% - 40px));
+    margin: -35px auto 50px;
+    position: relative;
+    z-index: 2;
+    padding: 30px;
+    border: 1px solid #e0e9e4;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 12px 35px rgba(24, 51, 44, 0.09);
+}
+
+.search-heading {
+    margin-bottom: 22px;
+}
+
+.search-heading h2 {
+    margin: 6px 0;
+    color: #18382f;
+}
+
+.search-heading > p:last-child,
+.section-description {
+    color: #65766f;
+    line-height: 1.7;
+}
+
+.homepage-search-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 0.65fr) auto;
+    align-items: end;
+    gap: 16px;
+}
+
+.search-field {
+    min-width: 0;
+}
+
+.search-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #233b32;
+}
+
+.search-field input {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border: 1px solid #ccd9d2;
+    border-radius: 8px;
+    background: #fff;
+    font: inherit;
+}
+
+.homepage-search-form .primary-btn {
+    min-height: 48px;
+    white-space: nowrap;
+}
+
+.quick-destinations {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 9px;
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.quick-destinations > span {
+    color: #65766f;
+}
+
+.quick-destinations button {
+    padding: 7px 12px;
+    border: 1px solid #dbe7e0;
+    border-radius: 20px;
+    background: #f5faf7;
+    color: #214b3c;
+    cursor: pointer;
+}
+
+.quick-destinations button:hover {
+    background: #e4f4eb;
+}
+
+.popular-section {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.popular-destination-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 28px;
+}
+
+.popular-destination-card {
+    overflow: hidden;
+    min-width: 0;
+    border: 1px solid #e0e9e4;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(24, 51, 44, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popular-destination-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(24, 51, 44, 0.1);
+}
+
+.popular-destination-visual {
+    display: flex;
+    min-height: 155px;
+    padding: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    color: #fff;
+    background: linear-gradient(135deg, #1d6251, #8bb9a1);
+}
+
+.visual-coxs {
+    background: linear-gradient(135deg, #155e75, #7dd3d8);
+}
+
+.visual-sajek {
+    background: linear-gradient(135deg, #315c45, #b6c98b);
+}
+
+.visual-sylhet {
+    background: linear-gradient(135deg, #226247, #9bc69b);
+}
+
+.visual-bandarban {
+    background: linear-gradient(135deg, #514a36, #b7a16c);
+}
+
+.visual-sundarbans {
+    background: linear-gradient(135deg, #1d5142, #8aaf77);
+}
+
+.visual-kuakata {
+    background: linear-gradient(135deg, #7a4e39, #d8ad7a);
+}
+
+.destination-category {
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.22);
+    font-size: 12px;
+}
+
+.destination-number {
+    font-size: 25px;
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+.popular-destination-content {
+    padding: 20px;
+}
+
+.popular-destination-content h3 {
+    margin: 0 0 10px;
+    color: #18382f;
+    font-size: 19px;
+}
+
+.popular-destination-content p {
+    min-height: 66px;
+    margin: 0 0 15px;
+    color: #65766f;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.destination-explore-btn {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #087f5b;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.destination-explore-btn:hover {
+    color: #07553d;
+}
+
+.all-districts-action {
+    margin-top: 42px;
+    padding: 30px;
+    border: 1px solid #dce8e1;
+    border-radius: 14px;
+    background: #f4f9f6;
+    text-align: center;
+}
+
+.all-districts-action h3 {
+    margin: 0 0 8px;
+    color: #18382f;
+}
+
+.all-districts-action p {
+    margin: 0 0 18px;
+    color: #65766f;
+}
+
+#allDistrictsPanel {
+    padding-top: 32px;
+    scroll-margin-top: 24px;
+}
+
+#allDistrictsPanel #districtSearch {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    min-height: 46px;
+    margin: 20px 0;
+    padding: 12px;
+    border: 1px solid #ccd9d2;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.feature-card {
+    padding: 24px;
+    border: 1px solid #e0e9e4;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.feature-icon {
+    margin-bottom: 12px;
+    font-size: 28px;
+}
+
+.feature-card a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #087f5b;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .homepage-search-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .homepage-search-form .primary-btn {
+        grid-column: 1 / -1;
+    }
+
+    .popular-destination-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .search-section {
+        width: calc(100% - 28px);
+        margin-top: -20px;
+        padding: 20px;
+    }
+
+    .homepage-search-form,
+    .popular-destination-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .homepage-search-form .primary-btn {
+        grid-column: auto;
+        width: 100%;
+    }
+
+    .popular-destination-visual {
+        min-height: 130px;
+    }
+
+    .popular-destination-content p {
+        min-height: 0;
+    }
+
+    .all-districts-action {
+        padding: 22px 16px;
+    }
+}
+
+.feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    background: #eaf5ef;
+    color: #087f5b;
+}
+
+.feature-icon svg {
+    width: 27px;
+    height: 27px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

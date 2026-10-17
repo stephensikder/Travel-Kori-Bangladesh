@@ -22,6 +22,17 @@
         .transport-booking-panel[hidden] { display: none; }
         .passenger-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
         #transportBookingMessage, #transportMessage { line-height: 1.6; }
+        .payment-methods { border: 1px solid #dce5e2; border-radius: 12px; padding: 18px; margin: 18px 0; }
+        .payment-methods legend { font-weight: 700; padding: 0 8px; }
+        .payment-note { color: #52616b; font-size: 14px; line-height: 1.5; }
+        .payment-option { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid #dce5e2; border-radius: 10px; margin: 10px 0; cursor: pointer; }
+        .payment-option:has(input:checked) { border-color: #087f5b; background: #f0faf6; }
+        .payment-option input { margin-top: 4px; }
+        .payment-option span { display: flex; flex-direction: column; gap: 4px; }
+        .payment-option small { color: #52616b; }
+        .wallet-payment-fields { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 14px; }
+        .wallet-payment-fields[hidden] { display: none; }
+        .wallet-payment-fields input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
         @media (max-width: 760px) { .transport-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 520px) { .transport-page { padding: 28px 14px; } .transport-search, .transport-booking-panel { padding: 18px; } .transport-fields, .passenger-fields { grid-template-columns: 1fr; } }
     </style>
@@ -97,14 +108,94 @@
                     </div>
                 </div>
 
+                <fieldset class="payment-methods">
+    <legend>Choose Payment Method</legend>
+
+    <p class="payment-note">
+        Demo checkout only. No real money will be charged.
+    </p>
+
+    <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="bkash" required>
+        <span class="payment-option-content">
+            <strong>bKash</strong>
+            <small>Demo wallet payment</small>
+        </span>
+    </label>
+
+    <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="nagad" required>
+        <span class="payment-option-content">
+            <strong>Nagad</strong>
+            <small>Demo wallet payment</small>
+        </span>
+    </label>
+
+    <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="card" required>
+        <span class="payment-option-content">
+            <strong>Debit / Credit Card</strong>
+            <small>
+                Simulated demo payment. Do not enter card details.
+            </small>
+        </span>
+    </label>
+
+    <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="cash" required>
+        <span class="payment-option-content">
+            <strong>Cash</strong>
+            <small>Pay on travel day</small>
+        </span>
+    </label>
+
+    <div id="walletPaymentFields"
+         class="wallet-payment-fields"
+         hidden>
+
+        <label for="paymentPhone">
+            bKash/Nagad mobile number
+        </label>
+
+        <input
+            id="paymentPhone"
+            type="tel"
+            inputmode="numeric"
+            maxlength="11"
+            placeholder="01XXXXXXXXX"
+        >
+
+        <label for="transactionReference">
+            Demo transaction reference (optional)
+        </label>
+
+        <input
+            id="transactionReference"
+            type="text"
+            maxlength="80"
+            placeholder="e.g. DEMO12345"
+        >
+    </div>
+
+    <p id="paymentHelp" class="payment-note" aria-live="polite">
+        Select a payment method to continue.
+    </p>
+</fieldset>
+
+<button id="confirmTransportBtn"
+        class="signup-btn"
+        type="submit">
+    Confirm Demo Booking
+</button>
+
                 <button id="confirmTransportBtn" class="signup-btn" type="submit">
-                    Submit Booking Request
+                    Confirm Demo Booking
                 </button>
                 <p id="transportBookingMessage" aria-live="polite"></p>
             </form>
         </section>
 
-        <p><small>Demo only: schedules, operators, fares and unavailable seats are illustrative, not live data. No real ticket is issued.</small></p>
+        <p><small>Demo only: schedules, operators, fares, seat availability and payments are illustrative. bKash, Nagad and card are simulated only; no real payment is processed and no real ticket is issued.</small></p>
     </main>
 
     <footer>
