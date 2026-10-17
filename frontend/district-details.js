@@ -1,3 +1,7 @@
+// ============================================
+// TRAVEL KORI BANGLADESH
+// DISTRICT DETAILS SCRIPT
+// ============================================
 
 const districtSpots = {
     "Bagerhat": ["Sixty Dome Mosque", "Khan Jahan Ali Shrine", "Sundarbans"],
@@ -66,7 +70,10 @@ const districtSpots = {
     "Thakurgaon": ["Baliadangi Surjapuri Mango Tree", "King Jangal", "Shalbagan"]
 };
 
-// Generate district descriptions and attraction details
+// ============================================
+// GENERATE DISTRICT DATA
+// ============================================
+
 const districtData = {};
 
 Object.keys(districtSpots).forEach(function (districtName) {
@@ -86,70 +93,113 @@ Object.keys(districtSpots).forEach(function (districtName) {
     };
 });
 
-// Read the district name from the URL
+// ============================================
+// GET DISTRICT NAME FROM URL
+// Supports both ?name=Bagerhat and ?district=Bagerhat
+// ============================================
+
 const params = new URLSearchParams(window.location.search);
-const districtName = params.get("name");
+
+const requestedDistrict =
+    params.get("name") ||
+    params.get("district") ||
+    "";
+
+const normalizedDistrictName = requestedDistrict.trim().toLowerCase();
+
+// Match district name without case sensitivity
+const matchedDistrictName = Object.keys(districtData).find(function (name) {
+    return name.trim().toLowerCase() === normalizedDistrictName;
+});
+
+const district = matchedDistrictName
+    ? districtData[matchedDistrictName]
+    : null;
+
+// ============================================
+// DOM ELEMENTS
+// ============================================
 
 const nameElement = document.getElementById("districtName");
 const descriptionElement = document.getElementById("districtDescription");
 const attractionGrid = document.getElementById("attractionGrid");
 const attractionMessage = document.getElementById("attractionMessage");
 
-const district = districtData[districtName];
+// ============================================
+// DISPLAY DISTRICT DETAILS
+// ============================================
 
-// Display district details
-if (district) {
-    nameElement.textContent = districtName;
-    descriptionElement.textContent = district.description;
+if (nameElement && descriptionElement && attractionGrid) {
 
     attractionGrid.innerHTML = "";
 
-    district.attractions.forEach(function (attraction) {
-        const card = document.createElement("article");
-        card.className = "destination-card attraction-card";
+    if (district) {
+        nameElement.textContent = matchedDistrictName;
+        descriptionElement.textContent = district.description;
 
-        const title = document.createElement("h3");
-        title.textContent = attraction.name;
+        district.attractions.forEach(function (attraction) {
+            const card = document.createElement("article");
+            card.className = "destination-card attraction-card";
 
-        const details = document.createElement("p");
-        details.textContent = attraction.description;
+            const title = document.createElement("h3");
+            title.textContent = attraction.name;
 
-        const mapLink = document.createElement("a");
-        mapLink.textContent = "View on Google Maps";
-        mapLink.href =
-            "https://www.google.com/maps/search/?api=1&query=" +
-            encodeURIComponent(
-                attraction.name + ", " + districtName + ", Bangladesh"
-            );
+            const details = document.createElement("p");
+            details.textContent = attraction.description;
 
-        mapLink.target = "_blank";
-        mapLink.rel = "noopener noreferrer";
-        mapLink.className = "map-link";
+            const mapLink = document.createElement("a");
 
-        card.appendChild(title);
-        card.appendChild(details);
-        card.appendChild(mapLink);
+            mapLink.textContent = "View on Google Maps";
 
-        attractionGrid.appendChild(card);
-    });
+            mapLink.href =
+                "https://www.google.com/maps/search/?api=1&query=" +
+                encodeURIComponent(
+                    attraction.name + ", " +
+                    matchedDistrictName + ", Bangladesh"
+                );
 
-    if (attractionMessage) {
-        attractionMessage.textContent =
-            district.attractions.length + " attractions available.";
+            mapLink.target = "_blank";
+            mapLink.rel = "noopener noreferrer";
+            mapLink.className = "map-link";
+
+            card.appendChild(title);
+            card.appendChild(details);
+            card.appendChild(mapLink);
+
+            attractionGrid.appendChild(card);
+        });
+
+        if (attractionMessage) {
+            attractionMessage.textContent =
+                district.attractions.length + " attractions available.";
+        }
+
+    } else {
+        nameElement.textContent = "District Not Found";
+
+        descriptionElement.textContent =
+            requestedDistrict
+                ? "No district data found for '" + requestedDistrict +
+                  "'. Please return to the district list and select a valid district."
+                : "No district was selected. Please return to the district list and select a district.";
+
+        if (attractionMessage) {
+            attractionMessage.textContent =
+                "No attractions are available for this district.";
+        }
     }
+
 } else {
-    nameElement.textContent = districtName || "District Not Found";
-
-    descriptionElement.textContent =
-        "Detailed information for this district is not available yet.";
-
-    attractionGrid.innerHTML = "";
-
-    if (attractionMessage) {
-        attractionMessage.textContent =
-            "No attractions are available for this district yet.";
-    }
+    console.error(
+        "District details page is missing one or more required HTML elements:",
+        {
+            districtName: Boolean(nameElement),
+            districtDescription: Boolean(descriptionElement),
+            attractionGrid: Boolean(attractionGrid)
+        }
+    );
 }
 
-console.log("District details loaded:", districtName);
-console.log("Unique districts available:", Object.keys(districtData).length);
+console.log("Requested district:", requestedDistrict);
+console.log("Matched district:", matchedDistrictName || "Not found");
+console.log("Total districts available:", Object.keys(districtData).length);

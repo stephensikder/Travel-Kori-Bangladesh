@@ -458,3 +458,321 @@ async function loadHotelBookings() {
 if (user && user.id) {
     loadHotelBookings();
 }
+
+
+/* =========================================
+   MY TRANSPORT TICKETS
+   Bus + Train + Flight
+========================================= */
+
+(function initTransportDashboard() {
+    const API_URL = "http://localhost:5000";
+
+    const container = document.getElementById("myTransportBookings");
+    const message = document.getElementById("transportBookingsMessage");
+    const filter = document.getElementById("transportTypeFilter");
+
+    const busCount = document.getElementById("busTicketCount");
+    const trainCount = document.getElementById("trainTicketCount");
+    const flightCount = document.getElementById("flightTicketCount");
+
+    // This section may not exist on other pages.
+    if (!container || !message) return;
+
+    let transportBookings = [];
+
+    const user = (() => {
+        try {
+            return JSON.parse(sessionStorage.getItem("travelKoriUser") || "null");
+        } catch {
+            return null;
+        }
+    })();
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[character]);
+    }
+
+    function formatDate(value) {
+        if (!value) return "Not specified";
+
+        // Avoid timezone shifts for YYYY-MM-DD dates.
+        const dateString = String(value);
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+            const [year, month, day] = dateString.split("-").map(Number);
+            return new Date(year, month - 1, day).toLocaleDateString("en-BD", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
+        }
+
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return escapeHTML(dateString);
+        }
+
+        return date.toLocaleDateString("en-BD", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function formatMoney(amount) {
+        const number = Number(amount);
+
+        if (!Number.isFinite(number)) return "Not available";
+
+        return "৳" + number.toLocaleString("en-BD");
+    }
+
+    function normalizeType(booking) {
+        const type = String(
+            booking.transportType || booking.type || ""
+        ).toLowerCase();
+
+        if (type.includes("bus")) return "Bus";
+        if (type.includes("train")) return "Train";
+        if (type.includes("flight") || type.includes("plane")) return "Flight";
+
+        return "Transport";
+    }
+
+    function typeIcon(type) {
+        return {
+            Bus: "🚌",
+            Train: "🚆",
+            Flight: "✈️"
+        }[type] || "🎫";
+    }
+
+    function statusClass(status) {
+        const value = String(status || "Pending").toLowerCase();
+
+        if (value.includes("confirm")) return "confirmed";
+        if (value.includes("cancel")) return "cancelled";
+        if (value.includes("complete")) return "completed";
+
+        return "pending";
+    }
+
+    function updateSummary() {
+        if (busCount) {
+            busCount.textContent = transportBookings.filter(
+                booking => normalizeType(booking) === "Bus"
+            ).length;
+        }
+
+        if (trainCount) {
+            trainCount.textContent = transportBookings.filter(
+                booking => normalizeType(booking) === "Train"
+            ).length;
+        }
+
+        if (flightCount) {
+            flightCount.textContent = transportBookings.filter(
+                booking => normalizeType(booking) === "Flight"
+            ).length;
+        }
+    }
+
+    function renderBookings() {
+        const selectedType = filter ? filter.value : "all";
+
+        const visibleBookings = transportBookings.filter(booking => {
+            return selectedType === "all" ||
+                normalizeType(booking) === selectedType;
+        });
+
+        if (visibleBookings.length === 0) {
+            container.innerHTML = "";
+            message.className = "transport-empty-state";
+
+            if (transportBookings.length === 0) {
+                message.innerHTML = `
+                    <div class="transport-empty-icon">🎫</div>
+                    <h3>No transport tickets yet</h3>
+                    <p>Your bus, train and flight bookings will appear here.</p>
+                    <a href="transport.html" class="signup-btn">
+                        Find a Journey
+                    </a>
+                `;
+            } else {
+                message.textContent =
+                    "No " + selectedType.toLowerCase() +
+                    " tickets found. Try another filter.";
+            }
+
+            return;
+        }
+
+        message.textContent = "";
+        message.className = "";
+
+        container.innerHTML = visibleBookings.map(booking => {
+            const type = normalizeType(booking);
+            const status = booking.status || "Pending";
+
+            const from = booking.from || "Departure";
+            const to = booking.to || "Destination";
+
+            const reference = booking.reference ||
+                booking.bookingReference ||
+                booking.id ||
+                "Not available";
+
+            const journeyDate = booking.journeyDate ||
+                booking.travelDate ||
+                booking.date;
+
+            const passengers = booking.passengers ??
+                booking.numberOfPassengers ??
+                1;
+
+            const seatNumbers = Array.isArray(booking.seatNumbers)
+                ? booking.seatNumbers.join(", ")
+                : (booking.seatNumbers || booking.seats || "");
+
+            const operator = booking.operator || type + " service";
+
+            const total = booking.totalPrice ??
+                booking.totalFare ??
+                booking.amount;
+
+            return `
+                <article class="transport-ticket-card">
+                    <div class="transport-ticket-top">
+                        <div class="transport-operator">
+                            <span class="transport-ticket-icon">
+                                ${typeIcon(type)}
+                            </span>
+
+                            <div>
+                                <span class="transport-type-label">
+                                    ${escapeHTML(type)} TICKET
+                                </span>
+
+                                <h3>${escapeHTML(operator)}</h3>
+                            </div>
+                        </div>
+
+                        <span class="transport-status ${statusClass(status)}">
+                            ${escapeHTML(status)}
+                        </span>
+                    </div>
+
+                    <div class="transport-route">
+                        <div class="transport-route-point">
+                            <span>FROM</span>
+                            <strong>${escapeHTML(from)}</strong>
+                        </div>
+
+                        <div class="transport-route-line">
+                            <span>→</span>
+                        </div>
+
+                        <div class="transport-route-point destination">
+                            <span>TO</span>
+                            <strong>${escapeHTML(to)}</strong>
+                        </div>
+                    </div>
+
+                    <div class="transport-ticket-details">
+                        <div>
+                            <span>Journey date</span>
+                            <strong>${formatDate(journeyDate)}</strong>
+                        </div>
+
+                        <div>
+                            <span>Passengers</span>
+                            <strong>${escapeHTML(passengers)}</strong>
+                        </div>
+
+                        <div>
+                            <span>Booking reference</span>
+                            <strong class="ticket-reference">
+                                ${escapeHTML(reference)}
+                            </strong>
+                        </div>
+
+                        ${seatNumbers ? `
+                            <div>
+                                <span>Seat number(s)</span>
+                                <strong>${escapeHTML(seatNumbers)}</strong>
+                            </div>
+                        ` : ""}
+                    </div>
+
+                    <div class="transport-ticket-footer">
+                        <div>
+                            <span>Total fare</span>
+                            <strong class="transport-total">
+                                ${formatMoney(total)}
+                            </strong>
+                        </div>
+
+                        <span class="transport-footer-note">
+                            Booking details
+                        </span>
+                    </div>
+                </article>
+            `;
+        }).join("");
+    }
+
+    async function loadTransportBookings() {
+        if (!user || !user.id) {
+            message.className = "transport-empty-state";
+            message.textContent = "Please log in to view your transport tickets.";
+            return;
+        }
+
+        message.className = "";
+        message.textContent = "Loading your transport tickets...";
+
+        try {
+            const response = await fetch(
+                `${API_URL}/api/transport-bookings/${encodeURIComponent(user.id)}`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message || "Unable to load transport tickets."
+                );
+            }
+
+            transportBookings = Array.isArray(data.bookings)
+                ? data.bookings
+                : [];
+
+            updateSummary();
+            renderBookings();
+
+        } catch (error) {
+            console.error("Transport dashboard error:", error);
+
+            message.className = "transport-empty-state";
+            message.textContent =
+                error.message === "Failed to fetch"
+                    ? "Cannot connect to the backend. Make sure node server.js is running."
+                    : error.message;
+        }
+    }
+
+    if (filter) {
+        filter.addEventListener("change", renderBookings);
+    }
+
+    loadTransportBookings();
+})();

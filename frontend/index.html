@@ -487,35 +487,53 @@
              * The existing script.js may have its own search handler.
              */
             searchForm.addEventListener("submit", function (event) {
-                event.preventDefault();
+    event.preventDefault();
 
-                const destination = destinationInput.value.trim();
-                const travelDate = dateInput.value;
+    const destination = destinationInput.value.trim();
+    const travelDate = dateInput.value;
 
-                if (!destination) {
-                    searchMessage.textContent =
-                        "Please enter a destination to search.";
-                    destinationInput.focus();
-                    return;
-                }
+    if (!destination) {
+        searchMessage.textContent = "Please select a destination.";
+        destinationInput.focus();
+        return;
+    }
 
-                if (travelDate && travelDate < dateInput.min) {
-                    searchMessage.textContent =
-                        "Please select today or a future travel date.";
-                    dateInput.focus();
-                    return;
-                }
+    if (travelDate && travelDate < dateInput.min) {
+        searchMessage.textContent = "Please select today or a future date.";
+        dateInput.focus();
+        return;
+    }
 
-                searchMessage.textContent =
-                    "Searching for " + destination +
-                    (travelDate ? " on " + travelDate : "") + "...";
+    // Save the visitor's intended hotel search
+    const pendingSearch = {
+        destination: destination,
+        travelDate: travelDate
+    };
 
-                /*
-                 * Search behavior should be connected to the actual
-                 * destination data in script.js. This message alone
-                 * does not perform a database search.
-                 */
-            });
+    sessionStorage.setItem(
+        "travelKoriPendingHotelSearch",
+        JSON.stringify(pendingSearch)
+    );
+
+    // Check whether the user is already logged in
+    let currentUser = null;
+
+    try {
+        currentUser = JSON.parse(
+            sessionStorage.getItem("travelKoriUser") || "null"
+        );
+    } catch (error) {
+        currentUser = null;
+    }
+
+    if (currentUser && currentUser.id) {
+        // Already logged in: go directly to the hotel page
+        window.location.href = "hotel-booking.html";
+    } else {
+        // Not logged in: login first, then continue the saved search
+        window.location.href = "login.html";
+    }
+});
 
         });
     </script>

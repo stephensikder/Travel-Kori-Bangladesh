@@ -1,6 +1,4 @@
-
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ObjectId } = require("mongodb");
@@ -39,13 +37,21 @@ app.get("/api/health", function (req, res) {
 
 // =========================
 // USER REGISTRATION API
+// New registrations are travelers only.
 // =========================
 
 app.post("/api/auth/register", async function (req, res) {
     try {
         const { fullName, email, password } = req.body;
 
-        if (!fullName || !email || !password) {
+        if (
+            typeof fullName !== "string" ||
+            typeof email !== "string" ||
+            typeof password !== "string" ||
+            !fullName.trim() ||
+            !email.trim() ||
+            !password
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Name, email and password are required."
@@ -74,19 +80,26 @@ app.post("/api/auth/register", async function (req, res) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        const now = new Date();
 
         const result = await users.insertOne({
             fullName: fullName.trim(),
             email: normalizedEmail,
             password: hashedPassword,
+            userType: "traveler",
+            isActive: true,
+            phone: "",
+            address: "",
             favorites: [],
-            createdAt: new Date()
+            savedAttractions: [],
+            createdAt: now,
+            updatedAt: now
         });
 
         res.status(201).json({
             success: true,
             message: "Account created successfully!",
-            userId: result.insertedId
+            userId: result.insertedId.toString()
         });
 
     } catch (error) {
@@ -107,7 +120,12 @@ app.post("/api/auth/login", async function (req, res) {
     try {
         const { email, password } = req.body;
 
-        if (!email || !password) {
+        if (
+            typeof email !== "string" ||
+            typeof password !== "string" ||
+            !email.trim() ||
+            !password
+        ) {
             return res.status(400).json({
                 success: false,
                 message: "Email and password are required."
@@ -120,7 +138,7 @@ app.post("/api/auth/login", async function (req, res) {
             email: normalizedEmail
         });
 
-        if (!user) {
+        if (!user || typeof user.password !== "string") {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email or password."
@@ -139,15 +157,31 @@ app.post("/api/auth/login", async function (req, res) {
             });
         }
 
+        if (user.isActive === false) {
+            return res.status(403).json({
+                success: false,
+                message: "This account has been deactivated."
+            });
+        }
+
+        const userType = user.userType || "traveler";
+
+        if (!["admin", "traveler"].includes(userType)) {
+            return res.status(403).json({
+                success: false,
+                message: "Invalid account role."
+            });
+        }
+
         res.json({
             success: true,
             message: "Login successful!",
             user: {
-    id: user._id.toString(),
-    fullName: user.fullName,
-    email: user.email,
-    userType: user.userType || "traveler"
-}
+                id: user._id.toString(),
+                fullName: user.fullName,
+                email: user.email,
+                userType: userType
+            }
         });
 
     } catch (error) {
@@ -159,7 +193,6 @@ app.post("/api/auth/login", async function (req, res) {
         });
     }
 });
-
 
 // =========================
 // UPDATE USER PROFILE API
@@ -209,7 +242,8 @@ app.put("/api/users/:userId", async function (req, res) {
             {
                 $set: {
                     fullName: fullName.trim(),
-                    email: normalizedEmail
+                    email: normalizedEmail,
+                    updatedAt: new Date()
                 }
             }
         );
@@ -240,7 +274,6 @@ app.put("/api/users/:userId", async function (req, res) {
         });
     }
 });
-
 
 // =========================
 // FAVORITES API 1
@@ -385,8 +418,6 @@ app.delete(
     }
 );
 
-
-
 // =========================
 // ADMIN BOOKING MANAGEMENT
 // =========================
@@ -441,7 +472,6 @@ app.get("/api/admin/bookings/:adminId", async function (req, res) {
     }
 });
 
-
 // Update booking status (Admin only)
 app.put(
     "/api/admin/bookings/:adminId/:bookingId/status",
@@ -460,9 +490,7 @@ app.put(
                 });
             }
 
-            if (
-                !["Pending", "Confirmed", "Cancelled"].includes(status)
-            ) {
+            if (!["Pending", "Confirmed", "Cancelled"].includes(status)) {
                 return res.status(400).json({
                     success: false,
                     message: "Invalid booking status."
@@ -508,7 +536,6 @@ app.put(
         }
     }
 );
-
 
 // =========================
 // TRAVEL BOOKING API
@@ -564,21 +591,21 @@ app.post("/api/bookings", async function (req, res) {
         }
 
         const reference =
-    "TKB-" +
-    new Date().toISOString().slice(0, 10).replace(/-/g, "") +
-    "-" +
-    Math.random().toString(36).slice(2, 8).toUpperCase();
+            "TKB-" +
+            new Date().toISOString().slice(0, 10).replace(/-/g, "") +
+            "-" +
+            Math.random().toString(36).slice(2, 8).toUpperCase();
 
-const booking = {
-    reference: reference,
-    userId: user._id,
-    district: district.trim(),
-    touristSpot: touristSpot.trim(),
-    visitDate,
-    people: Number(people),
-    status: "Pending",
-    createdAt: new Date()
-};
+        const booking = {
+            reference: reference,
+            userId: user._id,
+            district: district.trim(),
+            touristSpot: touristSpot.trim(),
+            visitDate,
+            people: Number(people),
+            status: "Pending",
+            createdAt: new Date()
+        };
 
         const result = await db
             .collection("bookings")
@@ -603,7 +630,6 @@ const booking = {
         });
     }
 });
-
 
 // Get bookings for a user
 app.get("/api/bookings/:userId", async function (req, res) {
@@ -645,7 +671,6 @@ app.get("/api/bookings/:userId", async function (req, res) {
         });
     }
 });
-
 
 // =========================
 // HOTEL BOOKING API
@@ -856,7 +881,6 @@ app.post("/api/hotel-bookings", async function (req, res) {
     }
 });
 
-
 // Get hotel bookings for a user
 app.get("/api/hotel-bookings/:userId", async function (req, res) {
     try {
@@ -894,7 +918,6 @@ app.get("/api/hotel-bookings/:userId", async function (req, res) {
         });
     }
 });
-
 
 // =========================
 // TRANSPORT BOOKING API
@@ -972,6 +995,7 @@ app.post("/api/transport-bookings", async function (req, res) {
         }
 
         const allowedPaymentMethods = ["bkash", "nagad", "cash", "card"];
+
         if (!allowedPaymentMethods.includes(paymentMethod)) {
             return res.status(400).json({
                 success: false,
@@ -982,7 +1006,7 @@ app.post("/api/transport-bookings", async function (req, res) {
         if (paymentMethod === "bkash" || paymentMethod === "nagad") {
             if (
                 typeof paymentPhone !== "string" ||
-                !/^01[3-9]\\d{8}$/.test(paymentPhone.trim())
+                !/^01[3-9]\d{8}$/.test(paymentPhone.trim())
             ) {
                 return res.status(400).json({
                     success: false,
@@ -994,7 +1018,10 @@ app.post("/api/transport-bookings", async function (req, res) {
         if (
             transactionReference !== undefined &&
             transactionReference !== null &&
-            (typeof transactionReference !== "string" || transactionReference.trim().length > 80)
+            (
+                typeof transactionReference !== "string" ||
+                transactionReference.trim().length > 80
+            )
         ) {
             return res.status(400).json({
                 success: false,
@@ -1005,44 +1032,74 @@ app.post("/api/transport-bookings", async function (req, res) {
         // Server-controlled demonstration journey data.
         const demoJourneys = {
             "BUS-DAC-CTG-01": {
-                type: "Bus", operator: "Demo Express",
-                from: "Dhaka", to: "Chattogram", fare: 900
+                type: "Bus",
+                operator: "Demo Express",
+                from: "Dhaka",
+                to: "Chattogram",
+                fare: 900
             },
             "BUS-DAC-COX-01": {
-                type: "Bus", operator: "Demo Coastal Coach",
-                from: "Dhaka", to: "Cox's Bazar", fare: 1400
+                type: "Bus",
+                operator: "Demo Coastal Coach",
+                from: "Dhaka",
+                to: "Cox's Bazar",
+                fare: 1400
             },
             "BUS-DAC-SYL-01": {
-                type: "Bus", operator: "Demo Green Coach",
-                from: "Dhaka", to: "Sylhet", fare: 750
+                type: "Bus",
+                operator: "Demo Green Coach",
+                from: "Dhaka",
+                to: "Sylhet",
+                fare: 750
             },
             "BUS-CTG-COX-01": {
-                type: "Bus", operator: "Demo Bay Coach",
-                from: "Chattogram", to: "Cox's Bazar", fare: 500
+                type: "Bus",
+                operator: "Demo Bay Coach",
+                from: "Chattogram",
+                to: "Cox's Bazar",
+                fare: 500
             },
             "TRAIN-DAC-CTG-01": {
-                type: "Train", operator: "Demo Intercity Train",
-                from: "Dhaka", to: "Chattogram", fare: 450
+                type: "Train",
+                operator: "Demo Intercity Train",
+                from: "Dhaka",
+                to: "Chattogram",
+                fare: 450
             },
             "TRAIN-DAC-SYL-01": {
-                type: "Train", operator: "Demo Intercity Train",
-                from: "Dhaka", to: "Sylhet", fare: 400
+                type: "Train",
+                operator: "Demo Intercity Train",
+                from: "Dhaka",
+                to: "Sylhet",
+                fare: 400
             },
             "TRAIN-DAC-RJH-01": {
-                type: "Train", operator: "Demo Intercity Train",
-                from: "Dhaka", to: "Rajshahi", fare: 420
+                type: "Train",
+                operator: "Demo Intercity Train",
+                from: "Dhaka",
+                to: "Rajshahi",
+                fare: 420
             },
             "FLIGHT-DAC-CTG-01": {
-                type: "Flight", operator: "Demo Bangladesh Air",
-                from: "Dhaka", to: "Chattogram", fare: 4500
+                type: "Flight",
+                operator: "Demo Bangladesh Air",
+                from: "Dhaka",
+                to: "Chattogram",
+                fare: 4500
             },
             "FLIGHT-DAC-COX-01": {
-                type: "Flight", operator: "Demo Bangladesh Air",
-                from: "Dhaka", to: "Cox's Bazar", fare: 6500
+                type: "Flight",
+                operator: "Demo Bangladesh Air",
+                from: "Dhaka",
+                to: "Cox's Bazar",
+                fare: 6500
             },
             "FLIGHT-DAC-SYL-01": {
-                type: "Flight", operator: "Demo Bangladesh Air",
-                from: "Dhaka", to: "Sylhet", fare: 4200
+                type: "Flight",
+                operator: "Demo Bangladesh Air",
+                from: "Dhaka",
+                to: "Sylhet",
+                fare: 4200
             }
         };
 
@@ -1057,24 +1114,32 @@ app.post("/api/transport-bookings", async function (req, res) {
 
         // Validate seat labels against the selected transport type.
         if (journey.type === "Train") {
-            const validTrainSeat = seat => /^[ABC](?:[1-9]|[1-3]\d|40)$/.test(seat);
+            const validTrainSeat = seat =>
+                /^[ABC](?:[1-9]|[1-3]\d|40)$/.test(seat);
+
             if (!seatNumbers.every(validTrainSeat)) {
                 return res.status(400).json({
                     success: false,
                     message: "Invalid train coach or seat."
                 });
             }
+
         } else if (journey.type === "Bus") {
-            const validBusSeat = seat => /^B(?:[1-9]|[12]\d|3[0-2])$/.test(seat);
+            const validBusSeat = seat =>
+                /^B(?:[1-9]|[12]\d|3[0-2])$/.test(seat);
+
             if (!seatNumbers.every(validBusSeat)) {
                 return res.status(400).json({
                     success: false,
                     message: "Invalid bus seat."
                 });
             }
+
         } else if (journey.type === "Flight") {
             // Demo aircraft seat labels: 1A-5F (six seats per row).
-            const validFlightSeat = seat => /^[1-5][A-F]$/.test(seat);
+            const validFlightSeat = seat =>
+                /^[1-5][A-F]$/.test(seat);
+
             if (!seatNumbers.every(validFlightSeat)) {
                 return res.status(400).json({
                     success: false,
@@ -1110,16 +1175,20 @@ app.post("/api/transport-bookings", async function (req, res) {
                 method: paymentMethod,
                 status: paymentMethod === "cash" ? "Pay on travel day" : "Demo paid",
                 provider: paymentMethod === "bkash" ? "bKash (Demo)" :
-                          paymentMethod === "nagad" ? "Nagad (Demo)" :
-                          paymentMethod === "card" ? "Card (Demo)" : "Cash",
+                    paymentMethod === "nagad" ? "Nagad (Demo)" :
+                    paymentMethod === "card" ? "Card (Demo)" : "Cash",
                 payerPhone: (paymentMethod === "bkash" || paymentMethod === "nagad")
                     ? paymentPhone.trim()
                     : null,
                 transactionReference: paymentMethod === "cash"
                     ? null
-                    : (typeof transactionReference === "string" && transactionReference.trim()
-                        ? transactionReference.trim()
-                        : "DEMO-" + require("crypto").randomBytes(4).toString("hex").toUpperCase()),
+                    : (
+                        typeof transactionReference === "string" &&
+                        transactionReference.trim()
+                            ? transactionReference.trim()
+                            : "DEMO-" +
+                              require("crypto").randomBytes(4).toString("hex").toUpperCase()
+                    ),
                 paidAt: paymentMethod === "cash" ? null : new Date(),
                 isRealTransaction: false
             },
@@ -1149,7 +1218,6 @@ app.post("/api/transport-bookings", async function (req, res) {
         });
     }
 });
-
 
 app.get("/api/transport-bookings/:userId", async function (req, res) {
     try {
@@ -1188,7 +1256,6 @@ app.get("/api/transport-bookings/:userId", async function (req, res) {
     }
 });
 
-
 // =========================
 // CONNECT TO MONGODB
 // =========================
@@ -1219,6 +1286,7 @@ async function startServer() {
             "Failed to connect to MongoDB:",
             error.message
         );
+
         process.exit(1);
     }
 }

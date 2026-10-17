@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Hotel Booking | Travel Kori Bangladesh</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo">TK <span>Travel Kori</span></a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
+            <span class="brand-mark">TK</span>
+            <span class="brand-name">Travel Kori Bangladesh</span>
+        </a>
+
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="dashboard.html">Dashboard</a>
@@ -18,18 +25,35 @@
     </nav>
 
     <main class="hotel-page">
+
+        <!-- Hotel Hero with Background Image -->
         <section class="hotel-hero">
-            <p class="section-label">STAY COMFORTABLY</p>
-            <h1>Find Your Perfect Stay</h1>
-            <p>Explore Bangladesh and find a comfortable place to stay.</p>
+            <div class="hotel-hero-overlay">
+                <p class="section-label">TRAVEL KORI BANGLADESH</p>
+
+                <h1>
+                    Find Your Perfect Stay
+                </h1>
+
+                <p>
+                    Discover beautiful destinations and comfortable stays
+                    for your next Bangladesh adventure.
+                </p>
+
+                <a href="#hotelSearchPanel" class="hotel-hero-btn">
+                    Explore Hotels
+                </a>
+            </div>
         </section>
 
-        <section class="hotel-search-panel">
+        <!-- Hotel Search -->
+        <section class="hotel-search-panel" id="hotelSearchPanel">
             <h2>Find a Hotel</h2>
 
             <div class="hotel-search-grid">
                 <div>
                     <label for="searchDistrict">Destination District</label>
+
                     <select id="searchDistrict">
                         <option value="">All districts</option>
                     </select>
@@ -37,6 +61,7 @@
 
                 <div>
                     <label for="searchRoomType">Room Type</label>
+
                     <select id="searchRoomType">
                         <option value="">All room types</option>
                         <option value="Standard">Standard</option>
@@ -47,6 +72,7 @@
 
                 <div>
                     <label for="searchGuests">Guests</label>
+
                     <select id="searchGuests">
                         <option value="1">1 guest</option>
                         <option value="2" selected>2 guests</option>
@@ -57,28 +83,37 @@
                     </select>
                 </div>
 
-                <button id="searchHotelsBtn" class="signup-btn" type="button">
+                <button
+                    id="searchHotelsBtn"
+                    class="signup-btn"
+                    type="button">
                     Search Hotels
                 </button>
             </div>
         </section>
 
+        <!-- Hotel List -->
         <section class="hotel-list-section">
             <div class="hotel-section-heading">
                 <div>
                     <h2>Explore Hotels</h2>
                     <p>Select a hotel to make a booking request.</p>
                 </div>
+
                 <span id="hotelCount"></span>
             </div>
 
             <div id="hotelList" class="hotel-grid"></div>
+
             <p id="hotelSearchMessage" aria-live="polite"></p>
         </section>
 
+        <!-- Hotel Booking Form -->
         <section class="hotel-booking-panel" id="hotelBookingSection">
             <p class="section-label">RESERVE YOUR STAY</p>
+
             <h2>Complete Your Hotel Booking</h2>
+
             <p id="selectedHotelMessage">
                 Select a hotel above to continue.
             </p>
@@ -88,17 +123,28 @@
 
                     <div class="hotel-field full-width">
                         <label for="hotelName">Selected Hotel</label>
-                        <input id="hotelName" type="text" readonly required
-                               placeholder="Choose a hotel above">
+
+                        <input
+                            id="hotelName"
+                            type="text"
+                            readonly
+                            required
+                            placeholder="Choose a hotel above">
                     </div>
 
                     <div class="hotel-field">
                         <label for="hotelDistrict">District</label>
-                        <input id="hotelDistrict" type="text" readonly required>
+
+                        <input
+                            id="hotelDistrict"
+                            type="text"
+                            readonly
+                            required>
                     </div>
 
                     <div class="hotel-field">
                         <label for="hotelRoomType">Room Type</label>
+
                         <select id="hotelRoomType" required>
                             <option value="Standard">Standard</option>
                             <option value="Deluxe">Deluxe</option>
@@ -108,57 +154,91 @@
 
                     <div class="hotel-field">
                         <label for="checkIn">Check-in Date</label>
+
                         <input id="checkIn" type="date" required>
                     </div>
 
                     <div class="hotel-field">
                         <label for="checkOut">Check-out Date</label>
+
                         <input id="checkOut" type="date" required>
                     </div>
 
                     <div class="hotel-field">
                         <label for="roomCount">Number of Rooms</label>
-                        <input id="roomCount" type="number" min="1" max="10"
-                               value="1" required>
+
+                        <input
+                            id="roomCount"
+                            type="number"
+                            min="1"
+                            max="10"
+                            value="1"
+                            required>
                     </div>
 
                     <div class="hotel-field">
                         <label for="guestCount">Number of Guests</label>
-                        <input id="guestCount" type="number" min="1" max="20"
-                               value="2" required>
+
+                        <input
+                            id="guestCount"
+                            type="number"
+                            min="1"
+                            max="20"
+                            value="2"
+                            required>
                     </div>
 
                     <div class="hotel-field">
                         <label for="guestName">Guest Full Name</label>
-                        <input id="guestName" type="text" maxlength="100"
-                               required placeholder="Enter full name">
+
+                        <input
+                            id="guestName"
+                            type="text"
+                            maxlength="100"
+                            required
+                            placeholder="Enter full name">
                     </div>
 
                     <div class="hotel-field">
                         <label for="guestPhone">Contact Number</label>
-                        <input id="guestPhone" type="tel" maxlength="20"
-                               required placeholder="01XXXXXXXXX">
+
+                        <input
+                            id="guestPhone"
+                            type="tel"
+                            maxlength="20"
+                            required
+                            placeholder="01XXXXXXXXX">
                     </div>
 
                 </div>
 
+                <!-- Price Summary -->
                 <div class="hotel-price-summary">
                     <div>
                         <span>Price per room / night</span>
                         <strong id="roomPrice">৳0</strong>
                     </div>
+
                     <div>
                         <span>Number of nights</span>
                         <strong id="nightCount">0</strong>
                     </div>
+
                     <div>
                         <span>Estimated total</span>
                         <strong id="totalPrice">৳0</strong>
                     </div>
-                    <p>Estimated price only. Final price and availability require hotel confirmation.</p>
+
+                    <p>
+                        Estimated price only. Final price and availability
+                        require hotel confirmation.
+                    </p>
                 </div>
 
-                <button id="submitHotelBooking" class="signup-btn" type="submit">
+                <button
+                    id="submitHotelBooking"
+                    class="signup-btn"
+                    type="submit">
                     Submit Hotel Booking Request
                 </button>
 
@@ -166,17 +246,25 @@
             </form>
         </section>
 
+        <!-- Notice -->
         <section class="hotel-notice">
             <h3>Before You Book</h3>
-            <p>This is a demonstration booking system. Submitting a request does not guarantee a room reservation or payment.</p>
+
+            <p>
+                This is a demonstration booking system. Submitting a request
+                does not guarantee a room reservation or payment.
+            </p>
         </section>
+
     </main>
 
+    <!-- Footer -->
     <footer>
         <p>© 2026 Travel Kori Bangladesh</p>
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
     <script src="hotel-booking.js"></script>
+
 </body>
 </html>

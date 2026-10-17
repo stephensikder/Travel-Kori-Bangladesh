@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,82 @@
     <title>Login | Travel Kori Bangladesh</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .auth-card {
+            max-width: 480px;
+        }
+
+        .login-role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .login-role-btn {
+            padding: 16px 10px;
+            border: 1px solid #d5e4dc;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #173b30;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s ease;
+        }
+
+        .login-role-btn:hover {
+            border-color: #087f5b;
+        }
+
+        .login-role-btn.active {
+            background: #087f5b;
+            border-color: #087f5b;
+            color: #ffffff;
+        }
+
+        .role-icon {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 9px;
+        }
+
+        .role-title {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .role-description {
+            display: block;
+            font-size: 12px;
+            line-height: 1.5;
+            opacity: 0.85;
+        }
+
+        .login-role-btn:focus-visible {
+            outline: 3px solid #8bd5b5;
+            outline-offset: 3px;
+        }
+
+        #loginMessage {
+            margin-top: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 420px) {
+            .login-role-options {
+                gap: 8px;
+            }
+
+            .login-role-btn {
+                padding: 12px 9px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -24,40 +98,87 @@
 
     <main class="auth-container">
         <div class="auth-card">
+
             <p class="section-label">WELCOME BACK</p>
 
             <h1>Login to Your Account</h1>
 
             <p>Continue your journey with Travel Kori Bangladesh.</p>
 
+            <!-- Select Login Role -->
+            <div class="login-role-options">
+
+                <button
+                    type="button"
+                    class="login-role-btn active"
+                    id="loginAsTraveler"
+                    aria-pressed="true"
+                >
+                    <span class="role-icon">🧳</span>
+                    <span class="role-title">Traveler</span>
+                    <span class="role-description">
+                        Explore destinations and manage bookings.
+                    </span>
+                </button>
+
+                <button
+                    type="button"
+                    class="login-role-btn"
+                    id="loginAsAdmin"
+                    aria-pressed="false"
+                >
+                    <span class="role-icon">🛡️</span>
+                    <span class="role-title">Admin</span>
+                    <span class="role-description">
+                        Manage the platform and access admin tools.
+                    </span>
+                </button>
+
+            </div>
+
+            <p id="selectedRoleText">
+                You are logging in as a Traveler.
+            </p>
+
             <form id="loginForm">
+
                 <label for="email">Email Address</label>
+
                 <input
                     type="email"
                     id="email"
                     placeholder="Enter your email"
+                    autocomplete="username"
                     required
                 >
 
                 <label for="password">Password</label>
+
                 <input
                     type="password"
                     id="password"
                     placeholder="Enter your password"
+                    autocomplete="current-password"
                     required
                 >
 
-                <button type="submit" class="primary-btn">
-                    Login
+                <button
+                    type="submit"
+                    class="primary-btn"
+                    id="loginSubmitBtn"
+                >
+                    Login as Traveler
                 </button>
 
-                <p id="loginMessage" role="status"></p>
+                <p id="loginMessage" role="status" aria-live="polite"></p>
+
             </form>
 
             <p>
                 Don't have an account?
                 <a href="signup.html">Sign Up</a>
             </p>
+
         </div>
     </main>
 
@@ -66,5 +187,6 @@
     </footer>
 
     <script src="auth.js"></script>
+
 </body>
 </html>

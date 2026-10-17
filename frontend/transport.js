@@ -1,127 +1,409 @@
 const API_URL = "http://localhost:5000";
 
 const cities = [
-    "Dhaka", "Chattogram", "Cox's Bazar", "Sylhet",
-    "Rajshahi", "Khulna", "Rangpur", "Mymensingh",
-    "Barishal", "Cumilla"
+    "Dhaka",
+    "Chattogram",
+    "Cox's Bazar",
+    "Sylhet",
+    "Rajshahi",
+    "Khulna",
+    "Rangpur",
+    "Mymensingh",
+    "Barishal",
+    "Cumilla"
 ];
 
+// ========================================
+// TRANSPORT DATA
+// Operator names are real.
+// Fares are illustrative estimates.
+// Verify schedules with official operators.
+// ========================================
+
 const journeys = [
+    // ================= BUS =================
+
     {
-        id: "BUS-DAC-CTG-01",
+        id: "BUS-GREEN-DAC-CTG",
         type: "Bus",
-        operator: "Demo Express",
+        operator: "Green Line Paribahan",
+        from: "Dhaka",
+        to: "Chattogram",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 6–8 hours",
+        fare: 1200,
+        scheduleUrl: "https://greenlinebd.com/service/"
+    },
+    {
+        id: "BUS-HANIF-DAC-CTG",
+        type: "Bus",
+        operator: "Hanif Enterprise",
+        from: "Dhaka",
+        to: "Chattogram",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 6–8 hours",
+        fare: 1000,
+        scheduleUrl: "https://hanifenterprisebd.com/"
+    },
+    {
+        id: "BUS-ENA-DAC-CTG",
+        type: "Bus",
+        operator: "Ena Transport",
+        from: "Dhaka",
+        to: "Chattogram",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 6–8 hours",
+        fare: 1000,
+        scheduleUrl: "https://ena.shohoz.com/booking/"
+    },
+    {
+        id: "BUS-GREEN-DAC-COX",
+        type: "Bus",
+        operator: "Green Line Paribahan",
+        from: "Dhaka",
+        to: "Cox's Bazar",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 9–12 hours",
+        fare: 1800,
+        scheduleUrl: "https://greenlinebd.com/coxs-bazar/"
+    },
+    {
+        id: "BUS-HANIF-DAC-COX",
+        type: "Bus",
+        operator: "Hanif Enterprise",
+        from: "Dhaka",
+        to: "Cox's Bazar",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 9–12 hours",
+        fare: 1500,
+        scheduleUrl: "https://hanifenterprisebd.com/"
+    },
+    {
+        id: "BUS-ENA-DAC-COX",
+        type: "Bus",
+        operator: "Ena Transport",
+        from: "Dhaka",
+        to: "Cox's Bazar",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 9–12 hours",
+        fare: 1500,
+        scheduleUrl: "https://ena.shohoz.com/booking/"
+    },
+    {
+        id: "BUS-GREEN-DAC-SYL",
+        type: "Bus",
+        operator: "Green Line Paribahan",
+        from: "Dhaka",
+        to: "Sylhet",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 6–8 hours",
+        fare: 1000,
+        scheduleUrl: "https://greenlinebd.com/service/"
+    },
+    {
+        id: "BUS-ENA-DAC-SYL",
+        type: "Bus",
+        operator: "Ena Transport",
+        from: "Dhaka",
+        to: "Sylhet",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 6–8 hours",
+        fare: 900,
+        scheduleUrl: "https://ena.shohoz.com/booking/"
+    },
+    {
+        id: "BUS-HANIF-DAC-RNG",
+        type: "Bus",
+        operator: "Hanif Enterprise",
+        from: "Dhaka",
+        to: "Rangpur",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 7–9 hours",
+        fare: 1000,
+        scheduleUrl: "https://hanifenterprisebd.com/"
+    },
+    {
+        id: "BUS-ENA-DAC-RNG",
+        type: "Bus",
+        operator: "Ena Transport",
+        from: "Dhaka",
+        to: "Rangpur",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 7–9 hours",
+        fare: 1000,
+        scheduleUrl: "https://ena.shohoz.com/booking/"
+    },
+    {
+        id: "BUS-GREEN-DAC-KHL",
+        type: "Bus",
+        operator: "Green Line Paribahan",
+        from: "Dhaka",
+        to: "Khulna",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 7–9 hours",
+        fare: 1200,
+        scheduleUrl: "https://greenlinebd.com/service/"
+    },
+    {
+        id: "BUS-GREEN-DAC-RJH",
+        type: "Bus",
+        operator: "Green Line Paribahan",
+        from: "Dhaka",
+        to: "Rajshahi",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 5–7 hours",
+        fare: 1000,
+        scheduleUrl: "https://greenlinebd.com/service/"
+    },
+    {
+        id: "BUS-HANIF-DAC-RJH",
+        type: "Bus",
+        operator: "Hanif Enterprise",
+        from: "Dhaka",
+        to: "Rajshahi",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 5–7 hours",
+        fare: 900,
+        scheduleUrl: "https://hanifenterprisebd.com/"
+    },
+    {
+        id: "BUS-GREEN-CTG-SYL",
+        type: "Bus",
+        operator: "Green Line Paribahan",
+        from: "Chattogram",
+        to: "Sylhet",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 7–9 hours",
+        fare: 1200,
+        scheduleUrl: "https://greenlinebd.com/service/"
+    },
+    {
+        id: "BUS-HANIF-CTG-COX",
+        type: "Bus",
+        operator: "Hanif Enterprise",
+        from: "Chattogram",
+        to: "Cox's Bazar",
+        departure: "Schedule varies",
+        arrival: "Schedule varies",
+        duration: "Approx. 4–5 hours",
+        fare: 600,
+        scheduleUrl: "https://hanifenterprisebd.com/"
+    },
+
+    // ================= TRAIN =================
+
+    {
+        id: "TRAIN-SONARBANGLA-DAC-CTG",
+        type: "Train",
+        operator: "Sonar Bangla Express",
         from: "Dhaka",
         to: "Chattogram",
         departure: "07:00",
-        arrival: "13:00",
-        duration: "6 hours",
-        fare: 900
+        arrival: "12:15",
+        duration: "Approx. 5 hours 15 minutes",
+        fare: 900,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
     },
     {
-        id: "BUS-DAC-COX-01",
-        type: "Bus",
-        operator: "Demo Coastal Coach",
-        from: "Dhaka",
-        to: "Cox's Bazar",
-        departure: "22:00",
-        arrival: "06:30",
-        duration: "8 hours 30 minutes",
-        fare: 1400
-    },
-    {
-        id: "BUS-DAC-SYL-01",
-        type: "Bus",
-        operator: "Demo Green Coach",
-        from: "Dhaka",
-        to: "Sylhet",
-        departure: "08:00",
-        arrival: "14:00",
-        duration: "6 hours",
-        fare: 750
-    },
-    {
-        id: "BUS-CTG-COX-01",
-        type: "Bus",
-        operator: "Demo Bay Coach",
-        from: "Chattogram",
-        to: "Cox's Bazar",
-        departure: "09:00",
-        arrival: "13:00",
-        duration: "4 hours",
-        fare: 500
-    },
-    {
-        id: "TRAIN-DAC-CTG-01",
+        id: "TRAIN-SUBARNA-DAC-CTG",
         type: "Train",
-        operator: "Demo Intercity Train",
+        operator: "Subarna Express",
         from: "Dhaka",
         to: "Chattogram",
-        departure: "07:30",
-        arrival: "14:00",
-        duration: "6 hours 30 minutes",
-        fare: 450
+        departure: "16:30",
+        arrival: "21:50",
+        duration: "Approx. 5 hours 20 minutes",
+        fare: 900,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
     },
     {
-        id: "TRAIN-DAC-SYL-01",
+        id: "TRAIN-MOHANAGAR-DAC-CTG",
         type: "Train",
-        operator: "Demo Intercity Train",
+        operator: "Mohanagar Provati",
+        from: "Dhaka",
+        to: "Chattogram",
+        departure: "07:45",
+        arrival: "13:35",
+        duration: "Approx. 5 hours 50 minutes",
+        fare: 700,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
+    },
+    {
+        id: "TRAIN-TURNA-DAC-CTG",
+        type: "Train",
+        operator: "Turna Express",
+        from: "Dhaka",
+        to: "Chattogram",
+        departure: "23:15",
+        arrival: "05:15",
+        duration: "Approx. 6 hours",
+        fare: 800,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
+    },
+    {
+        id: "TRAIN-COXEXP-DAC-COX",
+        type: "Train",
+        operator: "Cox's Bazar Express",
+        from: "Dhaka",
+        to: "Cox's Bazar",
+        departure: "22:30",
+        arrival: "03:40",
+        duration: "Approx. 7 hours",
+        fare: 1200,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
+    },
+    {
+        id: "TRAIN-PARJOTOK-DAC-COX",
+        type: "Train",
+        operator: "Parjotok Express",
+        from: "Dhaka",
+        to: "Cox's Bazar",
+        departure: "06:15",
+        arrival: "11:20",
+        duration: "Approx. 7 hours",
+        fare: 1200,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
+    },
+    {
+        id: "TRAIN-PARABAT-DAC-SYL",
+        type: "Train",
+        operator: "Parabat Express",
         from: "Dhaka",
         to: "Sylhet",
-        departure: "08:15",
-        arrival: "15:00",
-        duration: "6 hours 45 minutes",
-        fare: 400
+        departure: "06:30",
+        arrival: "13:00",
+        duration: "Approx. 6 hours 30 minutes",
+        fare: 500,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
     },
     {
-        id: "TRAIN-DAC-RJH-01",
+        id: "TRAIN-JAYANTIKA-DAC-SYL",
         type: "Train",
-        operator: "Demo Intercity Train",
+        operator: "Jayantika Express",
+        from: "Dhaka",
+        to: "Sylhet",
+        departure: "11:15",
+        arrival: "18:00",
+        duration: "Approx. 6 hours 45 minutes",
+        fare: 500,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
+    },
+    {
+        id: "TRAIN-DHUMKETU-DAC-RJH",
+        type: "Train",
+        operator: "Dhumketu Express",
         from: "Dhaka",
         to: "Rajshahi",
-        departure: "06:30",
-        arrival: "12:00",
-        duration: "5 hours 30 minutes",
-        fare: 420
+        departure: "06:00",
+        arrival: "11:40",
+        duration: "Approx. 5 hours 40 minutes",
+        fare: 550,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
     },
     {
-        id: "FLIGHT-DAC-CTG-01",
+        id: "TRAIN-SUNDARBAN-DAC-KHL",
+        type: "Train",
+        operator: "Sundarban Express",
+        from: "Dhaka",
+        to: "Khulna",
+        departure: "08:00",
+        arrival: "17:40",
+        duration: "Approx. 9 hours 40 minutes",
+        fare: 600,
+        scheduleUrl:
+            "https://railway.gov.bd/pages/static-pages/691997d5933eb65569ddf8e2"
+    },
+
+    // ================= FLIGHTS =================
+
+    {
+        id: "FLIGHT-BIMAN-DAC-CTG",
         type: "Flight",
-        operator: "Demo Bangladesh Air",
+        operator: "Biman Bangladesh Airlines",
         from: "Dhaka",
         to: "Chattogram",
-        departure: "09:00",
-        arrival: "09:55",
-        duration: "55 minutes",
-        fare: 4500
+        departure: "Check airline schedule",
+        arrival: "Check airline schedule",
+        duration: "Approx. 55 minutes",
+        fare: 5500,
+        scheduleUrl: "https://www.biman-airlines.com/"
     },
     {
-        id: "FLIGHT-DAC-COX-01",
+        id: "FLIGHT-USBAIR-DAC-CTG",
         type: "Flight",
-        operator: "Demo Bangladesh Air",
+        operator: "US-Bangla Airlines",
+        from: "Dhaka",
+        to: "Chattogram",
+        departure: "Check airline schedule",
+        arrival: "Check airline schedule",
+        duration: "Approx. 55 minutes",
+        fare: 5000,
+        scheduleUrl: "https://usbair.com/"
+    },
+    {
+        id: "FLIGHT-BIMAN-DAC-COX",
+        type: "Flight",
+        operator: "Biman Bangladesh Airlines",
         from: "Dhaka",
         to: "Cox's Bazar",
-        departure: "10:00",
-        arrival: "11:05",
-        duration: "1 hour 5 minutes",
-        fare: 6500
+        departure: "Check airline schedule",
+        arrival: "Check airline schedule",
+        duration: "Approx. 1 hour 5 minutes",
+        fare: 7000,
+        scheduleUrl: "https://www.biman-airlines.com/"
     },
     {
-        id: "FLIGHT-DAC-SYL-01",
+        id: "FLIGHT-USBAIR-DAC-COX",
         type: "Flight",
-        operator: "Demo Bangladesh Air",
+        operator: "US-Bangla Airlines",
+        from: "Dhaka",
+        to: "Cox's Bazar",
+        departure: "Check airline schedule",
+        arrival: "Check airline schedule",
+        duration: "Approx. 1 hour 5 minutes",
+        fare: 6500,
+        scheduleUrl: "https://usbair.com/"
+    },
+    {
+        id: "FLIGHT-USBAIR-DAC-SYL",
+        type: "Flight",
+        operator: "US-Bangla Airlines",
         from: "Dhaka",
         to: "Sylhet",
-        departure: "12:00",
-        arrival: "12:50",
-        duration: "50 minutes",
-        fare: 4200
+        departure: "Check airline schedule",
+        arrival: "Check airline schedule",
+        duration: "Approx. 50 minutes",
+        fare: 5000,
+        scheduleUrl: "https://usbair.com/"
     }
 ];
 
-// ================================
+// ========================================
 // GLOBAL VARIABLES
-// ================================
+// ========================================
 
 let selectedType = "Bus";
 let selectedJourney = null;
@@ -129,9 +411,9 @@ let selectedSeats = [];
 let selectedCoach = "A";
 let searchDate = "";
 
-// ================================
+// ========================================
 // DOM ELEMENTS
-// ================================
+// ========================================
 
 const fromCity = document.getElementById("fromCity");
 const toCity = document.getElementById("toCity");
@@ -145,63 +427,59 @@ const bookingPanel = document.getElementById("transportBookingPanel");
 const bookingMessage = document.getElementById("transportBookingMessage");
 const bookingForm = document.getElementById("transportBookingForm");
 
-const walletPaymentFields =
-    document.getElementById("walletPaymentFields");
-
-const paymentPhoneInput =
-    document.getElementById("paymentPhone");
-
+const walletPaymentFields = document.getElementById("walletPaymentFields");
+const paymentPhoneInput = document.getElementById("paymentPhone");
 const transactionReferenceInput =
     document.getElementById("transactionReference");
+const paymentHelp = document.getElementById("paymentHelp");
 
-const paymentHelp =
-    document.getElementById("paymentHelp");
-
-// ================================
+// ========================================
 // PAYMENT METHOD SELECTION
-// ================================
+// ========================================
 
-document.querySelectorAll(
-    'input[name="paymentMethod"]'
-).forEach(function (input) {
+document.querySelectorAll('input[name="paymentMethod"]').forEach(
+    function (input) {
+        input.addEventListener("change", function () {
+            if (!input.checked) return;
 
-    input.addEventListener("change", function () {
+            const isWallet =
+                input.value === "bkash" ||
+                input.value === "nagad";
 
-        if (!input.checked) return;
+            if (walletPaymentFields) {
+                walletPaymentFields.hidden = !isWallet;
+            }
 
-        const isWallet =
-            input.value === "bkash" ||
-            input.value === "nagad";
+            if (paymentPhoneInput) {
+                paymentPhoneInput.required = isWallet;
 
-        walletPaymentFields.hidden = !isWallet;
-        paymentPhoneInput.required = isWallet;
+                if (!isWallet) {
+                    paymentPhoneInput.value = "";
+                }
+            }
 
-        if (!isWallet) {
-            paymentPhoneInput.value = "";
-        }
+            if (paymentHelp) {
+                if (input.value === "bkash") {
+                    paymentHelp.textContent =
+                        "bKash demo selected. This does not connect to the real wallet service.";
+                } else if (input.value === "nagad") {
+                    paymentHelp.textContent =
+                        "Nagad demo selected. This does not connect to the real wallet service.";
+                } else if (input.value === "card") {
+                    paymentHelp.textContent =
+                        "Card demo selected. No card number or CVV is requested or charged.";
+                } else if (input.value === "cash") {
+                    paymentHelp.textContent =
+                        "Cash selected. Payment status will be Pay on travel day.";
+                }
+            }
+        });
+    }
+);
 
-        if (input.value === "bkash") {
-            paymentHelp.textContent =
-                "bKash demo selected. This does not connect to the real wallet service.";
-
-        } else if (input.value === "nagad") {
-            paymentHelp.textContent =
-                "Nagad demo selected. This does not connect to the real wallet service.";
-
-        } else if (input.value === "card") {
-            paymentHelp.textContent =
-                "Card demo selected. No card number or CVV is requested or charged.";
-
-        } else if (input.value === "cash") {
-            paymentHelp.textContent =
-                "Cash selected. Payment status will be Pay on travel day.";
-        }
-    });
-});
-
-// ================================
+// ========================================
 // LOGIN SESSION
-// ================================
+// ========================================
 
 let user = null;
 
@@ -213,9 +491,9 @@ try {
     user = null;
 }
 
-// ================================
+// ========================================
 // DATE HELPER
-// ================================
+// ========================================
 
 function localDateString(date) {
     const year = date.getFullYear();
@@ -227,31 +505,25 @@ function localDateString(date) {
 
 journeyDate.min = localDateString(new Date());
 
-// ================================
+// ========================================
 // POPULATE CITY OPTIONS
-// ================================
+// ========================================
 
 cities.forEach(function (city) {
-
     [fromCity, toCity].forEach(function (select) {
-
         const option = document.createElement("option");
-
         option.value = city;
         option.textContent = city;
-
         select.appendChild(option);
     });
 });
 
-// ================================
+// ========================================
 // BUS / TRAIN / FLIGHT TABS
-// ================================
+// ========================================
 
 document.querySelectorAll(".transport-tab").forEach(function (tab) {
-
     tab.addEventListener("click", function () {
-
         selectedType = tab.dataset.type;
 
         document.querySelectorAll(".transport-tab").forEach(function (item) {
@@ -282,14 +554,13 @@ document.querySelectorAll(".transport-tab").forEach(function (tab) {
     });
 });
 
-// ================================
+// ========================================
 // TRANSPORT SEARCH
-// ================================
+// ========================================
 
 document.getElementById("transportSearchForm").addEventListener(
     "submit",
     function (event) {
-
         event.preventDefault();
 
         const from = fromCity.value;
@@ -339,12 +610,11 @@ document.getElementById("transportSearchForm").addEventListener(
     }
 );
 
-// ================================
+// ========================================
 // DISPLAY SEARCH RESULTS
-// ================================
+// ========================================
 
 function renderResults(matches) {
-
     results.replaceChildren();
 
     bookingPanel.hidden = true;
@@ -358,24 +628,21 @@ function renderResults(matches) {
     }
 
     document.getElementById("resultCount").textContent =
-        `${matches.length} option(s)`;
+        `${matches.length} listed option(s)`;
 
     document.getElementById("resultsSubtitle").textContent =
-        `Journey date: ${searchDate}. Estimated fares are in BDT.`;
+        `Journey date: ${searchDate}. Listed fares are estimates in BDT, not live quotes.`;
 
     if (!matches.length) {
-
         message.textContent =
-            "No demo schedules found for this route. Try another route or transport type.";
-
+            "No listed option found for this route. Try another route or transport type.";
         return;
     }
 
     message.textContent =
-        "Demo results only. Actual schedules and fares are not verified live.";
+        "Important: these are route/operator listings and indicative estimates, not live schedules, seat availability, or confirmed fares. Check the official link before booking.";
 
     matches.forEach(function (journey) {
-
         const card = document.createElement("article");
         card.className = "transport-result-card";
 
@@ -401,7 +668,6 @@ function renderResults(matches) {
         const button = document.createElement("button");
         button.type = "button";
         button.className = "signup-btn";
-
         button.textContent =
             journey.type === "Flight"
                 ? "Select Flight"
@@ -411,18 +677,30 @@ function renderResults(matches) {
             chooseJourney(journey);
         });
 
-        card.append(title, route, time, type, fare, button);
+        card.append(title, route, time, type, fare);
 
+        if (journey.scheduleUrl) {
+            const scheduleLink = document.createElement("a");
+            scheduleLink.href = journey.scheduleUrl;
+            scheduleLink.target = "_blank";
+            scheduleLink.rel = "noopener noreferrer";
+            scheduleLink.className = "map-link";
+            scheduleLink.textContent =
+                "Check official schedule / booking";
+
+            card.appendChild(scheduleLink);
+        }
+
+        card.appendChild(button);
         results.appendChild(card);
     });
 }
 
-// ================================
+// ========================================
 // SELECT A JOURNEY
-// ================================
+// ========================================
 
 function chooseJourney(journey) {
-
     selectedJourney = journey;
     selectedSeats = [];
     selectedCoach = "A";
@@ -431,11 +709,9 @@ function chooseJourney(journey) {
     bookingMessage.textContent = "";
 
     const summary = document.getElementById("selectedJourney");
-
     summary.replaceChildren();
 
     const details = document.createElement("p");
-
     details.textContent =
         `${journey.type}: ${journey.operator} | ` +
         `${journey.from} → ${journey.to} | ${searchDate}`;
@@ -450,12 +726,11 @@ function chooseJourney(journey) {
     });
 }
 
-// ================================
+// ========================================
 // SEAT SELECTION
-// ================================
+// ========================================
 
 function renderSeatSelection(journey) {
-
     const oldPicker = document.getElementById("seatSelection");
 
     if (oldPicker) {
@@ -478,7 +753,6 @@ function renderSeatSelection(journey) {
                 : "Flight Seat Selection";
 
     const instructions = document.createElement("p");
-
     instructions.textContent =
         `Choose exactly ${passengers} seat(s) for your journey.`;
 
@@ -486,9 +760,7 @@ function renderSeatSelection(journey) {
 
     // Train coach selection
     if (journey.type === "Train") {
-
         const coachLabel = document.createElement("label");
-
         coachLabel.htmlFor = "coachSelect";
         coachLabel.textContent = "Select Coach: ";
 
@@ -496,20 +768,15 @@ function renderSeatSelection(journey) {
         coachSelect.id = "coachSelect";
 
         ["A", "B", "C"].forEach(function (coach) {
-
             const option = document.createElement("option");
-
             option.value = coach;
             option.textContent = `Coach ${coach}`;
-
             coachSelect.appendChild(option);
         });
 
         coachSelect.addEventListener("change", function () {
-
             selectedCoach = coachSelect.value;
             selectedSeats = [];
-
             drawSeats();
         });
 
@@ -526,7 +793,6 @@ function renderSeatSelection(journey) {
         ["chosen", "Selected"],
         ["occupied", "Unavailable (demo)"]
     ].forEach(function ([className, labelText]) {
-
         const label = document.createElement("span");
 
         const sample = document.createElement("i");
@@ -547,7 +813,6 @@ function renderSeatSelection(journey) {
 
     const front = document.createElement("div");
     front.className = "vehicle-front";
-
     front.textContent =
         journey.type === "Train" ? "TRAIN FRONT" : "DRIVER";
 
@@ -570,7 +835,6 @@ function renderSeatSelection(journey) {
 
     // Draw seats
     function drawSeats() {
-
         layout.replaceChildren();
 
         const isFlight = journey.type === "Flight";
@@ -589,7 +853,6 @@ function renderSeatSelection(journey) {
         }
 
         for (let row = 0; row < rows; row++) {
-
             const totalPositions = isFlight ? 7 : 5;
 
             for (
@@ -597,17 +860,14 @@ function renderSeatSelection(journey) {
                 position < totalPositions;
                 position++
             ) {
-
                 const aislePosition = isFlight ? 3 : 2;
 
                 if (position === aislePosition) {
-
                     const aisle = document.createElement("div");
                     aisle.className = "seat-aisle";
                     aisle.setAttribute("aria-hidden", "true");
 
                     layout.appendChild(aisle);
-
                     continue;
                 }
 
@@ -615,7 +875,6 @@ function renderSeatSelection(journey) {
                 let seatIndex;
 
                 if (isFlight) {
-
                     const letterIndex =
                         position < 3 ? position : position - 1;
 
@@ -624,9 +883,7 @@ function renderSeatSelection(journey) {
 
                     seatNumber = `${row + 1}${letter}`;
                     seatIndex = seatNumber;
-
                 } else {
-
                     seatIndex =
                         row * 4 +
                         (position < 2 ? position : position - 1) +
@@ -639,7 +896,6 @@ function renderSeatSelection(journey) {
                 }
 
                 const button = document.createElement("button");
-
                 button.type = "button";
                 button.className = "seat";
                 button.textContent = isFlight ? seatNumber : seatIndex;
@@ -653,40 +909,29 @@ function renderSeatSelection(journey) {
                     unavailable.includes(seatIndex);
 
                 if (isUnavailable) {
-
                     button.classList.add("occupied");
                     button.disabled = true;
                     button.title = "Unavailable demo seat";
-
                 } else if (selectedSeats.includes(seatNumber)) {
-
                     button.classList.add("chosen");
                     button.setAttribute("aria-pressed", "true");
-
                 } else {
-
                     button.classList.add("available");
                     button.setAttribute("aria-pressed", "false");
                 }
 
                 button.addEventListener("click", function () {
-
                     if (selectedSeats.includes(seatNumber)) {
-
                         selectedSeats = selectedSeats.filter(
                             seat => seat !== seatNumber
                         );
-
                     } else {
-
                         if (
                             selectedSeats.length >=
                             Number(passengersInput.value)
                         ) {
-
                             info.textContent =
                                 `You can select only ${passengersInput.value} seat(s).`;
-
                             return;
                         }
 
@@ -714,43 +959,33 @@ function renderSeatSelection(journey) {
     drawSeats();
 }
 
-// ================================
+// ========================================
 // BOOKING SUBMISSION + PAYMENT
-// ================================
+// ========================================
 
 bookingForm.addEventListener("submit", async function (event) {
-
     event.preventDefault();
 
     if (!user || !user.id) {
-
         bookingMessage.textContent =
             "Please log in before submitting a booking.";
-
         bookingMessage.style.color = "red";
-
         return;
     }
 
     if (!selectedJourney) {
-
         bookingMessage.textContent =
             "Please select a journey first.";
-
         bookingMessage.style.color = "red";
-
         return;
     }
 
     if (
         selectedSeats.length !== Number(passengersInput.value)
     ) {
-
         bookingMessage.textContent =
             `Please select exactly ${passengersInput.value} seat(s).`;
-
         bookingMessage.style.color = "red";
-
         return;
     }
 
@@ -764,43 +999,37 @@ bookingForm.addEventListener("submit", async function (event) {
         'input[name="paymentMethod"]:checked'
     );
 
+    // If payment controls are missing from HTML, default to cash.
     const paymentMethod =
-        paymentMethodInput ? paymentMethodInput.value : "";
+        paymentMethodInput ? paymentMethodInput.value : "cash";
 
     const paymentPhone =
-        paymentPhoneInput.value.trim();
+        paymentPhoneInput ? paymentPhoneInput.value.trim() : "";
 
     const transactionReference =
-        transactionReferenceInput.value.trim();
+        transactionReferenceInput
+            ? transactionReferenceInput.value.trim()
+            : "";
 
     const button =
         document.getElementById("confirmTransportBtn");
 
-    // Validate payment selection
     if (!paymentMethod) {
-
         bookingMessage.textContent =
             "Please select a payment method.";
-
         bookingMessage.style.color = "red";
-
         return;
     }
 
-    // Normalize mobile number by removing whitespace
     const cleanPaymentPhone = paymentPhone.replace(/\s+/g, "");
 
-    // Validate bKash / Nagad mobile number
     if (
         (paymentMethod === "bkash" || paymentMethod === "nagad") &&
         !/^01[3-9][0-9]{8}$/.test(cleanPaymentPhone)
     ) {
-
         bookingMessage.textContent =
             "Enter a valid 11-digit Bangladeshi mobile number for demo wallet payment.";
-
         bookingMessage.style.color = "red";
-
         return;
     }
 
@@ -808,41 +1037,27 @@ bookingForm.addEventListener("submit", async function (event) {
     button.textContent = "Processing demo checkout...";
 
     try {
-
         const response = await fetch(
             `${API_URL}/api/transport-bookings`,
             {
                 method: "POST",
-
                 headers: {
                     "Content-Type": "application/json"
                 },
-
                 body: JSON.stringify({
-
                     userId: user.id,
-
                     journeyId: selectedJourney.id,
-
                     journeyDate: searchDate,
-
                     passengers: Number(passengersInput.value),
-
                     seatNumbers: selectedSeats,
-
                     passengerName: passengerName,
-
                     passengerPhone: passengerPhone,
-
                     paymentMethod: paymentMethod,
-
-                    // Send the same normalized number that was validated
                     paymentPhone:
                         paymentMethod === "bkash" ||
                         paymentMethod === "nagad"
                             ? cleanPaymentPhone
                             : null,
-
                     transactionReference:
                         transactionReference || null
                 })
@@ -879,9 +1094,7 @@ bookingForm.addEventListener("submit", async function (event) {
             );
 
         bookingMessage.style.color = "#087f5b";
-
     } catch (error) {
-
         console.error("Transport booking error:", error);
 
         bookingMessage.textContent =
@@ -890,9 +1103,7 @@ bookingForm.addEventListener("submit", async function (event) {
                 : error.message;
 
         bookingMessage.style.color = "red";
-
     } finally {
-
         button.disabled = false;
         button.textContent = "Confirm Demo Booking";
     }

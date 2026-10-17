@@ -413,3 +413,102 @@ hotelBookingForm.addEventListener("submit", async function (event) {
 // Initial page setup.
 renderHotels(hotels);
 updatePrice();
+
+// Continue the pending destination search after login
+document.addEventListener("DOMContentLoaded", function () {
+    const savedSearch = sessionStorage.getItem(
+        "travelKoriPendingHotelSearch"
+    );
+
+    if (!savedSearch) return;
+
+    let searchData;
+
+    try {
+        searchData = JSON.parse(savedSearch);
+    } catch (error) {
+        sessionStorage.removeItem("travelKoriPendingHotelSearch");
+        return;
+    }
+
+    const destination = (searchData.destination || "").trim();
+
+    const districtSelect = document.getElementById("searchDistrict");
+    const searchButton = document.getElementById("searchHotelsBtn");
+    const checkInInput = document.getElementById("checkIn");
+
+    if (!destination || !districtSelect || !searchButton) return;
+
+    // Popular tourist destinations mapped to their districts
+    const destinationDistricts = {
+        "cox's bazar": "Cox's Bazar",
+        "cox's bazar beach": "Cox's Bazar",
+        "sajek valley": "Rangamati",
+        "sundarbans": "Bagerhat",
+        "saint martin's island": "Cox's Bazar",
+        "kuakata": "Patuakhali",
+        "srimangal": "Moulvibazar",
+        "tea gardens": "Moulvibazar",
+        "bandarban": "Bandarban",
+        "rangamati": "Rangamati",
+        "sylhet": "Sylhet",
+        "dhaka": "Dhaka",
+        "chattogram": "Chattogram",
+        "rajshahi": "Rajshahi",
+        "khulna": "Khulna",
+        "bagerhat": "Bagerhat",
+        "patuakhali": "Patuakhali",
+        "moulvibazar": "Moulvibazar"
+    };
+
+    const normalizedDestination = destination.toLowerCase();
+
+    const targetDistrict =
+        destinationDistricts[normalizedDestination] || destination;
+
+    // Match the saved destination to an available district option
+    const matchingOption = Array.from(districtSelect.options).find(
+        function (option) {
+            return (
+                option.value.toLowerCase() === targetDistrict.toLowerCase() ||
+                option.textContent.trim().toLowerCase() ===
+                    targetDistrict.toLowerCase()
+            );
+        }
+    );
+
+    if (matchingOption) {
+        districtSelect.value = matchingOption.value;
+    } else {
+        // If no district matches, do not silently show unrelated hotels
+        const message = document.getElementById("hotelSearchMessage");
+
+        if (message) {
+            message.textContent =
+                "No matching district was found for " +
+                destination +
+                ". Please choose a district manually.";
+        }
+
+        sessionStorage.removeItem("travelKoriPendingHotelSearch");
+        return;
+    }
+
+    // Carry the selected travel date into the booking form
+    if (checkInInput && searchData.travelDate) {
+        checkInInput.value = searchData.travelDate;
+        checkInInput.min = searchData.travelDate;
+
+        const checkOutInput = document.getElementById("checkOut");
+
+        if (checkOutInput) {
+            checkOutInput.min = searchData.travelDate;
+        }
+    }
+
+    // Trigger the existing hotel search logic
+    searchButton.click();
+
+    // Clear the pending search after it has been applied
+    sessionStorage.removeItem("travelKoriPendingHotelSearch");
+});

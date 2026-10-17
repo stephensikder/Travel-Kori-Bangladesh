@@ -3,43 +3,432 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus, Train & Flight Search | Travel Kori Bangladesh</title>
+
+    <title>Travel Kori Bangladesh | Transport Booking</title>
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="transport-seat.css">
+
     <style>
-        .transport-page { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
-        .transport-search, .transport-booking-panel { margin: 28px 0; padding: 28px; border: 1px solid #dce5e2; border-radius: 16px; background: #fff; box-shadow: 0 8px 24px rgba(20, 50, 42, .05); }
-        .transport-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end; }
-        .transport-fields label, .passenger-fields label { display: block; font-weight: 600; margin-bottom: 8px; }
-        .transport-fields select, .transport-fields input, .passenger-fields input { width: 100%; padding: 13px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; background: white; }
-        .transport-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
-        .transport-tab { border: 1px solid #cbd5e1; border-radius: 8px; padding: 12px 22px; background: #fff; cursor: pointer; font: inherit; }
-        .transport-tab.active { color: #fff; background: #087f5b; border-color: #087f5b; }
-        .transport-results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin: 24px 0; }
-        .transport-result-card { border: 1px solid #dce5e2; border-radius: 14px; padding: 24px; box-shadow: 0 8px 24px rgba(20, 50, 42, .05); }
-        .transport-result-card h3 { margin-top: 0; }
-        .transport-fare { color: #087f5b; font-weight: 700; font-size: 20px; }
-        .transport-booking-panel[hidden] { display: none; }
-        .passenger-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
-        #transportBookingMessage, #transportMessage { line-height: 1.6; }
-        .payment-methods { border: 1px solid #dce5e2; border-radius: 12px; padding: 18px; margin: 18px 0; }
-        .payment-methods legend { font-weight: 700; padding: 0 8px; }
-        .payment-note { color: #52616b; font-size: 14px; line-height: 1.5; }
-        .payment-option { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border: 1px solid #dce5e2; border-radius: 10px; margin: 10px 0; cursor: pointer; }
-        .payment-option:has(input:checked) { border-color: #087f5b; background: #f0faf6; }
-        .payment-option input { margin-top: 4px; }
-        .payment-option span { display: flex; flex-direction: column; gap: 4px; }
-        .payment-option small { color: #52616b; }
-        .wallet-payment-fields { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 14px; }
-        .wallet-payment-fields[hidden] { display: none; }
-        .wallet-payment-fields input { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
-        @media (max-width: 760px) { .transport-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (max-width: 520px) { .transport-page { padding: 28px 14px; } .transport-search, .transport-booking-panel { padding: 18px; } .transport-fields, .passenger-fields { grid-template-columns: 1fr; } }
+        :root {
+            --transport-green: #087f5b;
+            --transport-dark: #17382f;
+            --transport-border: #dce7e2;
+            --transport-muted: #64766e;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+        }
+
+        /* Navbar */
+        .navbar .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .navbar .brand-mark {
+            color: var(--transport-green);
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .navbar .brand-name {
+            color: var(--transport-dark);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Hero background */
+        .transport-hero {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 440px;
+            padding: 55px 24px 120px;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-align: center;
+            color: white;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    rgba(9, 42, 34, 0.77),
+                    rgba(6, 74, 58, 0.67),
+                    rgba(13, 39, 32, 0.35)
+                ),
+                url("transport-hero.jpg") center 48% / cover no-repeat;
+        }
+
+        .transport-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            animation: transportFadeIn 0.6s ease both;
+        }
+
+        .transport-hero .section-label {
+            margin: 0 0 14px;
+            color: #b9f3d8;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .transport-hero h1 {
+            margin: 0 0 18px;
+            color: #ffffff;
+            font-size: clamp(34px, 5vw, 54px);
+            line-height: 1.15;
+        }
+
+        .transport-hero-description {
+            max-width: 760px;
+            margin: 0 auto;
+            color: #f0f7f3;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        @keyframes transportFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main content */
+        .transport-page {
+            position: relative;
+            width: min(1100px, calc(100% - 40px));
+            margin: -85px auto 0;
+            padding: 0 0 55px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        /* Transport tabs */
+        .transport-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 0 0 20px;
+        }
+
+        .transport-tab {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 110px;
+            min-height: 48px;
+            padding: 12px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            background: #ffffff;
+            color: var(--transport-dark);
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .transport-tab:hover {
+            transform: translateY(-2px);
+        }
+
+        .transport-tab.active {
+            background: var(--transport-green);
+            border-color: var(--transport-green);
+            color: white;
+        }
+
+        /* Search panel */
+        .transport-search {
+            margin: 0 0 32px;
+            padding: 28px;
+            border: 1px solid var(--transport-border);
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 12px 35px rgba(20, 50, 42, 0.13);
+        }
+
+        .transport-fields {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            align-items: end;
+        }
+
+        .transport-fields > div {
+            min-width: 0;
+        }
+
+        .transport-fields label,
+        .passenger-fields label {
+            display: block;
+            margin-bottom: 9px;
+            color: var(--transport-dark);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .transport-fields select,
+        .transport-fields input,
+        .passenger-fields input {
+            width: 100%;
+            min-height: 46px;
+            padding: 11px 13px;
+            box-sizing: border-box;
+            border: 1px solid #cbd8d2;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #243b33;
+            font: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .transport-fields select:focus,
+        .transport-fields input:focus,
+        .passenger-fields input:focus {
+            border-color: var(--transport-green);
+            box-shadow: 0 0 0 3px rgba(8, 127, 91, 0.12);
+        }
+
+        .transport-search .primary-btn {
+            min-height: 46px;
+            margin-top: 20px;
+            padding: 12px 22px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--transport-dark);
+            color: white;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .transport-search .primary-btn:hover {
+            background: var(--transport-green);
+            transform: translateY(-1px);
+        }
+
+        /* Results section */
+        .transport-results-section {
+            padding-top: 4px;
+        }
+
+        .transport-results-section h2 {
+            margin: 0 0 10px;
+            color: var(--transport-dark);
+            font-size: 27px;
+        }
+
+        #resultsSubtitle {
+            margin: 0 0 12px;
+            color: var(--transport-muted);
+            line-height: 1.7;
+        }
+
+        #resultCount {
+            color: var(--transport-green);
+            font-weight: 600;
+        }
+
+        .transport-results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin: 22px 0;
+        }
+
+        .transport-result-card {
+            padding: 24px;
+            border: 1px solid var(--transport-border);
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 5px 20px rgba(20, 50, 42, 0.055);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .transport-result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(20, 50, 42, 0.1);
+        }
+
+        .transport-result-card h3 {
+            margin-top: 0;
+            color: var(--transport-dark);
+        }
+
+        .transport-fare {
+            color: var(--transport-green);
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        /* Booking panel */
+        .transport-booking-panel {
+            margin: 32px 0;
+            padding: 28px;
+            border: 1px solid var(--transport-border);
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: 0 8px 24px rgba(20, 50, 42, 0.06);
+        }
+
+        .transport-booking-panel[hidden] {
+            display: none !important;
+        }
+
+        .transport-booking-panel h2 {
+            margin-top: 0;
+            color: var(--transport-dark);
+        }
+
+        .passenger-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin: 22px 0;
+        }
+
+        #transportBookingMessage,
+        #transportMessage {
+            line-height: 1.7;
+        }
+
+        /* Demo notice */
+        .transport-demo-notice {
+            margin-top: 26px;
+            padding: 18px 20px;
+            border: 1px solid #dce8f4;
+            border-radius: 10px;
+            background: #f2f7fc;
+            color: #49657e;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        .transport-footer {
+            padding: 28px 20px;
+            background: var(--transport-dark);
+            color: white;
+            text-align: center;
+        }
+
+        .transport-footer p {
+            margin: 7px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 850px) {
+            .transport-fields {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .transport-hero {
+                min-height: 400px;
+            }
+
+            .transport-results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .navbar .brand-name {
+                font-size: 15px;
+            }
+
+            .transport-hero {
+                min-height: 370px;
+                padding: 45px 20px 105px;
+                background-position: center;
+            }
+
+            .transport-hero h1 {
+                font-size: 34px;
+            }
+
+            .transport-hero-description {
+                font-size: 14px;
+            }
+
+            .transport-page {
+                width: calc(100% - 24px);
+                margin-top: -70px;
+            }
+
+            .transport-search,
+            .transport-booking-panel {
+                padding: 19px;
+            }
+
+            .transport-fields,
+            .passenger-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .transport-tabs {
+                gap: 8px;
+            }
+
+            .transport-tab {
+                min-width: 0;
+                flex: 1;
+                padding: 11px 14px;
+            }
+
+            .transport-search .primary-btn {
+                width: 100%;
+            }
+
+            .transport-results-section h2 {
+                font-size: 23px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .transport-hero-content {
+                animation: none;
+            }
+
+            .transport-tab,
+            .transport-result-card {
+                transition: none;
+            }
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo">TK <span>Travel Kori</span></a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
+            <span class="brand-mark">TK</span>
+            <span class="brand-name">Travel Kori Bangladesh</span>
+        </a>
+
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="hotel-booking.html">Hotel Booking</a>
@@ -47,162 +436,197 @@
         </div>
     </nav>
 
-    <main class="transport-page">
-        <p class="section-label">PLAN YOUR JOURNEY</p>
-        <h1>Bus, Train & Flight Search</h1>
-        <p>Search demonstration schedules, select seats for buses and trains, and submit a booking request.</p>
+    <!-- Hero -->
+    <header class="transport-hero">
+        <div class="transport-hero-content">
+            <p class="section-label">PLAN YOUR JOURNEY</p>
 
-        <div class="transport-tabs" role="tablist" aria-label="Transport type">
-            <button class="transport-tab active" type="button" data-type="Bus">Bus</button>
-            <button class="transport-tab" type="button" data-type="Train">Train</button>
-            <button class="transport-tab" type="button" data-type="Flight">Flight</button>
+            <h1>Travel Kori Bangladesh</h1>
+
+            <p class="transport-hero-description">
+                Search bus, train and flight journeys, select your seats
+                and plan your next trip across Bangladesh.
+            </p>
+        </div>
+    </header>
+
+    <main class="transport-page">
+
+        <!-- Transport Type Tabs -->
+        <div class="transport-tabs"
+             role="tablist"
+             aria-label="Transport type">
+
+            <button
+                class="transport-tab active"
+                type="button"
+                data-type="Bus"
+                role="tab"
+                aria-selected="true">
+                Bus
+            </button>
+
+            <button
+                class="transport-tab"
+                type="button"
+                data-type="Train"
+                role="tab"
+                aria-selected="false">
+                Train
+            </button>
+
+            <button
+                class="transport-tab"
+                type="button"
+                data-type="Flight"
+                role="tab"
+                aria-selected="false">
+                Flight
+            </button>
         </div>
 
+        <!-- Search Form -->
         <form id="transportSearchForm" class="transport-search">
+
             <div class="transport-fields">
+
                 <div>
                     <label for="fromCity">From</label>
+
                     <select id="fromCity" required>
                         <option value="">Select origin</option>
                     </select>
                 </div>
+
                 <div>
                     <label for="toCity">To</label>
+
                     <select id="toCity" required>
                         <option value="">Select destination</option>
                     </select>
                 </div>
+
                 <div>
                     <label for="journeyDate">Journey date</label>
-                    <input id="journeyDate" type="date" required>
+
+                    <input
+                        id="journeyDate"
+                        type="date"
+                        required>
                 </div>
+
                 <div>
                     <label for="passengers">Passengers</label>
-                    <input id="passengers" type="number" min="1" max="10" value="1" required>
+
+                    <input
+                        id="passengers"
+                        type="number"
+                        min="1"
+                        max="10"
+                        value="1"
+                        required>
                 </div>
+
             </div>
-            <button class="primary-btn" type="submit" style="margin-top:20px;">Search Journeys</button>
+
+            <button class="primary-btn" type="submit">
+                Search Journeys
+            </button>
         </form>
 
-        <section aria-labelledby="resultsTitle">
+        <!-- Search Results -->
+        <section class="transport-results-section"
+                 aria-labelledby="resultsTitle">
+
             <h2 id="resultsTitle">Available Bus Options</h2>
-            <p id="resultsSubtitle">Select your route and journey date.</p>
-            <p id="resultCount"></p>
-            <div id="transportResults" class="transport-results-grid"></div>
+
+            <p id="resultsSubtitle">
+                Select your route and journey date.
+            </p>
+
+            <p id="resultCount" aria-live="polite"></p>
+
+            <div
+                id="transportResults"
+                class="transport-results-grid">
+            </div>
+
             <p id="transportMessage" aria-live="polite"></p>
         </section>
 
-        <section id="transportBookingPanel" class="transport-booking-panel" hidden>
+        <!-- Booking Panel -->
+        <section
+            id="transportBookingPanel"
+            class="transport-booking-panel"
+            hidden>
+
             <h2>Confirm Your Booking Request</h2>
+
             <div id="selectedJourney"></div>
 
             <form id="transportBookingForm">
+
                 <div class="passenger-fields">
+
                     <div>
-                        <label for="passengerName">Passenger name</label>
-                        <input id="passengerName" type="text" maxlength="100" required>
+                        <label for="passengerName">
+                            Passenger name
+                        </label>
+
+                        <input
+                            id="passengerName"
+                            type="text"
+                            maxlength="100"
+                            required
+                            autocomplete="name">
                     </div>
+
                     <div>
-                        <label for="passengerPhone">Contact phone</label>
-                        <input id="passengerPhone" type="tel" maxlength="20" required>
+                        <label for="passengerPhone">
+                            Contact phone
+                        </label>
+
+                        <input
+                            id="passengerPhone"
+                            type="tel"
+                            maxlength="20"
+                            required
+                            autocomplete="tel"
+                            placeholder="01XXXXXXXXX">
                     </div>
+
                 </div>
 
-                <fieldset class="payment-methods">
-    <legend>Choose Payment Method</legend>
-
-    <p class="payment-note">
-        Demo checkout only. No real money will be charged.
-    </p>
-
-    <label class="payment-option">
-        <input type="radio" name="paymentMethod" value="bkash" required>
-        <span class="payment-option-content">
-            <strong>bKash</strong>
-            <small>Demo wallet payment</small>
-        </span>
-    </label>
-
-    <label class="payment-option">
-        <input type="radio" name="paymentMethod" value="nagad" required>
-        <span class="payment-option-content">
-            <strong>Nagad</strong>
-            <small>Demo wallet payment</small>
-        </span>
-    </label>
-
-    <label class="payment-option">
-        <input type="radio" name="paymentMethod" value="card" required>
-        <span class="payment-option-content">
-            <strong>Debit / Credit Card</strong>
-            <small>
-                Simulated demo payment. Do not enter card details.
-            </small>
-        </span>
-    </label>
-
-    <label class="payment-option">
-        <input type="radio" name="paymentMethod" value="cash" required>
-        <span class="payment-option-content">
-            <strong>Cash</strong>
-            <small>Pay on travel day</small>
-        </span>
-    </label>
-
-    <div id="walletPaymentFields"
-         class="wallet-payment-fields"
-         hidden>
-
-        <label for="paymentPhone">
-            bKash/Nagad mobile number
-        </label>
-
-        <input
-            id="paymentPhone"
-            type="tel"
-            inputmode="numeric"
-            maxlength="11"
-            placeholder="01XXXXXXXXX"
-        >
-
-        <label for="transactionReference">
-            Demo transaction reference (optional)
-        </label>
-
-        <input
-            id="transactionReference"
-            type="text"
-            maxlength="80"
-            placeholder="e.g. DEMO12345"
-        >
-    </div>
-
-    <p id="paymentHelp" class="payment-note" aria-live="polite">
-        Select a payment method to continue.
-    </p>
-</fieldset>
-
-<button id="confirmTransportBtn"
-        class="signup-btn"
-        type="submit">
-    Confirm Demo Booking
-</button>
-
-                <button id="confirmTransportBtn" class="signup-btn" type="submit">
-                    Confirm Demo Booking
+                <button
+                    id="confirmTransportBtn"
+                    class="signup-btn"
+                    type="submit">
+                    Submit Booking Request
                 </button>
-                <p id="transportBookingMessage" aria-live="polite"></p>
+
+                <p id="transportBookingMessage"
+                   aria-live="polite"></p>
             </form>
         </section>
 
-        <p><small>Demo only: schedules, operators, fares, seat availability and payments are illustrative. bKash, Nagad and card are simulated only; no real payment is processed and no real ticket is issued.</small></p>
+        <!-- Demo Notice -->
+        <aside class="transport-demo-notice">
+            <strong>Demo information:</strong>
+            Schedules, operators, fares and seat availability are illustrative,
+            not live data. bKash, Nagad and card payments are simulated only.
+            No real payment is processed and no real ticket is issued.
+        </aside>
+
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="transport-footer">
         <p>© 2026 Travel Kori Bangladesh</p>
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
+    <!-- Existing transport functionality -->
     <script src="transport.js"></script>
+
 </body>
 </html>
