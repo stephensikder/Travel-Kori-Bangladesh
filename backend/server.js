@@ -3,7 +3,8 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
+const bcrypt = require("bcrypt");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,27 +15,32 @@ app.use(express.json());
 
 let db;
 
-// Test route
+// =========================
+// TEST ROUTE
+// =========================
+
 app.get("/", function (req, res) {
     res.send("Travel Kori Bangladesh Backend is running!");
 });
 
-// Health check
+// =========================
+// HEALTH CHECK
+// =========================
+
 app.get("/api/health", function (req, res) {
     res.json({
         success: true,
         databaseConnected: Boolean(db),
         message: db
             ? "Backend and MongoDB are connected!"
-            : "Backend is running, but database is not connected."
+            : "Database is not connected."
     });
 });
 
+// =========================
+// USER REGISTRATION API
+// =========================
 
-
-const bcrypt = require("bcrypt");
-
-// User Registration API
 app.post("/api/auth/register", async function (req, res) {
     try {
         const { fullName, email, password } = req.body;
@@ -54,7 +60,6 @@ app.post("/api/auth/register", async function (req, res) {
         }
 
         const users = db.collection("users");
-
         const normalizedEmail = email.trim().toLowerCase();
 
         const existingUser = await users.findOne({
@@ -74,6 +79,7 @@ app.post("/api/auth/register", async function (req, res) {
             fullName: fullName.trim(),
             email: normalizedEmail,
             password: hashedPassword,
+            favorites: [],
             createdAt: new Date()
         });
 
@@ -93,7 +99,9 @@ app.post("/api/auth/register", async function (req, res) {
     }
 });
 
-
+// =========================
+// USER LOGIN API
+// =========================
 
 app.post("/api/auth/login", async function (req, res) {
     try {
@@ -106,11 +114,9 @@ app.post("/api/auth/login", async function (req, res) {
             });
         }
 
-        const users = db.collection("users");
-
         const normalizedEmail = email.trim().toLowerCase();
 
-        const user = await users.findOne({
+        const user = await db.collection("users").findOne({
             email: normalizedEmail
         });
 
@@ -137,7 +143,7 @@ app.post("/api/auth/login", async function (req, res) {
             success: true,
             message: "Login successful!",
             user: {
-                id: user._id,
+                id: user._id.toString(),
                 fullName: user.fullName,
                 email: user.email
             }
@@ -153,10 +159,159 @@ app.post("/api/auth/login", async function (req, res) {
     }
 });
 
+// =========================
+// FAVORITES API 1
+// GET USER FAVORITES
+// =========================
 
+app.get("/api/favorites/:userId", async function (req, res) {
+    try {
+        const { userId } = req.params;
 
-// Connect to MongoDB and start server
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID."
+            });
+        }
+
+        const user = await db.collection("users").findOne(
+            { _id: new ObjectId(userId) },
+            { projection: { favorites: 1 } }
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            });
+        }
+
+        res.json({
+            success: true,
+            favorites: user.favorites || []
+        });
+
+    } catch (error) {
+        console.error("Get favorites error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to load favorites."
+        });
+    }
+});
+
+// =========================
+// FAVORITES API 2
+// ADD A FAVORITE DISTRICT
+// =========================
+
+app.post("/api/favorites", async function (req, res) {
+    try {
+        const { userId, district } = req.body;
+
+        if (
+            typeof userId !== "string" ||
+            typeof district !== "string" ||
+            !district.trim()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Valid user ID and district are required."
+            });
+        }
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID."
+            });
+        }
+
+        const result = await db.collection("users").updateOne(
+            { _id: new ObjectId(userId) },
+            { $addToSet: { favorites: district.trim() } }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Favorite district saved successfully."
+        });
+
+    } catch (error) {
+        console.error("Add favorite error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to save favorite."
+        });
+    }
+});
+
+// =========================
+// FAVORITES API 3
+// REMOVE A FAVORITE DISTRICT
+// =========================
+
+app.delete(
+    "/api/favorites/:userId/:district",
+    async function (req, res) {
+        try {
+            const { userId, district } = req.params;
+
+            if (!ObjectId.isValid(userId)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid user ID."
+                });
+            }
+
+            const result = await db.collection("users").updateOne(
+                { _id: new ObjectId(userId) },
+                { $pull: { favorites: district } }
+            );
+
+            if (result.matchedCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found."
+                });
+            }
+
+            res.json({
+                success: true,
+                message: "Favorite district removed successfully."
+            });
+
+        } catch (error) {
+            console.error("Remove favorite error:", error.message);
+
+            res.status(500).json({
+                success: false,
+                message: "Unable to remove favorite."
+            });
+        }
+    }
+);
+
+// =========================
+// CONNECT TO MONGODB
+// =========================
+
 async function startServer() {
+    if (!MONGODB_URI) {
+        console.error("MONGODB_URI is missing from the .env file.");
+        process.exit(1);
+    }
+
     try {
         const client = new MongoClient(MONGODB_URI);
 
@@ -167,10 +322,16 @@ async function startServer() {
         console.log("MongoDB connected successfully!");
 
         app.listen(PORT, function () {
-            console.log(`Server is running at http://localhost:${PORT}`);
+            console.log(
+                `Server is running at http://localhost:${PORT}`
+            );
         });
+
     } catch (error) {
-        console.error("Failed to connect to MongoDB:", error.message);
+        console.error(
+            "Failed to connect to MongoDB:",
+            error.message
+        );
         process.exit(1);
     }
 }
