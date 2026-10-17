@@ -257,3 +257,34 @@ footer {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+
+/* District Details Page */
+.section > a {
+    display: inline-block;
+    margin-bottom: 25px;
+    color: #087f5b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.section > a:hover {
+    text-decoration: underline;
+}
+
+#districtName {
+    font-size: clamp(32px, 5vw, 48px);
+    margin: 15px 0;
+}
+
+#districtDescription {
+    max-width: 750px;
+    color: #62766d;
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
+
+#attractionGrid {
+    margin-top: 25px;
+}
+
