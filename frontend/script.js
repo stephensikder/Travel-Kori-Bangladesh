@@ -117,6 +117,15 @@ districtSearch.addEventListener("input", function () {
         return district.toLowerCase().includes(searchText);
     });
 
+    
+if (filteredDistricts.length === 0) {
+    districtMessage.textContent = "No districts found. Try another name.";
+} else {
+    districtMessage.textContent =
+        filteredDistricts.length + " district(s) found.";
+}
+
+
     displayDistricts(filteredDistricts);
 });
 
