@@ -4,6 +4,7 @@ const API_URL = "http://localhost:5000/api/auth";
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 
+
 // Login form
 if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
@@ -30,52 +31,46 @@ if (loginForm) {
                 body: JSON.stringify({ email, password })
             });
 
-            const responseText = await response.text();
-            let data;
-
-            try {
-                data = JSON.parse(responseText);
-            } catch {
-                throw new Error("Unexpected server response. Check the backend.");
-            }
+            const data = await response.json();
 
             if (!response.ok) {
                 throw new Error(data.message || "Login failed.");
             }
 
-            
-loginMessage.textContent =
-    "Welcome, " + data.user.fullName + "! Login successful.";
+            if (!data.user || !data.user.id) {
+                throw new Error("Login response does not contain user information.");
+            }
 
-loginMessage.style.color = "#087f5b";
+            // Store logged-in user information
+            sessionStorage.setItem(
+                "travelKoriUser",
+                JSON.stringify({
+                    id: data.user.id,
+                    fullName: data.user.fullName,
+                    email: data.user.email
+                })
+            );
 
+            loginMessage.textContent =
+                "Login successful! Redirecting to dashboard...";
+            loginMessage.style.color = "#087f5b";
 
-        
-sessionStorage.setItem(
-    "travelKoriUser",
-    JSON.stringify({
-        id: data.user.id,
-        fullName: data.user.fullName,
-        email: data.user.email
-    })
-);
-
-window.location.href = "dashboard.html";
-
-
-        // Redirect to the dashboard after successful login
-        window.location.href = "dashboard.html";
+            // Redirect only once
+            window.location.href = "dashboard.html";
 
         } catch (error) {
+            console.error("Login error:", error);
+
             loginMessage.textContent =
                 error.message === "Failed to fetch"
-                    ? "Cannot connect to the backend. Start the server first."
+                    ? "Cannot connect to backend. Start the server first."
                     : error.message;
 
             loginMessage.style.color = "red";
         }
     });
 }
+
 
 
 // Sign Up form

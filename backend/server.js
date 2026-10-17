@@ -159,6 +159,88 @@ app.post("/api/auth/login", async function (req, res) {
     }
 });
 
+
+// =========================
+// UPDATE USER PROFILE API
+// =========================
+
+app.put("/api/users/:userId", async function (req, res) {
+    try {
+        const { userId } = req.params;
+        const { fullName, email } = req.body;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID."
+            });
+        }
+
+        if (
+            typeof fullName !== "string" ||
+            typeof email !== "string" ||
+            !fullName.trim() ||
+            !email.trim()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Name and email are required."
+            });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+        const users = db.collection("users");
+
+        const existingUser = await users.findOne({
+            email: normalizedEmail,
+            _id: { $ne: new ObjectId(userId) }
+        });
+
+        if (existingUser) {
+            return res.status(409).json({
+                success: false,
+                message: "This email is already registered."
+            });
+        }
+
+        const result = await users.updateOne(
+            { _id: new ObjectId(userId) },
+            {
+                $set: {
+                    fullName: fullName.trim(),
+                    email: normalizedEmail
+                }
+            }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Profile updated successfully!",
+            user: {
+                id: userId,
+                fullName: fullName.trim(),
+                email: normalizedEmail
+            }
+        });
+
+    } catch (error) {
+        console.error("Profile update error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to update profile."
+        });
+    }
+});
+
+
 // =========================
 // FAVORITES API 1
 // GET USER FAVORITES
@@ -301,6 +383,139 @@ app.delete(
         }
     }
 );
+
+
+
+// =========================
+// TRAVEL BOOKING API
+// =========================
+
+// Create a booking
+app.post("/api/bookings", async function (req, res) {
+    try {
+        const {
+            userId,
+            district,
+            touristSpot,
+            visitDate,
+            people
+        } = req.body;
+
+        if (
+            !userId ||
+            !ObjectId.isValid(userId) ||
+            !district?.trim() ||
+            !touristSpot?.trim() ||
+            !visitDate ||
+            !Number.isInteger(Number(people)) ||
+            Number(people) < 1
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide valid booking information."
+            });
+        }
+
+        const selectedDate = new Date(visitDate);
+
+        if (
+            Number.isNaN(selectedDate.getTime()) ||
+            visitDate < new Date().toISOString().slice(0, 10)
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Please select a valid future date."
+            });
+        }
+
+        const user = await db.collection("users").findOne({
+            _id: new ObjectId(userId)
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found."
+            });
+        }
+
+        const booking = {
+            userId: user._id,
+            district: district.trim(),
+            touristSpot: touristSpot.trim(),
+            visitDate,
+            people: Number(people),
+            status: "Pending",
+            createdAt: new Date()
+        };
+
+        const result = await db
+            .collection("bookings")
+            .insertOne(booking);
+
+        res.status(201).json({
+            success: true,
+            message: "Booking request submitted successfully!",
+            booking: {
+                id: result.insertedId.toString(),
+                ...booking,
+                userId: user._id.toString()
+            }
+        });
+
+    } catch (error) {
+        console.error("Create booking error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to submit booking request."
+        });
+    }
+});
+
+
+// Get bookings for a user
+app.get("/api/bookings/:userId", async function (req, res) {
+    try {
+        const { userId } = req.params;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user ID."
+            });
+        }
+
+        const bookings = await db
+            .collection("bookings")
+            .find({
+                userId: new ObjectId(userId)
+            })
+            .sort({ createdAt: -1 })
+            .toArray();
+
+        res.json({
+            success: true,
+            bookings: bookings.map(function (booking) {
+                return {
+                    ...booking,
+                    id: booking._id.toString(),
+                    userId: booking.userId.toString()
+                };
+            })
+        });
+
+    } catch (error) {
+        console.error("Get bookings error:", error.message);
+
+        res.status(500).json({
+            success: false,
+            message: "Unable to load bookings."
+        });
+    }
+});
+
+
 
 // =========================
 // CONNECT TO MONGODB

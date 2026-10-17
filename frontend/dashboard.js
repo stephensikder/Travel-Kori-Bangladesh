@@ -1,132 +1,258 @@
+// API URL
+const API_URL = "http://localhost:5000";
 
-const storedUser = sessionStorage.getItem("travelKoriUser");
-
-let currentUser = null;
+// Get logged-in user
+let user = null;
 
 try {
-    currentUser = storedUser ? JSON.parse(storedUser) : null;
+    user = JSON.parse(
+        sessionStorage.getItem("travelKoriUser") || "null"
+    );
 } catch (error) {
-    currentUser = null;
+    user = null;
 }
 
-if (!currentUser || !currentUser.id) {
-    window.location.href = "login.html";
+// Redirect if user is not logged in
+if (!user || !user.id) {
+    window.location.replace("login.html");
 } else {
+    // Display user information
     document.getElementById("userName").textContent =
-        currentUser.fullName;
+        user.fullName || "Traveler";
+
+    document.getElementById("profileName").textContent =
+        user.fullName || "Not provided";
 
     document.getElementById("userEmail").textContent =
-        currentUser.email;
+        user.email || "Not provided";
+
+    // Load favorites
+    loadFavorites();
+
+    // Profile elements
+    const editProfileBtn =
+        document.getElementById("editProfileBtn");
+
+    const profileEditForm =
+        document.getElementById("profileEditForm");
+
+    const cancelEditBtn =
+        document.getElementById("cancelEditBtn");
+
+    const profileMessage =
+        document.getElementById("profileMessage");
+
+    // Open Edit Profile form
+    if (editProfileBtn && profileEditForm) {
+        editProfileBtn.addEventListener("click", function () {
+            document.getElementById("editFullName").value =
+                user.fullName || "";
+
+            document.getElementById("editEmail").value =
+                user.email || "";
+
+            profileEditForm.hidden = false;
+            profileMessage.textContent = "";
+        });
+
+        // Update profile in MongoDB
+        profileEditForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const newName = document
+                .getElementById("editFullName")
+                .value.trim();
+
+            const newEmail = document
+                .getElementById("editEmail")
+                .value.trim();
+
+            if (!newName || !newEmail) {
+                profileMessage.textContent =
+                    "Please enter your name and email.";
+                return;
+            }
+
+            profileMessage.textContent = "Saving profile...";
+            profileMessage.style.color = "#087f5b";
+
+            try {
+                const response = await fetch(
+                    `${API_URL}/api/users/${encodeURIComponent(user.id)}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            fullName: newName,
+                            email: newEmail
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message || "Could not update profile."
+                    );
+                }
+
+                user.fullName = data.user.fullName;
+                user.email = data.user.email;
+
+                sessionStorage.setItem(
+                    "travelKoriUser",
+                    JSON.stringify(user)
+                );
+
+                document.getElementById("userName").textContent =
+                    user.fullName;
+
+                document.getElementById("profileName").textContent =
+                    user.fullName;
+
+                document.getElementById("userEmail").textContent =
+                    user.email;
+
+                profileEditForm.hidden = true;
+
+                profileMessage.textContent =
+                    "Profile updated successfully!";
+                profileMessage.style.color = "#087f5b";
+
+            } catch (error) {
+                console.error("Profile update error:", error);
+
+                profileMessage.textContent = error.message;
+                profileMessage.style.color = "red";
+            }
+        });
+
+        // Cancel editing
+        if (cancelEditBtn) {
+            cancelEditBtn.addEventListener("click", function () {
+                profileEditForm.hidden = true;
+
+                profileMessage.textContent =
+                    "Profile editing cancelled.";
+            });
+        }
+    }
 }
 
-const favoriteContainer =
-    document.getElementById("favoriteDistricts");
+// Load favorites
+async function loadFavorites() {
+    const favoriteGrid =
+        document.getElementById("favoriteDistricts");
 
-const favoriteMessage =
-    document.getElementById("favoriteMessage");
+    const favoriteMessage =
+        document.getElementById("favoriteMessage");
 
-async function loadFavoriteDistricts() {
-    if (!currentUser || !currentUser.id) {
+    if (!user || !user.id || !favoriteGrid || !favoriteMessage) {
         return;
     }
 
+    favoriteMessage.textContent = "Loading your favorites...";
+
     try {
         const response = await fetch(
-            "http://localhost:5000/api/favorites/" +
-            encodeURIComponent(currentUser.id)
+            `${API_URL}/api/favorites/${encodeURIComponent(user.id)}`
         );
 
         const data = await response.json();
 
-        if (!response.ok || !data.success) {
+        if (!response.ok) {
             throw new Error(
-                data.message || "Unable to load favorites."
+                data.message || "Could not load favorites."
             );
         }
 
-        const favorites = data.favorites || [];
+        const favorites = Array.isArray(data.favorites)
+            ? data.favorites
+            : [];
 
-        favoriteContainer.innerHTML = "";
+        favoriteGrid.replaceChildren();
 
         if (favorites.length === 0) {
             favoriteMessage.textContent =
-                "No favorite districts saved yet.";
+                "You have not saved any favorite districts yet.";
             return;
         }
 
-        favoriteMessage.textContent =
-            favorites.length + " favorite district(s) saved.";
-
         favorites.forEach(function (district) {
-            const card = document.createElement("article");
+            const card = document.createElement("div");
             card.className = "destination-card";
 
             const title = document.createElement("h3");
             title.textContent = district;
 
             const exploreLink = document.createElement("a");
-            exploreLink.className = "map-link";
-            exploreLink.textContent = "Explore District";
+            exploreLink.textContent = "Explore District →";
             exploreLink.href =
-                "district-details.html?name=" +
-                encodeURIComponent(district);
+                `district-details.html?district=${encodeURIComponent(district)}`;
 
             const removeButton = document.createElement("button");
             removeButton.type = "button";
-            removeButton.className = "favorite-btn";
+            removeButton.className = "signup-btn";
             removeButton.textContent = "Remove Favorite";
 
-            removeButton.addEventListener("click", async function () {
-                removeButton.disabled = true;
-
-                try {
-                    const deleteResponse = await fetch(
-                        "http://localhost:5000/api/favorites/" +
-                        encodeURIComponent(currentUser.id) + "/" +
-                        encodeURIComponent(district),
-                        { method: "DELETE" }
-                    );
-
-                    const deleteData = await deleteResponse.json();
-
-                    if (!deleteResponse.ok || !deleteData.success) {
-                        throw new Error(
-                            deleteData.message ||
-                            "Unable to remove favorite."
-                        );
-                    }
-
-                    await loadFavoriteDistricts();
-
-                } catch (error) {
-                    alert(error.message);
-                    removeButton.disabled = false;
-                }
+            removeButton.addEventListener("click", function () {
+                removeFavorite(district);
             });
 
-            card.appendChild(title);
-            card.appendChild(exploreLink);
-            card.appendChild(removeButton);
-
-            favoriteContainer.appendChild(card);
+            card.append(title, exploreLink, removeButton);
+            favoriteGrid.appendChild(card);
         });
+
+        favoriteMessage.textContent =
+            `You have ${favorites.length} favorite district(s).`;
 
     } catch (error) {
         console.error("Favorites error:", error);
 
         favoriteMessage.textContent =
-            "Unable to load favorites. Check your backend connection.";
+            "Could not load favorites. Check the backend server.";
     }
 }
 
-if (favoriteContainer && favoriteMessage) {
-    loadFavoriteDistricts();
+// Remove favorite
+async function removeFavorite(district) {
+    const favoriteMessage =
+        document.getElementById("favoriteMessage");
+
+    try {
+        const response = await fetch(
+            `${API_URL}/api/favorites/${encodeURIComponent(user.id)}/${encodeURIComponent(district)}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.message || "Could not remove favorite."
+            );
+        }
+
+        await loadFavorites();
+
+    } catch (error) {
+        console.error("Remove favorite error:", error);
+
+        favoriteMessage.textContent =
+            "Could not remove this favorite. Please try again.";
+    }
 }
 
-const logoutButton = document.getElementById("logoutBtn");
+// Logout
+const logoutBtn = document.getElementById("logoutBtn");
 
-if (logoutButton) {
-    logoutButton.addEventListener("click", function () {
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
         sessionStorage.removeItem("travelKoriUser");
         window.location.href = "login.html";
     });

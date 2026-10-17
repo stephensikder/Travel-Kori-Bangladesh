@@ -420,3 +420,214 @@ footer {
 .details-btn:hover {
     background: #066b4d;
 }
+
+
+
+.attractions-section {
+    margin-top: 30px;
+}
+
+.attractions-intro {
+    margin-bottom: 24px;
+    color: #666;
+    line-height: 1.7;
+}
+
+.attraction-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.attraction-card h3 {
+    margin: 0;
+}
+
+.attraction-card p {
+    line-height: 1.7;
+}
+
+#attractionMessage {
+    margin-top: 18px;
+    color: #666;
+}
+
+.map-link {
+    display: inline-block;
+    margin-top: auto;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #087f5b;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.map-link:hover {
+    background: #066b4d;
+}
+
+
+
+
+/* Tourist attraction section */
+.attractions-section {
+    margin-top: 32px;
+}
+
+.attractions-intro {
+    color: #64748b;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+/* Tourist attraction cards */
+.attraction-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 220px;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.attraction-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+}
+
+.attraction-card h3 {
+    margin: 0;
+    color: #163b32;
+    font-size: 19px;
+}
+
+.attraction-card p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.7;
+}
+
+.attraction-card .map-link {
+    display: inline-block;
+    margin-top: auto;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: #087f5b;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.attraction-card .map-link:hover {
+    background: #066b4d;
+}
+
+#attractionMessage {
+    margin-top: 18px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .attraction-card {
+        min-height: auto;
+        padding: 18px;
+    }
+}
+
+
+```css
+/* Dashboard layout */
+.dashboard-main {
+    min-height: 65vh;
+}
+
+.dashboard-favorites {
+    margin: 48px 0;
+}
+
+.dashboard-favorites h2 {
+    margin-bottom: 12px;
+}
+
+.dashboard-features {
+    margin-top: 36px;
+}
+
+.dashboard-card {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-card h3 {
+    margin-top: 0;
+    color: #163b32;
+}
+
+.dashboard-card p {
+    line-height: 1.7;
+    color: #64748b;
+}
+
+.dashboard-card a {
+    display: inline-block;
+    margin-top: 8px;
+}
+
+#profileEditForm {
+    margin-top: 20px;
+}
+
+#profileEditForm[hidden] {
+    display: none;
+}
+
+#profileEditForm label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: 600;
+}
+
+#profileEditForm input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px;
+    margin-bottom: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font: inherit;
+}
+
+.profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+#profileMessage {
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .dashboard-favorites {
+        margin: 30px 0;
+    }
+
+    .dashboard-card {
+        padding: 18px;
+    }
+}
+```

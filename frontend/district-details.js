@@ -58,7 +58,7 @@ const districtSpots = {
     "Rangpur": ["Tajhat Palace", "Carmichael College", "Chikli Beel"],
     "Satkhira": ["Sundarbans", "Shyamnagar Eco-Tourism Areas", "Jhaudanga Heritage Sites"],
     "Shariatpur": ["Padma Riverbank", "Local River Islands", "Historic Religious Sites"],
-    "Sherpur": ["Madhutila Eco Park", "Gajni অবকাশ কেন্দ্র", "Garo Hills"],
+    "Sherpur": ["Madhutila Eco Park", "Gajni Recreation Centre", "Garo Hills"],
     "Sirajganj": ["Jamuna Bridge", "Hatikumrul Navaratna Temple", "Jamuna Riverbank"],
     "Sunamganj": ["Tanguar Haor", "Jadukata River", "Shimul Garden"],
     "Sylhet": ["Jaflong", "Ratargul Swamp Forest", "Lalakhal"],
@@ -66,6 +66,7 @@ const districtSpots = {
     "Thakurgaon": ["Baliadangi Surjapuri Mango Tree", "King Jangal", "Shalbagan"]
 };
 
+// Generate district descriptions and attraction details
 const districtData = {};
 
 Object.keys(districtSpots).forEach(function (districtName) {
@@ -78,23 +79,26 @@ Object.keys(districtSpots).forEach(function (districtName) {
             return {
                 name: spotName,
                 description:
-                    spotName + " is a destination to explore in or around " +
-                    districtName + ", Bangladesh."
+                    "Discover " + spotName + " in " + districtName +
+                    ", Bangladesh. Explore its local scenery and cultural heritage."
             };
         })
     };
 });
 
+// Read the district name from the URL
 const params = new URLSearchParams(window.location.search);
 const districtName = params.get("name");
 
 const nameElement = document.getElementById("districtName");
 const descriptionElement = document.getElementById("districtDescription");
 const attractionGrid = document.getElementById("attractionGrid");
+const attractionMessage = document.getElementById("attractionMessage");
 
-if (districtName && districtData[districtName]) {
-    const district = districtData[districtName];
+const district = districtData[districtName];
 
+// Display district details
+if (district) {
     nameElement.textContent = districtName;
     descriptionElement.textContent = district.description;
 
@@ -102,7 +106,7 @@ if (districtName && districtData[districtName]) {
 
     district.attractions.forEach(function (attraction) {
         const card = document.createElement("article");
-        card.className = "destination-card";
+        card.className = "destination-card attraction-card";
 
         const title = document.createElement("h3");
         title.textContent = attraction.name;
@@ -128,10 +132,23 @@ if (districtName && districtData[districtName]) {
 
         attractionGrid.appendChild(card);
     });
+
+    if (attractionMessage) {
+        attractionMessage.textContent =
+            district.attractions.length + " attractions available.";
+    }
 } else {
     nameElement.textContent = districtName || "District Not Found";
+
     descriptionElement.textContent =
         "Detailed information for this district is not available yet.";
+
+    attractionGrid.innerHTML = "";
+
+    if (attractionMessage) {
+        attractionMessage.textContent =
+            "No attractions are available for this district yet.";
+    }
 }
 
 console.log("District details loaded:", districtName);
