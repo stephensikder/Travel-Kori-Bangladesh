@@ -111,11 +111,24 @@ if (district) {
         const card = document.createElement("article");
         card.className = "destination-card";
 
-        const title = document.createElement("h3");
-        title.textContent = attraction;
+        
+const title = document.createElement("h3");
+title.textContent = attraction;
 
-        card.appendChild(title);
-        attractionGrid.appendChild(card);
+const mapLink = document.createElement("a");
+mapLink.textContent = "View on Google Maps";
+mapLink.href =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(attraction + ", Bangladesh");
+
+mapLink.target = "_blank";
+mapLink.rel = "noopener noreferrer";
+mapLink.className = "map-link";
+
+card.appendChild(title);
+card.appendChild(mapLink);
+attractionGrid.appendChild(card);
+
     });
 } else {
     nameElement.textContent = districtName || "District Not Found";

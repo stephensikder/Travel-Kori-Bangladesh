@@ -288,3 +288,17 @@ footer {
     margin-top: 25px;
 }
 
+
+/* Google Maps link */
+.map-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #087f5b;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.map-link:hover {
+    text-decoration: underline;
+}
+
