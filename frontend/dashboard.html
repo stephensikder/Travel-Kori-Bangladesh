@@ -639,27 +639,84 @@
 
     <!-- Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            TK <span>Travel Kori Bangladesh</span>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
+            <span class="brand-mark">TK</span>
+            <span class="brand-name">Travel Kori Bangladesh</span>
         </a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <a href="index.html#destinations">Explore Districts</a>
-            <button id="logoutBtn" type="button">Logout</button>
+            <a href="hotel-booking.html">Hotels</a>
+            <a href="transport.html">Transport</a>
+            <div id="navUserArea"></div>
         </div>
     </nav>
+
+    <!-- Profile Edit Modal -->
+    <div id="profileModal" class="profile-modal-overlay" hidden>
+        <div class="profile-modal-box">
+            <div class="profile-modal-header">
+                <h3>👤 Edit My Profile</h3>
+                <button type="button" id="closeProfileModal" class="close-modal-btn">✕</button>
+            </div>
+            <p style="font-size:13px; color:#62766d; margin:0 0 16px;">
+                Update your personal name and email for your Travel Kori Bangladesh account.
+            </p>
+            <form id="profileEditForm">
+                <div style="margin-bottom:12px;">
+                    <label for="editFullName" style="display:block; font-size:12px; font-weight:700; margin-bottom:4px; color:#123c35;">Full Name</label>
+                    <input type="text" id="editFullName" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font:inherit;">
+                </div>
+                <div style="margin-bottom:16px;">
+                    <label for="editEmail" style="display:block; font-size:12px; font-weight:700; margin-bottom:4px; color:#123c35;">Email Address</label>
+                    <input type="email" id="editEmail" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font:inherit;">
+                </div>
+                <p id="profileMessage" aria-live="polite" style="margin: 0 0 12px; font-size:13px;"></p>
+                <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+                    <button type="button" id="cancelModalBtn" style="padding:10px 18px; border:1px solid #cbd5e1; background:#f1f5f9; color:#334155; border-radius:8px; cursor:pointer; font-weight:700; font-size:14px;">Cancel</button>
+                    <button type="submit" class="signup-btn" style="padding:10px 22px; background:#087f5b; border:1px solid #087f5b; color:#ffffff; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Dashboard -->
     <main class="section dashboard-main">
 
-        <p class="section-label">YOUR TRAVEL SPACE</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
+            <div>
+                <p class="section-label" style="margin-bottom: 4px;">TRAVEL KORI BANGLADESH</p>
+                <h1 style="margin: 0; font-size: 28px; font-weight: 900;">
+                    Welcome, <span id="userName">Traveler</span>!
+                </h1>
+                <p style="margin: 4px 0 0; color: #64748b; font-size: 14px;">Manage your travel activities, itineraries, tickets, and reservations.</p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" id="exportHistoryPdfBtn" class="btn-profile-green" style="display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; font-weight: 700; cursor: pointer; border: none; font-size: 13px;">
+                    <span>📥 Export Travel History (PDF)</span>
+                </button>
+                <a href="my-profile.html" class="primary-btn" style="background: #0284c7; border-color: #0284c7; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; font-weight: 700; font-size: 13px;">
+                    <span>👤 Detailed Profile</span>
+                </a>
+            </div>
+        </div>
 
-        <h1>
-            Welcome, <span id="userName">Traveler</span>!
-        </h1>
-
-        <p>Manage your travel activities from one place.</p>
+        <!-- Saved Custom Trip Plans (Section H) -->
+        <section class="dashboard-bookings" id="customTripPlansSection">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                    <h2 style="margin: 0 0 2px 0;">🗓️ My Saved Trip Plans & Itineraries</h2>
+                    <p style="margin: 0; font-size: 13px; color: #64748b;">Custom itineraries and estimated budgets generated via Trip Planner.</p>
+                </div>
+                <a href="booking.html" class="btn-profile-green" style="font-size: 12px; padding: 6px 14px; text-decoration: none;">
+                    + Create New Trip Plan
+                </a>
+            </div>
+            <div id="savedTripPlansGrid" class="destination-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;"></div>
+            <p id="tripPlansMessage" aria-live="polite" style="font-size: 13px; color: #64748b; margin-top: 10px;">
+                Loading your saved itineraries...
+            </p>
+        </section>
 
         <!-- Favorite Districts -->
         <section class="dashboard-favorites">
@@ -759,6 +816,114 @@
             </div>
         </section>
 
+        <!-- My Tour Guide Bookings (FR-48 to FR-56) -->
+        <section class="dashboard-bookings" id="tourGuideBookingsSection">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <h2>🧭 My Tour Guide Bookings</h2>
+                    <p style="margin:0; font-size:13px; color:var(--travel-muted);">Track your local tour guide reservations, confirmation status, and real reviews.</p>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button type="button" id="openDirectReviewBtn" class="signup-btn" style="padding:8px 16px; font-size:13px; background:#087f5b; border:1px solid #087f5b; color:white; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                        ⭐ Rate a Tour Guide
+                    </button>
+                    <a href="guides.html" class="signup-btn" style="padding:8px 16px; font-size:13px; text-decoration:none; background:#123c35; border:1px solid #123c35;">+ Book a Guide</a>
+                </div>
+            </div>
+
+            <div id="myGuideBookings" class="transport-booking-grid"></div>
+
+            <div id="guideBookingsMessage" aria-live="polite" style="color:var(--travel-muted); font-size:13px;">
+                Loading your guide bookings...
+            </div>
+
+            <!-- Traveler's Submitted Guide Reviews -->
+            <div style="margin-top:28px; padding-top:20px; border-top:1px solid #e2e8f0;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="font-size:17px; margin:0; color:var(--travel-dark);">⭐ My Submitted Tour Guide Reviews</h3>
+                    <span id="myReviewsCountBadge" style="font-size:12px; font-weight:700; color:#087f5b; background:#e6f7f0; padding:3px 10px; border-radius:12px;">0 Reviews</span>
+                </div>
+                <div id="myGuideReviewsList" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:14px;"></div>
+                <div id="myGuideReviewsMessage" style="color:var(--travel-muted); font-size:13px;">Loading your reviews...</div>
+            </div>
+        </section>
+
+        <!-- Guide Rating & Review Modal -->
+        <div id="guideRatingModal" class="profile-modal-overlay" hidden>
+            <div class="profile-modal-box" style="max-width: 520px;">
+                <div class="profile-modal-header">
+                    <h3>⭐ Rate & Review Tour Guide</h3>
+                    <button type="button" id="closeRatingModalBtn" class="close-modal-btn">✕</button>
+                </div>
+                <p id="ratingModalSubtitle" style="font-size:13px; color:#62766d; margin:0 0 16px;">
+                    Share your experience with your tour guide to help fellow travelers.
+                </p>
+                <form id="guideReviewForm">
+                    <input type="hidden" id="reviewGuideId" />
+                    <input type="hidden" id="reviewBookingRef" />
+
+                    <!-- Guide Selector (visible when reviewing any guide directly) -->
+                    <div id="guideSelectRow" style="margin-bottom: 14px;">
+                        <label for="reviewGuideSelect" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px; color:#123c35;">Select Tour Guide</label>
+                        <select id="reviewGuideSelect" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font:inherit; background:white;">
+                            <option value="">-- Choose a Tour Guide --</option>
+                        </select>
+                    </div>
+
+                    <!-- Target Guide Display (visible when rating from a specific booking) -->
+                    <div id="guideTargetBadge" style="margin-bottom: 14px; display:none; background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:10px 14px; font-size:13px; color:#166534;">
+                        Guide: <strong id="guideTargetName"></strong> <span id="guideTargetRef" style="color:#64748b; font-size:12px; margin-left:8px;"></span>
+                    </div>
+
+                    <!-- Interactive Star Rating -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="display:block; font-size:12px; font-weight:700; margin-bottom:6px; color:#123c35;">Rating (1 to 5 Stars)</label>
+                        <div id="starPicker" style="display:flex; gap:8px; font-size:28px; cursor:pointer; margin-bottom:6px; color:#f59e0b;">
+                            <span class="star-btn" data-value="1">★</span>
+                            <span class="star-btn" data-value="2">★</span>
+                            <span class="star-btn" data-value="3">★</span>
+                            <span class="star-btn" data-value="4">★</span>
+                            <span class="star-btn" data-value="5">★</span>
+                        </div>
+                        <select id="reviewStarRating" required style="width:100%; padding:9px; border:1px solid #cbd5e1; border-radius:8px; font:inherit; background:white;">
+                            <option value="5" selected>⭐⭐⭐⭐⭐ - 5 Stars (Exceptional)</option>
+                            <option value="4">⭐⭐⭐⭐ - 4 Stars (Very Good)</option>
+                            <option value="3">⭐⭐⭐ - 3 Stars (Average)</option>
+                            <option value="2">⭐⭐ - 2 Stars (Needs Improvement)</option>
+                            <option value="1">⭐ - 1 Star (Poor Experience)</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px;">
+                        <label for="reviewCommentText" style="display:block; font-size:12px; font-weight:700; margin-bottom:6px; color:#123c35;">Review Details & Feedback (Comment)</label>
+                        <textarea id="reviewCommentText" rows="3" placeholder="Describe the guide's punctuality, knowledge of sights, language skills, and friendliness..." required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font:inherit; resize:vertical;"></textarea>
+                    </div>
+
+                    <p id="reviewSubmitMsg" style="font-size:13px; margin: 0 0 12px; font-weight:600;"></p>
+
+                    <div style="display:flex; justify-content:flex-end; gap:12px;">
+                        <button type="button" id="cancelReviewBtn" style="padding:10px 18px; border:1px solid #cbd5e1; background:#f1f5f9; color:#334155; border-radius:8px; cursor:pointer; font-weight:700; font-size:13px;">Cancel</button>
+                        <button type="submit" id="submitReviewBtn" class="signup-btn" style="padding:10px 22px; background:#087f5b; border:1px solid #087f5b; color:#ffffff; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer;">Submit Rating & Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Booking Notifications (FR-61, FR-62) -->
+        <section class="dashboard-bookings" id="notificationsSection">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <h2>🔔 Booking Notifications</h2>
+                    <p style="margin:0; font-size:13px; color:var(--travel-muted);">Real-time status updates and activity alerts regarding your bookings.</p>
+                </div>
+                <button id="markAllNotificationsReadBtn" type="button" style="padding:6px 14px; background:#eaf7f1; color:#087f68; border:1px solid #b5e8d5; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">✓ Mark All as Read</button>
+            </div>
+
+            <div id="notificationsList" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;"></div>
+
+            <p id="notificationsMessage" style="color:var(--travel-muted); font-size:13px; margin-top:12px;">Loading notifications...</p>
+        </section>
+
         <!-- Dashboard Feature Cards -->
         <section class="feature-grid dashboard-features">
 
@@ -774,43 +939,10 @@
                 <a href="index.html#destinations">Discover places →</a>
             </div>
 
-            <!-- My Profile -->
-            <div class="dashboard-card" id="profileCard">
-                <h3>My Profile</h3>
-
-                <p>
-                    <strong>Full Name:</strong>
-                    <span id="profileName">Loading...</span>
-                </p>
-
-                <p>
-                    <strong>Email:</strong>
-                    <span id="userEmail">Loading...</span>
-                </p>
-
-                <button type="button" id="editProfileBtn" class="signup-btn">
-                    Edit Profile
-                </button>
-
-                <p id="profileMessage" aria-live="polite"></p>
-
-                <form id="profileEditForm" hidden>
-                    <label for="editFullName">Full Name</label>
-                    <input type="text" id="editFullName" required>
-
-                    <label for="editEmail">Email</label>
-                    <input type="email" id="editEmail" required>
-
-                    <div class="profile-actions">
-                        <button type="submit" class="signup-btn">
-                            Save Changes
-                        </button>
-
-                        <button type="button" id="cancelEditBtn">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+            <div class="dashboard-card">
+                <h3>Travel Support</h3>
+                <p>Need assistance with your bookings or itinerary? Contact Travel Kori Bangladesh support.</p>
+                <a href="transport.html">Browse transport options →</a>
             </div>
 
         </section>
@@ -821,9 +953,11 @@
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
-    <!-- Keep your existing JavaScript -->
+    <!-- PDF Generation & App Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="pdf-ticket.js"></script>
+    <script src="nav.js"></script>
     <script src="dashboard.js"></script>
 
 </body>
 </html>
-```

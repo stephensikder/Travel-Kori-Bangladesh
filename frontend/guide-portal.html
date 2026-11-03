@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Operations Portal | Travel Kori Bangladesh</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .portal-header {
+            background: #17382f;
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #087f5b;
+        }
+        .portal-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+        .portal-brand-badge {
+            background: #087f5b;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .portal-user-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .portal-user-badge {
+            background: #234e40;
+            color: #b5e8d5;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #366d5b;
+        }
+        .btn-portal-logout {
+            background: white;
+            color: #17382f;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        .btn-portal-logout:hover {
+            background: #f1f5f9;
+        }
+
+        .portal-main {
+            max-width: 1280px;
+            margin: 24px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* Top 4 Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #087f5b;
+        }
+        .stat-card-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: #17382f;
+        }
+        .stat-card-sub {
+            font-size: 12px;
+            color: #087f5b;
+            font-weight: 600;
+        }
+
+        /* 2-Column Layout */
+        .portal-layout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .portal-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .portal-section-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .section-header-row h2 {
+            font-size: 18px;
+            color: #17382f;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        /* Filter Tabs */
+        .req-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+        .req-tab-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .req-tab-btn.active {
+            background: #087f5b;
+            color: white;
+            border-color: #087f5b;
+        }
+
+        /* Request Cards */
+        .request-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            background: #ffffff;
+            transition: border-color 0.2s;
+        }
+        .request-card:hover {
+            border-color: #b5e8d5;
+        }
+        .req-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .req-ref {
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #087f5b;
+        }
+        .status-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-confirmed { background: #e6f7f0; color: #087f5b; }
+        .status-completed { background: #e0f2fe; color: #0369a1; }
+        .status-rejected { background: #fee2e2; color: #b91c1c; }
+
+        .req-card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 16px;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 14px;
+        }
+        .req-card-grid strong {
+            color: #17382f;
+        }
+
+        .req-actions-row {
+            display: flex;
+            gap: 10px;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 12px;
+            flex-wrap: wrap;
+        }
+        .btn-req-accept {
+            background: #087f5b;
+            color: white;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-req-accept:hover { background: #066549; }
+        .btn-req-reject {
+            background: #ffffff;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-req-reject:hover { background: #fee2e2; }
+        .btn-req-complete {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Profile Form */
+        .portal-form-group {
+            margin-bottom: 16px;
+        }
+        .portal-form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #17382f;
+            margin-bottom: 5px;
+        }
+        .portal-form-group input,
+        .portal-form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            background: #f8fafc;
+        }
+        .portal-form-group input:focus,
+        .portal-form-group textarea:focus {
+            background: white;
+            border-color: #087f5b;
+            outline: none;
+        }
+
+        .btn-save-settings {
+            background: #087f5b;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .btn-save-settings:hover { background: #066549; }
+    </style>
+</head>
+<body style="background: #f8fafc;">
+
+    <!-- Top Portal Header -->
+    <header class="portal-header">
+        <a href="index.html" class="portal-brand">
+            <span style="background: #087f5b; color: white; padding: 4px 10px; border-radius: 6px; font-weight: 800;">TK</span>
+            <span style="font-weight: 800; font-size: 18px;">Travel Kori Bangladesh</span>
+            <span class="portal-brand-badge">Guide Operations Portal</span>
+        </a>
+
+        <div class="portal-user-box" style="display:flex; align-items:center; gap:10px;">
+            <button type="button" class="theme-toggle-btn modern-theme-btn" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3); color:white; padding:5px 10px; border-radius:999px; font-size:12px; font-weight:700; cursor:pointer;">🌙 Dark</button>
+            <span id="portalGuideNameBadge" class="portal-user-badge">🧭 Loading Guide...</span>
+            <a href="index.html" style="color:white; text-decoration:none; font-size:13px; font-weight:700;">Home</a>
+            <button id="portalLogoutBtn" type="button" class="btn-portal-logout">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Portal Content -->
+    <main class="portal-main">
+
+        <!-- Top Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-card-label">Guide Rating</span>
+                <div class="stat-card-value" id="statRating">⭐ 5.0</div>
+                <span class="stat-card-sub" id="statReviews">0 Verified Reviews</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-card-label">Total Tours</span>
+                <div class="stat-card-value" id="statTours">0</div>
+                <span class="stat-card-sub" id="statCompleted">0 Completed Tours</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-card-label">Daily Guiding Rate</span>
+                <div class="stat-card-value" id="statRate">৳2,000</div>
+                <span class="stat-card-sub">Per Calendar Day</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-card-label">Availability Status</span>
+                <div class="stat-card-value" id="statAvailBadge" style="font-size: 18px; color: #087f5b;">🟢 Available</div>
+                <button id="toggleAvailBtn" type="button" style="background:#f1f5f9; border:1px solid #cbd5e1; padding:5px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer; margin-top:4px;">
+                    Switch to Unavailable
+                </button>
+            </div>
+        </div>
+
+        <!-- 2-Column Content Layout -->
+        <div class="portal-layout-grid">
+
+            <!-- Column 1: Incoming Traveler Requests -->
+            <section class="portal-section-box">
+                <div class="section-header-row">
+                    <h2>Incoming Traveler Booking Requests</h2>
+                    <span id="reqCountBadge" style="background:#e6f7f0; color:#087f5b; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:700;">
+                        0 Request(s)
+                    </span>
+                </div>
+
+                <!-- Status Filter Tabs -->
+                <div class="req-tabs">
+                    <button class="req-tab-btn active" data-filter="all">All Requests</button>
+                    <button class="req-tab-btn" data-filter="Pending">Pending Approval</button>
+                    <button class="req-tab-btn" data-filter="Confirmed">Confirmed</button>
+                    <button class="req-tab-btn" data-filter="Completed">Completed</button>
+                </div>
+
+                <!-- Request Cards Container -->
+                <div id="bookingRequestsContainer">
+                    <p style="color:#64748b; font-size:13px; text-align:center; padding:30px 0;">Loading incoming booking requests...</p>
+                </div>
+            </section>
+
+            <!-- Column 2: Guide Profile & Rate Settings -->
+            <section class="portal-section-box">
+                <div class="section-header-row">
+                    <h2>Guide Profile & Service Settings</h2>
+                </div>
+
+                <form id="guideSettingsForm">
+                    <div class="portal-form-group">
+                        <label>Guide Full Name</label>
+                        <input type="text" id="settingGuideName" disabled style="background:#e2e8f0; color:#475569;" />
+                    </div>
+
+                    <div class="portal-form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="settingGuideEmail" disabled style="background:#e2e8f0; color:#475569;" />
+                    </div>
+
+                    <div class="portal-form-group">
+                        <label>Contact Phone Number</label>
+                        <input type="tel" id="settingGuidePhone" required placeholder="+8801700000000" />
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="portal-form-group">
+                            <label>Daily Guiding Rate (৳ BDT)</label>
+                            <input type="number" id="settingDailyRate" min="500" max="25000" step="100" required />
+                        </div>
+                        <div class="portal-form-group">
+                            <label>Guiding Experience (Years)</label>
+                            <input type="number" id="settingExperience" min="0" max="50" required />
+                        </div>
+                    </div>
+
+                    <div class="portal-form-group">
+                        <label>Spoken Languages (Comma-separated)</label>
+                        <input type="text" id="settingLanguages" placeholder="e.g. Bengali, English, Sylheti" required />
+                    </div>
+
+                    <div class="portal-form-group">
+                        <label>Supported Districts / Destinations (Comma-separated)</label>
+                        <input type="text" id="settingSpecialization" placeholder="e.g. Sylhet, Sunamganj, Moulvibazar" required />
+                    </div>
+
+                    <div class="portal-form-group">
+                        <label>Professional Biography / Experience Story</label>
+                        <textarea id="settingBio" rows="4" placeholder="Describe your background, specialty routes, and guiding passion..."></textarea>
+                    </div>
+
+                    <button type="submit" id="saveSettingsBtn" class="btn-save-settings">
+                        💾 Save Guide Settings
+                    </button>
+                    <p id="settingsMsg" style="font-size:12px; margin-top:10px; text-align:center; font-weight:700;"></p>
+                </form>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 20px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
+        <p>© 2026 Travel Kori Bangladesh | Guide Operations Portal</p>
+    </footer>
+
+    <!-- Portal Script -->
+    <script>
+    (function () {
+        // 1. Role Protection: Strictly verify Guide role
+        let user = null;
+        try {
+            user = JSON.parse(sessionStorage.getItem("travelKoriUser") || "null");
+        } catch (e) {
+            user = null;
+        }
+
+        if (!user || !user.id || (user.userType || "").toLowerCase() !== "guide") {
+            alert("Access denied. Please log in with a Tour Guide account to access the Guide Operations Portal.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const guideUserId = user.id;
+        let currentGuideId = user.guideId || user.id;
+        let guideProfileData = null;
+        let allRequests = [];
+        let currentFilter = "all";
+
+        // DOM elements
+        const nameBadge = document.getElementById("portalGuideNameBadge");
+        const statRating = document.getElementById("statRating");
+        const statReviews = document.getElementById("statReviews");
+        const statTours = document.getElementById("statTours");
+        const statCompleted = document.getElementById("statCompleted");
+        const statRate = document.getElementById("statRate");
+        const statAvailBadge = document.getElementById("statAvailBadge");
+        const toggleAvailBtn = document.getElementById("toggleAvailBtn");
+        const requestsContainer = document.getElementById("bookingRequestsContainer");
+        const reqCountBadge = document.getElementById("reqCountBadge");
+
+        const settingGuideName = document.getElementById("settingGuideName");
+        const settingGuideEmail = document.getElementById("settingGuideEmail");
+        const settingGuidePhone = document.getElementById("settingGuidePhone");
+        const settingDailyRate = document.getElementById("settingDailyRate");
+        const settingExperience = document.getElementById("settingExperience");
+        const settingLanguages = document.getElementById("settingLanguages");
+        const settingSpecialization = document.getElementById("settingSpecialization");
+        const settingBio = document.getElementById("settingBio");
+        const settingsForm = document.getElementById("guideSettingsForm");
+        const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+        const settingsMsg = document.getElementById("settingsMsg");
+
+        nameBadge.textContent = `🧭 ${user.fullName || 'Tour Guide'}`;
+
+        // Logout
+        document.getElementById("portalLogoutBtn").addEventListener("click", () => {
+            sessionStorage.removeItem("travelKoriUser");
+            window.location.href = "login.html";
+        });
+
+        // 2. Load Guide Profile
+        async function loadGuideProfile() {
+            try {
+                const res = await fetch(`http://localhost:5000/api/guide/profile/${currentGuideId}`);
+                const data = await res.json();
+                if (data.success && data.guide) {
+                    guideProfileData = data.guide;
+                    currentGuideId = data.guide.id;
+
+                    // Update Stats
+                    statRating.textContent = `⭐ ${Number(data.guide.rating).toFixed(1)}`;
+                    statReviews.textContent = `${data.guide.reviews} Verified Review(s)`;
+                    statTours.textContent = data.guide.totalBookings || 0;
+                    statCompleted.textContent = `${data.guide.completedTours || 0} Completed Tour(s)`;
+                    statRate.textContent = `৳${Number(data.guide.dailyRate).toLocaleString('en-BD')}`;
+
+                    updateAvailUI(data.guide.isAvailable);
+
+                    // Fill Settings Form
+                    settingGuideName.value = data.guide.name;
+                    settingGuideEmail.value = data.guide.email;
+                    settingGuidePhone.value = data.guide.phone || "";
+                    settingDailyRate.value = data.guide.dailyRate || 2000;
+                    settingExperience.value = data.guide.experience || 1;
+                    settingLanguages.value = data.guide.languages.join(", ");
+                    settingSpecialization.value = data.guide.specialization.join(", ");
+                    settingBio.value = data.guide.bio || "";
+                }
+            } catch (err) {
+                console.error("Load guide profile error:", err);
+            }
+        }
+
+        function updateAvailUI(isAvailable) {
+            if (isAvailable) {
+                statAvailBadge.textContent = "🟢 Available for Hire";
+                statAvailBadge.style.color = "#087f5b";
+                toggleAvailBtn.textContent = "Switch to Unavailable";
+                toggleAvailBtn.style.color = "#b91c1c";
+            } else {
+                statAvailBadge.textContent = "🔴 Unavailable";
+                statAvailBadge.style.color = "#b91c1c";
+                toggleAvailBtn.textContent = "Switch to Available for Hire";
+                toggleAvailBtn.style.color = "#087f5b";
+            }
+        }
+
+        // 3. Toggle Availability
+        toggleAvailBtn.addEventListener("click", async () => {
+            if (!guideProfileData) return;
+            const newStatus = !guideProfileData.isAvailable;
+            toggleAvailBtn.disabled = true;
+            try {
+                const res = await fetch(`http://localhost:5000/api/guide/availability/${currentGuideId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ isAvailable: newStatus })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    guideProfileData.isAvailable = newStatus;
+                    updateAvailUI(newStatus);
+                }
+            } catch (err) {
+                console.error("Toggle avail error:", err);
+            } finally {
+                toggleAvailBtn.disabled = false;
+            }
+        });
+
+        // 4. Load Requests for this Guide
+        async function loadRequests() {
+            try {
+                const res = await fetch(`http://localhost:5000/api/guide/bookings/${currentGuideId}`);
+                const data = await res.json();
+                if (data.success && Array.isArray(data.bookings)) {
+                    allRequests = data.bookings;
+                    reqCountBadge.textContent = `${allRequests.length} Request(s)`;
+                    renderRequests();
+                } else {
+                    requestsContainer.innerHTML = `<p style="text-align:center; color:#64748b; padding:30px 0;">No incoming bookings at this time.</p>`;
+                }
+            } catch (err) {
+                console.error("Load requests error:", err);
+                requestsContainer.innerHTML = `<p style="color:red; text-align:center;">Failed to load booking requests.</p>`;
+            }
+        }
+
+        // Render Filtered Requests
+        function renderRequests() {
+            const filtered = allRequests.filter(r => {
+                if (currentFilter === "all") return true;
+                return r.status.toLowerCase() === currentFilter.toLowerCase();
+            });
+
+            if (filtered.length === 0) {
+                requestsContainer.innerHTML = `<p style="color:#64748b; text-align:center; padding:30px 0;">No ${currentFilter === 'all' ? '' : currentFilter} requests found.</p>`;
+                return;
+            }
+
+            requestsContainer.innerHTML = filtered.map(req => {
+                const statusClass = `status-${(req.status || 'pending').toLowerCase()}`;
+                const totalAmt = Number(req.totalAmount || 0).toLocaleString('en-BD');
+
+                let actionButtonsHtml = "";
+                if (req.status === "Pending") {
+                    actionButtonsHtml = `
+                        <button type="button" class="btn-req-accept" data-booking-id="${req.id}" data-action="Confirmed">
+                            ✓ Accept Request
+                        </button>
+                        <button type="button" class="btn-req-reject" data-booking-id="${req.id}" data-action="Rejected">
+                            ✕ Reject Request
+                        </button>
+                    `;
+                } else if (req.status === "Confirmed") {
+                    actionButtonsHtml = `
+                        <button type="button" class="btn-req-complete" data-booking-id="${req.id}" data-action="Completed">
+                            ★ Mark as Completed
+                        </button>
+                    `;
+                } else {
+                    actionButtonsHtml = `<span style="font-size:12px; color:#64748b;">No further actions needed.</span>`;
+                }
+
+                return `
+                    <div class="request-card">
+                        <div class="req-card-top">
+                            <span class="req-ref">REF: ${req.reference}</span>
+                            <span class="status-pill ${statusClass}">${req.status}</span>
+                        </div>
+
+                        <div class="req-card-grid">
+                            <div>
+                                <span>Traveler:</span>
+                                <strong>${req.guestName}</strong>
+                            </div>
+                            <div>
+                                <span>Phone:</span>
+                                <strong>${req.guestPhone}</strong>
+                            </div>
+                            <div>
+                                <span>Destination:</span>
+                                <strong>${req.destination}</strong>
+                            </div>
+                            <div>
+                                <span>Tour Date:</span>
+                                <strong>${req.tourDate}</strong>
+                            </div>
+                            <div>
+                                <span>Duration:</span>
+                                <strong>${req.days} Day(s)</strong>
+                            </div>
+                            <div>
+                                <span>Total Fare:</span>
+                                <strong style="color:#087f5b;">৳${totalAmt} BDT</strong>
+                            </div>
+                            <div>
+                                <span>Payment Method:</span>
+                                <strong>${(req.paymentMethod || 'cash').toUpperCase()} (${req.paymentStatus})</strong>
+                            </div>
+                            <div>
+                                <span>Notes:</span>
+                                <span>${req.notes || 'None'}</span>
+                            </div>
+                        </div>
+
+                        <div class="req-actions-row">
+                            ${actionButtonsHtml}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            // Attach Action Handlers
+            requestsContainer.querySelectorAll("button[data-booking-id]").forEach(btn => {
+                btn.addEventListener("click", async function () {
+                    const bId = this.getAttribute("data-booking-id");
+                    const targetStatus = this.getAttribute("data-action");
+                    await updateBookingStatus(bId, targetStatus);
+                });
+            });
+        }
+
+        // Update Booking Status Handler
+        async function updateBookingStatus(bookingId, status) {
+            try {
+                const res = await fetch(`http://localhost:5000/api/guide/bookings/${bookingId}/status`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        status: status,
+                        guideId: currentGuideId
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    await loadRequests();
+                    await loadGuideProfile();
+                } else {
+                    alert(data.message || "Failed to update booking status.");
+                }
+            } catch (err) {
+                console.error("Update status error:", err);
+            }
+        }
+
+        // Tab Filter Buttons
+        document.querySelectorAll(".req-tab-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                document.querySelectorAll(".req-tab-btn").forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+                currentFilter = this.getAttribute("data-filter");
+                renderRequests();
+            });
+        });
+
+        // 5. Save Guide Settings
+        settingsForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            saveSettingsBtn.disabled = true;
+            saveSettingsBtn.textContent = "Saving Guide Settings...";
+            settingsMsg.textContent = "";
+
+            try {
+                const res = await fetch(`http://localhost:5000/api/guide/profile/${currentGuideId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        phone: settingGuidePhone.value.trim(),
+                        dailyRate: Number(settingDailyRate.value),
+                        experience: Number(settingExperience.value),
+                        languages: settingLanguages.value,
+                        specialization: settingSpecialization.value,
+                        bio: settingBio.value.trim()
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    settingsMsg.textContent = "✅ Guide settings saved successfully!";
+                    settingsMsg.style.color = "#087f5b";
+                    await loadGuideProfile();
+                } else {
+                    throw new Error(data.message || "Failed to save settings.");
+                }
+            } catch (err) {
+                console.error("Save settings error:", err);
+                settingsMsg.textContent = `❌ ${err.message}`;
+                settingsMsg.style.color = "red";
+            } finally {
+                saveSettingsBtn.disabled = false;
+                saveSettingsBtn.textContent = "💾 Save Guide Settings";
+            }
+        });
+
+        // Initialize
+        async function initPortal() {
+            await loadGuideProfile();
+            await loadRequests();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initPortal);
+        } else {
+            initPortal();
+        }
+    })();
+    </script>
+    <script src="pdf-ticket.js"></script>
+    <script src="nav.js"></script>
+</body>
+</html>

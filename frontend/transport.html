@@ -7,7 +7,6 @@
     <title>Travel Kori Bangladesh | Transport Booking</title>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="transport-seat.css">
 
     <style>
         :root {
@@ -431,8 +430,10 @@
 
         <div class="nav-links">
             <a href="index.html">Home</a>
+            <a href="index.html#destinations">Destinations</a>
             <a href="hotel-booking.html">Hotel Booking</a>
-            <a href="dashboard.html">Dashboard</a>
+            <a href="transport.html">Transport</a>
+            <div id="navUserArea"></div>
         </div>
     </nav>
 
@@ -597,6 +598,57 @@
 
                 </div>
 
+                <!-- Dummy Payment Options -->
+                <fieldset class="payment-methods" style="margin-top: 16px;">
+                    <legend>Select Demo Payment Method</legend>
+                    <p class="payment-note">
+                        Simulated payment for course demonstration. No real money is charged.
+                    </p>
+
+                    <label class="payment-option" style="border-left: 4px solid #e2136e;">
+                        <input type="radio" name="paymentMethod" value="bkash">
+                        <div class="payment-option-content">
+                            <strong style="color: #e2136e;">bKash (Demo)</strong>
+                            <small>Simulated mobile wallet payment (Instant Confirmation)</small>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" style="border-left: 4px solid #f7941d;">
+                        <input type="radio" name="paymentMethod" value="nagad">
+                        <div class="payment-option-content">
+                            <strong style="color: #f7941d;">Nagad (Demo)</strong>
+                            <small>Simulated digital wallet payment (Instant Confirmation)</small>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" style="border-left: 4px solid #0284c7;">
+                        <input type="radio" name="paymentMethod" value="card">
+                        <div class="payment-option-content">
+                            <strong style="color: #0284c7;">Debit / Credit Card (Demo)</strong>
+                            <small>Visa / Mastercard / AMEX Simulated</small>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" style="border-left: 4px solid #087f5b;">
+                        <input type="radio" name="paymentMethod" value="cash" checked>
+                        <div class="payment-option-content">
+                            <strong style="color: #087f5b;">Cash at Counter / Boarding</strong>
+                            <small>Pay at station counter or bus conductor upon boarding</small>
+                        </div>
+                    </label>
+
+                    <div id="transportWalletFields" class="wallet-payment-fields" hidden style="margin-top: 12px;">
+                        <label for="transportPaymentPhone">Mobile Wallet Number</label>
+                        <input
+                            type="tel"
+                            id="transportPaymentPhone"
+                            name="transportPaymentPhone"
+                            placeholder="01XXXXXXXXX"
+                            style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit;"
+                        >
+                    </div>
+                </fieldset>
+
                 <button
                     id="confirmTransportBtn"
                     class="signup-btn"
@@ -625,7 +677,9 @@
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
-    <!-- Existing transport functionality -->
+    <!-- PDF Generator & Universal Navbar -->
+    <script src="pdf-ticket.js"></script>
+    <script src="nav.js"></script>
     <script src="transport.js"></script>
 
 </body>

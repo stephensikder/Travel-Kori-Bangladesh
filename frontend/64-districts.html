@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All 64 Districts of Bangladesh | Travel Kori Bangladesh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Universal Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            TK <span>Travel Kori Bangladesh</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="64-districts.html" class="active">64 Districts</a>
+            <a href="hotel-booking.html">Hotels</a>
+            <a href="transport.html">Transport</a>
+            <a href="guides.html">Guides</a>
+            <a href="booking.html">Plan Trip</a>
+            <div id="navUserArea"></div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <header class="section" style="background: linear-gradient(135deg, #123328 0%, #17382f 50%, #1e4a3e 100%); color: white; padding: 48px 24px; text-align: center;">
+        <span style="background: rgba(255,255,255,0.15); padding: 4px 14px; border-radius: 999px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+            🇧🇩 Comprehensive National Directory
+        </span>
+        <h1 style="font-size: 36px; font-weight: 900; margin: 16px 0 8px; color: white;">
+            Explore All 64 Districts of Bangladesh
+        </h1>
+        <p style="font-size: 15px; color: #bbf7d0; max-width: 650px; margin: 0 auto; line-height: 1.6;">
+            From coastal islands and mangrove forests to rolling tea hills and historic Mughal mosques, discover local attractions, maps, hotels, and transport across every district.
+        </p>
+    </header>
+
+    <!-- Main Directory Section -->
+    <main class="section" style="padding-top: 32px;">
+
+        <!-- Division Filter Bar -->
+        <div style="margin-bottom: 24px;">
+            <p style="font-size: 13px; font-weight: 700; color: #64748b; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                Filter by Administrative Division:
+            </p>
+            <div id="divisionFilterBar" class="division-filter-bar">
+                <button type="button" class="division-pill-btn active" data-division="ALL">All Divisions (64)</button>
+                <button type="button" class="division-pill-btn" data-division="Dhaka">Dhaka (13)</button>
+                <button type="button" class="division-pill-btn" data-division="Chattogram">Chattogram (11)</button>
+                <button type="button" class="division-pill-btn" data-division="Rajshahi">Rajshahi (8)</button>
+                <button type="button" class="division-pill-btn" data-division="Khulna">Khulna (10)</button>
+                <button type="button" class="division-pill-btn" data-division="Barishal">Barishal (6)</button>
+                <button type="button" class="division-pill-btn" data-division="Sylhet">Sylhet (4)</button>
+                <button type="button" class="division-pill-btn" data-division="Rangpur">Rangpur (8)</button>
+                <button type="button" class="division-pill-btn" data-division="Mymensingh">Mymensingh (4)</button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div style="margin-bottom: 24px;">
+            <input
+                type="text"
+                id="districtSearch"
+                placeholder="Search any district name (e.g. Cox's Bazar, Sylhet, Bogura, Panchagarh)..."
+                style="width: 100%; box-sizing: border-box; padding: 14px 18px; font-size: 15px; border-radius: 12px; border: 1px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.03);"
+                aria-label="Search districts"
+            >
+        </div>
+
+        <p id="districtMessage" style="font-size: 13px; color: #64748b; font-weight: 600; margin-bottom: 16px;"></p>
+
+        <!-- 64 District Grid -->
+        <div id="districtGrid" class="destination-grid"></div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 32px 24px; color: #94a3b8; font-size: 13px; border-top: 1px solid #e2e8f0; margin-top: 40px;">
+        <p>© 2026 Travel Kori Bangladesh • Connecting 64 Districts</p>
+        <p>Explore Bangladesh with confidence.</p>
+    </footer>
+
+    <!-- App Scripts -->
+    <script src="nav.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

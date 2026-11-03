@@ -4,64 +4,474 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Booking Management | Travel Kori Bangladesh</title>
+    <title>Admin Dashboard | Travel Kori Bangladesh</title>
 
     <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 24px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e0ebe5;
+            padding-bottom: 12px;
+        }
+        .admin-tab-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            color: #123c35;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .admin-tab-btn:hover {
+            background: #eaf7f1;
+            border-color: #087f68;
+        }
+        .admin-tab-btn.active {
+            background: #087f68;
+            color: #ffffff;
+            border-color: #087f68;
+        }
+        .admin-section {
+            background: #ffffff;
+            border: 1px solid #e0ebe5;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(18, 60, 53, 0.05);
+        }
+        .admin-section h2 {
+            margin-top: 0;
+            color: #123c35;
+        }
+        .admin-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .admin-form-grid input,
+        .admin-form-grid select,
+        .admin-form-grid textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font: inherit;
+        }
+        .admin-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .admin-data-table th,
+        .admin-data-table td {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 13px;
+        }
+        .admin-data-table th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+        }
+        .admin-action-btn {
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            margin-right: 6px;
+        }
+        .btn-edit {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        .btn-delete {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .admin-success-msg {
+            color: #087f5b;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .admin-error-msg {
+            color: #c92a2a;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
         <a href="index.html" class="logo">
-            TK <span>Travel Kori</span>
+            TK <span>Travel Kori Bangladesh</span>
         </a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <button id="adminLogoutBtn" class="signup-btn" type="button">
-                Logout
-            </button>
+            <a href="hotel-booking.html">Hotels</a>
+            <a href="transport.html">Transport</a>
+            <div id="navUserArea"></div>
         </div>
     </nav>
 
     <main class="section dashboard-main">
 
-        <p class="section-label">ADMIN PANEL</p>
+        <p class="section-label">TRAVEL KORI BANGLADESH ADMIN</p>
 
-        <h1>Booking Management</h1>
+        <h1>Administrator Dashboard</h1>
 
-        <p>View travel requests and manage their booking status.</p>
+        <p>Manage tour bookings, add new tourist spots, hotels, and transportation routes.</p>
 
-        <section class="dashboard-bookings">
+        <!-- Admin Navigation Tabs -->
+        <div class="admin-nav-tabs">
+            <button type="button" class="admin-tab-btn active" data-tab="tabBookings">📋 Tour Bookings</button>
+            <button type="button" class="admin-tab-btn" data-tab="tabSpots">📍 Tourist Spots</button>
+            <button type="button" class="admin-tab-btn" data-tab="tabHotels">🏨 Hotels & Resorts</button>
+            <button type="button" class="admin-tab-btn" data-tab="tabTransport">🚌 Transport Fleets</button>
+            <button type="button" class="admin-tab-btn" data-tab="tabGuides">🧭 Tour Guides</button>
+        </div>
 
-            <div class="admin-booking-summary">
-                <div class="dashboard-card">
-                    <h3>Total Bookings</h3>
-                    <p id="totalBookings">0</p>
+        <!-- TAB 1: BOOKINGS -->
+        <div id="tabBookings" class="admin-tab-content">
+            <section class="admin-section">
+                <h2>Tour Booking Requests</h2>
+                <div class="admin-booking-summary">
+                    <div class="dashboard-card">
+                        <h3>Total Bookings</h3>
+                        <p id="totalBookings">0</p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>Pending</h3>
+                        <p id="pendingBookings">0</p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>Confirmed</h3>
+                        <p id="confirmedBookings">0</p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3>Cancelled</h3>
+                        <p id="cancelledBookings">0</p>
+                    </div>
                 </div>
 
-                <div class="dashboard-card">
-                    <h3>Pending</h3>
-                    <p id="pendingBookings">0</p>
+                <div class="booking-category-filters" style="display:flex; gap:8px; margin: 18px 0 14px; flex-wrap:wrap;">
+                    <button type="button" class="admin-tab-btn active btn-bfilter" data-bfilter="all">All Bookings (<span id="countAll">0</span>)</button>
+                    <button type="button" class="admin-tab-btn btn-bfilter" data-bfilter="tour">📍 Tour Spots (<span id="countTour">0</span>)</button>
+                    <button type="button" class="admin-tab-btn btn-bfilter" data-bfilter="hotel">🏨 Hotels (<span id="countHotel">0</span>)</button>
+                    <button type="button" class="admin-tab-btn btn-bfilter" data-bfilter="transport">🚌 Transport (<span id="countTransport">0</span>)</button>
+                    <button type="button" class="admin-tab-btn btn-bfilter" data-bfilter="guide">🧭 Tour Guides (<span id="countGuide">0</span>)</button>
                 </div>
 
-                <div class="dashboard-card">
-                    <h3>Confirmed</h3>
-                    <p id="confirmedBookings">0</p>
+                <p id="adminMessage" aria-live="polite">
+                    Loading bookings...
+                </p>
+
+                <div id="adminBookings" class="destination-grid"></div>
+            </section>
+        </div>
+
+        <!-- TAB 2: TOURIST SPOTS -->
+        <div id="tabSpots" class="admin-tab-content" hidden>
+            <section class="admin-section">
+                <h2>Manage Tourist Spots</h2>
+                <p>Create new tourist spots or update existing spots. New spots will immediately appear in the user tour booking dropdown.</p>
+
+                <form id="spotForm" style="background:#f8fafc; padding:18px; border-radius:8px; border:1px solid #cbd5e1;">
+                    <input type="hidden" id="spotEditId">
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="spotName" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Spot Name *</label>
+                            <input type="text" id="spotName" placeholder="e.g. Sajek Valley" required>
+                        </div>
+                        <div>
+                            <label for="spotDistrict" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">District Name *</label>
+                            <input type="text" id="spotDistrict" placeholder="e.g. Rangamati" required>
+                        </div>
+                        <div>
+                            <label for="spotSeason" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Best Season</label>
+                            <input type="text" id="spotSeason" placeholder="e.g. October - March">
+                        </div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <label for="spotDescription" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Description</label>
+                        <textarea id="spotDescription" rows="2" placeholder="Brief details about the tourist attraction..." style="width:100%;"></textarea>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" id="saveSpotBtn" class="signup-btn">Save Tourist Spot</button>
+                        <button type="button" id="cancelSpotEditBtn" style="padding:10px 16px; border:1px solid #cbd5e1; background:white; border-radius:6px; cursor:pointer;" hidden>Cancel Edit</button>
+                    </div>
+                    <p id="spotMessage" aria-live="polite"></p>
+                </form>
+
+                <h3 style="margin-top:24px;">Current Tourist Spots in Database</h3>
+                <div style="overflow-x:auto;">
+                    <table class="admin-data-table" id="spotsTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>District</th>
+                                <th>Best Time</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spotsTableBody">
+                            <tr><td colspan="5">Loading tourist spots...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: HOTELS -->
+        <div id="tabHotels" class="admin-tab-content" hidden>
+            <section class="admin-section">
+                <h2>Manage Hotels & Resorts</h2>
+                <p>Add new hotels and packages so travelers can discover and book them dynamically.</p>
+
+                <form id="hotelForm" style="background:#f8fafc; padding:18px; border-radius:8px; border:1px solid #cbd5e1;">
+                    <input type="hidden" id="hotelEditId">
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="adminHotelName" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Hotel / Resort Name *</label>
+                            <input type="text" id="adminHotelName" placeholder="e.g. Royal Tulip Sea Pearl" required>
+                        </div>
+                        <div>
+                            <label for="adminHotelDistrict" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">District *</label>
+                            <input type="text" id="adminHotelDistrict" placeholder="e.g. Cox's Bazar" required>
+                        </div>
+                        <div>
+                            <label for="adminHotelMinPrice" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Price per Night (৳) *</label>
+                            <input type="number" id="adminHotelMinPrice" placeholder="e.g. 3500" min="500" required>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <label for="adminHotelAddress" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Location / Address</label>
+                        <input type="text" id="adminHotelAddress" placeholder="e.g. Inani Beach, Marine Drive">
+                    </div>
+                    <div style="margin-bottom:12px;">
+                        <label for="adminHotelDesc" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Description</label>
+                        <textarea id="adminHotelDesc" rows="2" placeholder="Amenities, pool, complimentary breakfast, etc." style="width:100%;"></textarea>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" id="saveHotelBtn" class="signup-btn">Save Hotel</button>
+                        <button type="button" id="cancelHotelEditBtn" style="padding:10px 16px; border:1px solid #cbd5e1; background:white; border-radius:6px; cursor:pointer;" hidden>Cancel Edit</button>
+                    </div>
+                    <p id="hotelAdminMessage" aria-live="polite"></p>
+                </form>
+
+                <h3 style="margin-top:24px;">Current Hotels in Database</h3>
+                <div style="overflow-x:auto;">
+                    <table class="admin-data-table" id="hotelsTable">
+                        <thead>
+                            <tr>
+                                <th>Hotel Name</th>
+                                <th>District</th>
+                                <th>Standard Price (৳)</th>
+                                <th>Address / Details</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hotelsTableBody">
+                            <tr><td colspan="5">Loading hotels...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: TRANSPORT -->
+        <div id="tabTransport" class="admin-tab-content" hidden>
+            <section class="admin-section">
+                <h2>Manage Transport Routes</h2>
+                <p>Add, edit, or remove bus, train, and flight routes.</p>
+
+                <form id="transportForm" style="background:#f8fafc; padding:18px; border-radius:8px; border:1px solid #cbd5e1;">
+                    <input type="hidden" id="transportEditId">
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="adminTransportType" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Type *</label>
+                            <select id="adminTransportType" required>
+                                <option value="Bus">Bus</option>
+                                <option value="Train">Train</option>
+                                <option value="Flight">Flight</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="adminTransportOperator" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Operator Name *</label>
+                            <input type="text" id="adminTransportOperator" placeholder="e.g. Green Line Paribahan" required>
+                        </div>
+                        <div>
+                            <label for="adminTransportFrom" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Departure City *</label>
+                            <input type="text" id="adminTransportFrom" placeholder="e.g. Dhaka" required>
+                        </div>
+                        <div>
+                            <label for="adminTransportTo" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Destination City *</label>
+                            <input type="text" id="adminTransportTo" placeholder="e.g. Cox's Bazar" required>
+                        </div>
+                        <div>
+                            <label for="adminTransportFare" style="font-weight:700; font-size:12px; display:block; margin-bottom:4px;">Fare per Seat (৳) *</label>
+                            <input type="number" id="adminTransportFare" placeholder="e.g. 1500" min="50" required>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button type="submit" id="saveTransportBtn" class="signup-btn">Save Route</button>
+                        <button type="button" id="cancelTransportEditBtn" style="padding:10px 16px; border:1px solid #cbd5e1; background:white; border-radius:6px; cursor:pointer;" hidden>Cancel Edit</button>
+                    </div>
+                    <p id="transportAdminMessage" aria-live="polite"></p>
+                </form>
+
+                <h3 style="margin-top:24px;">Current Transport Routes in Database</h3>
+                <div style="overflow-x:auto;">
+                    <table class="admin-data-table" id="transportsTable">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Operator</th>
+                                <th>From → To</th>
+                                <th>Fare (৳)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transportsTableBody">
+                            <tr><td colspan="5">Loading routes...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 5: TOUR GUIDES MANAGEMENT (FR-48 to FR-56) -->
+        <div id="tabGuides" class="admin-tab-content" hidden>
+            <section class="admin-section">
+                <h2>Tour Guide Management</h2>
+                <p>Review registered guides, approve new applications, manage availability, and inspect traveler bookings.</p>
+
+                <div class="admin-booking-summary" style="margin-bottom:24px;">
+                    <div class="dashboard-card">
+                        <h3>Total Guides</h3>
+                        <p id="adminTotalGuides">0</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Pending Approval</h3>
+                        <p id="adminPendingGuides" style="color:#d97706;">0</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Active & Approved</h3>
+                        <p id="adminActiveGuides" style="color:#087f5b;">0</p>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Guide Bookings</h3>
+                        <p id="adminGuideBookingsCount">0</p>
+                    </div>
                 </div>
 
-                <div class="dashboard-card">
-                    <h3>Cancelled</h3>
-                    <p id="cancelledBookings">0</p>
+                <!-- Add New Tour Guide Form -->
+                <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:10px; padding:18px; margin-bottom:24px;">
+                    <h3 style="margin:0 0 12px; color:#17382f; font-size:16px;">➕ Add Verified Tour Guide</h3>
+                    <form id="adminAddGuideForm">
+                        <div class="admin-form-grid">
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Guide Full Name</label>
+                                <input type="text" id="adminGuideName" required placeholder="e.g. Asaduzzaman Nur" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Email Address</label>
+                                <input type="email" id="adminGuideEmail" required placeholder="guide@travelkori.bd" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Contact Phone</label>
+                                <input type="tel" id="adminGuidePhone" required placeholder="+8801700000000" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Daily Rate (৳ BDT)</label>
+                                <input type="number" id="adminGuideRate" required min="500" value="2000" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Experience (Years)</label>
+                                <input type="number" id="adminGuideExp" required min="0" value="3" />
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Languages (Comma-separated)</label>
+                                <input type="text" id="adminGuideLangs" required value="Bengali, English" />
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Supported Districts (Comma-separated)</label>
+                            <input type="text" id="adminGuideSpec" required placeholder="e.g. Dhaka, Narayanganj, Munshiganj" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px;" />
+                        </div>
+
+                        <div style="margin-bottom:14px;">
+                            <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Biography & Guiding Specialties</label>
+                            <textarea id="adminGuideBio" rows="2" placeholder="Experience details, historical knowledge..." style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;"></textarea>
+                        </div>
+
+                        <button type="submit" class="signup-btn" style="padding:10px 24px; font-weight:700; cursor:pointer;">
+                            Add & Approve Guide
+                        </button>
+                        <span id="adminGuideAddMsg" style="margin-left:12px; font-size:13px; font-weight:700;"></span>
+                    </form>
                 </div>
-            </div>
 
-            <p id="adminMessage" aria-live="polite">
-                Loading bookings...
-            </p>
+                <!-- Guides Table -->
+                <h3 style="margin:24px 0 10px; color:#17382f; font-size:16px;">Registered Tour Guides</h3>
+                <div style="overflow-x:auto;">
+                    <table class="admin-data-table" id="adminGuidesTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Districts</th>
+                                <th>Rate (৳)</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminGuidesTableBody">
+                            <tr><td colspan="7">Loading tour guides...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div id="adminBookings" class="destination-grid"></div>
+                <!-- Guide Booking Requests Table -->
+                <h3 style="margin:30px 0 10px; color:#17382f; font-size:16px;">Tour Guide Booking Requests</h3>
+                <div style="overflow-x:auto;">
+                    <table class="admin-data-table" id="adminGuideBookingsTable">
+                        <thead>
+                            <tr>
+                                <th>Ref</th>
+                                <th>Guide</th>
+                                <th>Traveler</th>
+                                <th>Destination</th>
+                                <th>Date</th>
+                                <th>Total (৳)</th>
+                                <th>Status</th>
+                                <th>Booked At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminGuideBookingsTableBody">
+                            <tr><td colspan="9">Loading guide bookings...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
 
-        </section>
     </main>
 
     <footer>
@@ -69,6 +479,7 @@
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
+    <script src="nav.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>

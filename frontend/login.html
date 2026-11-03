@@ -3,190 +3,719 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Login | Travel Kori Bangladesh</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 
     <style>
-        .auth-card {
-            max-width: 480px;
+        :root {
+            --brand-green: #087f5b;
+            --brand-green-hover: #066b4d;
+            --brand-light: #ecfdf5;
+            --brand-dark: #123328;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
         }
 
-        .login-role-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        body.auth-page {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: 
+                radial-gradient(circle at 10% 15%, rgba(8, 127, 91, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 90% 20%, rgba(14, 165, 233, 0.06) 0%, transparent 30%),
+                radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+                #f8fafc;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Modern Glass Navbar */
+        .modern-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 7%;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(8, 127, 91, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-logo-wrap {
+            display: inline-flex;
+            align-items: center;
             gap: 12px;
-            margin: 22px 0;
+            text-decoration: none;
         }
 
-        .login-role-btn {
-            padding: 16px 10px;
-            border: 1px solid #d5e4dc;
+        .brand-icon-badge {
+            background: linear-gradient(135deg, #087f5b 0%, #10b981 100%);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 7px 11px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(8, 127, 91, 0.25);
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #17382f;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text-title span {
+            color: var(--brand-green);
+        }
+
+        .modern-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .modern-nav-link {
+            text-decoration: none;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .modern-nav-link:hover {
+            color: var(--brand-green);
+            background: rgba(8, 127, 91, 0.06);
+        }
+
+        .nav-btn-pill {
+            text-decoration: none;
+            background: var(--brand-green);
+            color: #ffffff;
+            border: 1.5px solid var(--brand-green);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(8, 127, 91, 0.25);
+        }
+
+        .nav-btn-pill:hover {
+            background: var(--brand-green-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Centered Auth Card Container */
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 48px 20px 72px;
+            min-height: calc(100vh - 75px);
+            box-sizing: border-box;
+        }
+
+        .auth-card-modern {
+            width: 100%;
+            max-width: 660px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 44px 42px;
+            box-sizing: border-box;
+            border: 1px solid rgba(226, 232, 240, 0.85);
+            box-shadow: 
+                0 20px 45px -10px rgba(15, 23, 42, 0.07),
+                0 0 1px 1px rgba(15, 23, 42, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-top-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #087f5b 0%, #10b981 50%, #0284c7 100%);
+        }
+
+        .auth-pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #bbf7d0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .auth-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin: 0 0 8px;
+            line-height: 1.25;
+        }
+
+        .auth-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 24px;
+        }
+
+        /* 5-Column Role Switcher */
+        .role-section-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .modern-role-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 640px) {
+            .modern-role-grid-5 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 440px) {
+            .modern-role-grid-5 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .modern-role-btn {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px 6px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            outline: none;
+            user-select: none;
+        }
+
+        .modern-role-btn:hover {
+            border-color: #94a3b8;
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.05);
+        }
+
+        .modern-role-btn.active {
+            border-color: var(--brand-green);
+            background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+            box-shadow: 0 8px 20px -4px rgba(8, 127, 91, 0.18), 0 0 0 3px rgba(8, 127, 91, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .role-check-indicator {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: transparent;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modern-role-btn.active .role-check-indicator {
+            background: var(--brand-green);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(8, 127, 91, 0.3);
+        }
+
+        .role-icon-box {
+            font-size: 20px;
+            width: 38px;
+            height: 38px;
             border-radius: 12px;
             background: #ffffff;
-            color: #173b30;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s ease;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
         }
 
-        .login-role-btn:hover {
-            border-color: #087f5b;
+        .modern-role-btn:hover .role-icon-box {
+            transform: scale(1.08);
         }
 
-        .login-role-btn.active {
+        .modern-role-btn.active .role-icon-box {
             background: #087f5b;
+            color: white;
             border-color: #087f5b;
-            color: #ffffff;
         }
 
-        .role-icon {
-            display: block;
-            font-size: 25px;
-            margin-bottom: 9px;
+        .role-btn-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
         }
 
-        .role-title {
-            display: block;
+        .modern-role-btn.active .role-btn-title {
+            color: var(--brand-green);
+        }
+
+        .role-btn-badge {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: #64748b;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modern-role-btn.active .role-btn-badge {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .role-banner-info {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 9px 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Modern Inputs */
+        .modern-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .modern-input-wrapper {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .modern-input-wrapper .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #94a3b8;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .modern-input-wrapper input {
+            width: 100%;
+            height: 48px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            background: #f8fafc;
+            padding: 0 16px 0 44px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #0f172a;
+            box-sizing: border-box;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modern-input-wrapper input:focus {
+            background: #ffffff;
+            border-color: var(--brand-green);
+            box-shadow: 0 0 0 4px rgba(8, 127, 91, 0.12);
+            outline: none;
+        }
+
+        .modern-input-wrapper:focus-within .input-icon {
+            color: var(--brand-green);
+        }
+
+        /* Modern CTA Submit Button */
+        .modern-submit-btn {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #087f5b 0%, #059669 100%);
+            color: white;
             font-size: 15px;
             font-weight: 700;
-            margin-bottom: 5px;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 10px 24px -5px rgba(8, 127, 91, 0.35);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 8px;
         }
 
-        .role-description {
-            display: block;
+        .modern-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px -4px rgba(8, 127, 91, 0.45);
+            background: linear-gradient(135deg, #098862 0%, #047857 100%);
+        }
+
+        .modern-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-arrow {
+            transition: transform 0.2s ease;
+            font-size: 17px;
+        }
+
+        .modern-submit-btn:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Demo Accounts Box */
+        .demo-accounts-card {
+            margin-top: 22px;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
             font-size: 12px;
-            line-height: 1.5;
-            opacity: 0.85;
         }
 
-        .login-role-btn:focus-visible {
-            outline: 3px solid #8bd5b5;
-            outline-offset: 3px;
+        .demo-title {
+            margin: 0 0 8px;
+            font-weight: 800;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .demo-chips-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .demo-chip {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 700;
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .demo-chip:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .demo-chip.hotel {
+            color: #0f766e;
+            border-color: #99f6e4;
+            background: #f0fdfa;
+        }
+
+        .demo-chip.transport {
+            color: #c2410c;
+            border-color: #fed7aa;
+            background: #fff7ed;
+        }
+
+        .demo-chip.admin {
+            color: #475569;
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        /* Footer Prompt */
+        .auth-footer-prompt {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 13.5px;
+            color: #64748b;
+        }
+
+        .auth-link {
+            color: var(--brand-green);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .auth-link:hover {
+            color: var(--brand-green-hover);
+            text-decoration: underline;
         }
 
         #loginMessage {
             margin-top: 14px;
+            font-size: 13.5px;
+            font-weight: 600;
             overflow-wrap: anywhere;
         }
 
-        @media (max-width: 420px) {
-            .login-role-options {
-                gap: 8px;
+        @media (max-width: 500px) {
+            .auth-card-modern {
+                padding: 30px 20px;
+                border-radius: 18px;
             }
-
-            .login-role-btn {
-                padding: 12px 9px;
+            .auth-title {
+                font-size: 24px;
             }
         }
     </style>
 </head>
+<body class="auth-page">
 
-<body>
-
-    <nav class="navbar">
-        <a href="index.html" class="logo">
-            TK <span>Travel Kori</span>
+    <!-- Modern Glass Navbar -->
+    <nav class="modern-navbar">
+        <a href="index.html" class="brand-logo-wrap">
+            <span class="brand-icon-badge">TK</span>
+            <span class="brand-text-title">Travel Kori <span>Bangladesh</span></span>
         </a>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="index.html#destinations">Districts</a>
+        <div class="modern-nav-links">
+            <a href="index.html" class="modern-nav-link">Home</a>
+            <a href="index.html#destinations" class="modern-nav-link">Districts</a>
+            <a href="signup.html" class="nav-btn-pill">Sign Up →</a>
         </div>
     </nav>
 
-    <main class="auth-container">
-        <div class="auth-card">
+    <!-- Main Centered Auth Form -->
+    <main class="auth-wrapper">
+        <div class="auth-card-modern">
+            <div class="card-top-stripe"></div>
 
-            <p class="section-label">WELCOME BACK</p>
+            <div class="auth-pill-badge">
+                <span class="badge-dot"></span>
+                TRAVEL KORI BANGLADESH
+            </div>
 
-            <h1>Login to Your Account</h1>
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Select your account role to continue to your operations or traveler dashboard.</p>
 
-            <p>Continue your journey with Travel Kori Bangladesh.</p>
-
-            <!-- Select Login Role -->
-            <div class="login-role-options">
+            <!-- Modern 5-Column Role Switcher -->
+            <label class="role-section-label">Select Your Account Role</label>
+            <div class="modern-role-grid-5">
 
                 <button
                     type="button"
-                    class="login-role-btn active"
+                    class="modern-role-btn active"
                     id="loginAsTraveler"
                     aria-pressed="true"
                 >
-                    <span class="role-icon">🧳</span>
-                    <span class="role-title">Traveler</span>
-                    <span class="role-description">
-                        Explore destinations and manage bookings.
-                    </span>
+                    <span class="role-check-indicator">✓</span>
+                    <span class="role-icon-box">🧳</span>
+                    <span class="role-btn-title">Traveler</span>
+                    <span class="role-btn-badge">Explorer</span>
                 </button>
 
                 <button
                     type="button"
-                    class="login-role-btn"
+                    class="modern-role-btn"
+                    id="loginAsGuide"
+                    aria-pressed="false"
+                >
+                    <span class="role-check-indicator">✓</span>
+                    <span class="role-icon-box">🧭</span>
+                    <span class="role-btn-title">Guide</span>
+                    <span class="role-btn-badge">Certified</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="modern-role-btn"
+                    id="loginAsHotel"
+                    aria-pressed="false"
+                >
+                    <span class="role-check-indicator">✓</span>
+                    <span class="role-icon-box">🏨</span>
+                    <span class="role-btn-title">Hotel</span>
+                    <span class="role-btn-badge">Partner</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="modern-role-btn"
+                    id="loginAsTransport"
+                    aria-pressed="false"
+                >
+                    <span class="role-check-indicator">✓</span>
+                    <span class="role-icon-box">🚌</span>
+                    <span class="role-btn-title">Transport</span>
+                    <span class="role-btn-badge">Fleets</span>
+                </button>
+
+                <button
+                    type="button"
+                    class="modern-role-btn"
                     id="loginAsAdmin"
                     aria-pressed="false"
                 >
-                    <span class="role-icon">🛡️</span>
-                    <span class="role-title">Admin</span>
-                    <span class="role-description">
-                        Manage the platform and access admin tools.
-                    </span>
+                    <span class="role-check-indicator">✓</span>
+                    <span class="role-icon-box">🛡️</span>
+                    <span class="role-btn-title">Admin</span>
+                    <span class="role-btn-badge">System</span>
                 </button>
 
             </div>
 
-            <p id="selectedRoleText">
-                You are logging in as a Traveler.
-            </p>
+            <div class="role-banner-info">
+                <span>ℹ️</span>
+                <span id="selectedRoleText">You are logging in as a Traveler.</span>
+            </div>
 
             <form id="loginForm">
 
-                <label for="email">Email Address</label>
+                <label for="email" class="modern-label">
+                    <span>Email Address</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <span class="input-icon">✉️</span>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your registered email"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
 
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    autocomplete="username"
-                    required
-                >
-
-                <label for="password">Password</label>
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
+                <label for="password" class="modern-label">
+                    <span>Password</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
 
                 <button
                     type="submit"
-                    class="primary-btn"
+                    class="modern-submit-btn"
                     id="loginSubmitBtn"
                 >
-                    Login as Traveler
+                    <span>Login as Traveler</span>
+                    <span class="btn-arrow">→</span>
                 </button>
 
                 <p id="loginMessage" role="status" aria-live="polite"></p>
 
             </form>
 
-            <p>
-                Don't have an account?
-                <a href="signup.html">Sign Up</a>
-            </p>
+            <!-- Quick Demo Accounts -->
+            <div class="demo-accounts-card">
+                <p class="demo-title">⚡ Quick Demo Evaluation Credentials (Click to Auto-Fill):</p>
+                <div class="demo-chips-row" style="flex-wrap: wrap; gap: 8px;">
+                    <button type="button" class="demo-chip" style="background:#e6f4ea; border-color:#34a853; color:#137333;" onclick="fillDemo('traveler@travelkori.com', 'password123', 'traveler')">
+                        🧳 Traveler
+                    </button>
+                    <button type="button" class="demo-chip" style="background:#e0f2fe; border-color:#0284c7; color:#0369a1;" onclick="fillDemo('guide@travelkori.com', 'password123', 'guide')">
+                        🧭 Tour Guide
+                    </button>
+                    <button type="button" class="demo-chip hotel" onclick="fillDemo('hotel@travelkori.com', 'password123', 'hotel')">
+                        🏨 Hotel Partner
+                    </button>
+                    <button type="button" class="demo-chip transport" onclick="fillDemo('transport@travelkori.com', 'password123', 'transport')">
+                        🚌 Transport Partner
+                    </button>
+                    <button type="button" class="demo-chip admin" onclick="fillDemo('admin@travelkori.com', 'admin123', 'admin')">
+                        🛡️ Admin
+                    </button>
+                </div>
+            </div>
+
+            <div class="auth-footer-prompt">
+                Don't have an account yet?
+                <a href="signup.html" class="auth-link">Create a new account →</a>
+            </div>
 
         </div>
     </main>
 
-    <footer>
-        <p>© 2026 Travel Kori Bangladesh</p>
+    <footer style="text-align: center; padding: 24px; color: #94a3b8; font-size: 13px;">
+        <p>© 2026 Travel Kori Bangladesh • Connecting 64 Districts</p>
     </footer>
 
+    <script src="nav.js"></script>
     <script src="auth.js"></script>
-
 </body>
 </html>

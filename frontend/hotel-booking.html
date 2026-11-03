@@ -19,8 +19,10 @@
 
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="booking.html">Tour Booking</a>
+            <a href="index.html#destinations">Destinations</a>
+            <a href="hotel-booking.html">Hotel Booking</a>
+            <a href="transport.html">Transport</a>
+            <div id="navUserArea"></div>
         </div>
     </nav>
 
@@ -32,7 +34,7 @@
                 <p class="section-label">TRAVEL KORI BANGLADESH</p>
 
                 <h1>
-                    Find Your Perfect Stay
+                    Travel Kori Bangladesh — Find Your Perfect Stay
                 </h1>
 
                 <p>
@@ -235,6 +237,57 @@
                     </p>
                 </div>
 
+                <!-- Dummy Payment Methods -->
+                <fieldset class="payment-methods" style="margin-top: 16px;">
+                    <legend>Select Demo Payment Method</legend>
+                    <p class="payment-note">
+                        Simulated demo payment for university project. No actual money is deducted.
+                    </p>
+
+                    <label class="payment-option" style="border-left: 4px solid #e2136e;">
+                        <input type="radio" name="hotelPaymentMethod" value="bkash">
+                        <div class="payment-option-content">
+                            <strong style="color: #e2136e;">bKash (Demo)</strong>
+                            <small>Simulated mobile wallet (Instant Confirmation)</small>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" style="border-left: 4px solid #f7941d;">
+                        <input type="radio" name="hotelPaymentMethod" value="nagad">
+                        <div class="payment-option-content">
+                            <strong style="color: #f7941d;">Nagad (Demo)</strong>
+                            <small>Simulated digital wallet (Instant Confirmation)</small>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" style="border-left: 4px solid #0284c7;">
+                        <input type="radio" name="hotelPaymentMethod" value="card">
+                        <div class="payment-option-content">
+                            <strong style="color: #0284c7;">Debit / Credit Card (Demo)</strong>
+                            <small>Visa / Mastercard / AMEX Simulated</small>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" style="border-left: 4px solid #087f5b;">
+                        <input type="radio" name="hotelPaymentMethod" value="cash" checked>
+                        <div class="payment-option-content">
+                            <strong style="color: #087f5b;">Pay at Hotel Front Desk</strong>
+                            <small>Payment status marked as "Payment Pending" until check-in</small>
+                        </div>
+                    </label>
+
+                    <div id="hotelWalletFields" class="wallet-payment-fields" hidden style="margin-top: 12px;">
+                        <label for="hotelPaymentPhone">Mobile Wallet Number</label>
+                        <input
+                            type="tel"
+                            id="hotelPaymentPhone"
+                            name="hotelPaymentPhone"
+                            placeholder="01XXXXXXXXX"
+                            style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit;"
+                        >
+                    </div>
+                </fieldset>
+
                 <button
                     id="submitHotelBooking"
                     class="signup-btn"
@@ -264,6 +317,8 @@
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
+    <script src="pdf-ticket.js"></script>
+    <script src="nav.js"></script>
     <script src="hotel-booking.js"></script>
 
 </body>

@@ -9,6 +9,9 @@
     <meta name="description"
           content="Explore popular destinations, hotels, districts and transport options across Bangladesh with Travel Kori Bangladesh.">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -27,13 +30,8 @@
             <a href="hotel-booking.html" class="hotel-nav-link">
                 Hotel Booking
             </a>
-            <a href="transport.html">Bus / Train / Flight</a>
-
-            <button id="loginBtn" type="button">Login</button>
-
-            <button class="signup-btn" id="signupBtn" type="button">
-                Sign Up
-            </button>
+            <a href="transport.html">Transport</a>
+            <div id="navUserArea"></div>
         </div>
     </nav>
 
@@ -44,8 +42,8 @@
             <p class="tagline">🇧🇩 Travel Kori Bangladesh</p>
 
             <h1>
-                Explore Bangladesh,<br>
-                <span>Your Way.</span>
+                Travel Kori Bangladesh<br>
+                <span>Explore Bangladesh, Your Way.</span>
             </h1>
 
             <p class="hero-description">
@@ -154,127 +152,127 @@
 
         <div class="popular-destination-grid">
 
-            <article class="popular-destination-card">
-                <div class="popular-destination-visual visual-coxs">
+            <article class="popular-destination-card modern-pop-card">
+                <div class="popular-destination-visual-wrap">
+                    <img src="images/destinations/coxs-bazar.jpg" alt="Cox's Bazar" class="popular-card-img">
                     <span class="destination-category">Sea Beach</span>
-                    <span class="destination-number">01</span>
+                    <span class="pop-rating-chip">★ 4.9</span>
                 </div>
 
                 <div class="popular-destination-content">
-                    <h3>Cox's Bazar</h3>
+                    <h3>Cox's Bazar Beach & Kolatoli</h3>
                     <p>
-                        Experience the famous sandy beach and beautiful
-                        coastal scenery.
+                        The world's longest unbroken natural sandy sea beach with famous sunsets and coastal walks.
                     </p>
 
                     <button type="button"
-                            class="destination-explore-btn"
-                            data-destination="Cox's Bazar">
+                            class="destination-explore-btn modern-pop-btn"
+                            onclick="openDestinationDetails('coxs-bazar')">
                         Explore Destination →
                     </button>
                 </div>
             </article>
 
-            <article class="popular-destination-card">
-                <div class="popular-destination-visual visual-sajek">
+            <article class="popular-destination-card modern-pop-card">
+                <div class="popular-destination-visual-wrap">
+                    <img src="images/destinations/sajek-valley.jpg" alt="Sajek Valley" class="popular-card-img">
                     <span class="destination-category">Hill Escape</span>
-                    <span class="destination-number">02</span>
+                    <span class="pop-rating-chip">★ 4.9</span>
                 </div>
 
                 <div class="popular-destination-content">
-                    <h3>Sajek Valley</h3>
+                    <h3>Sajek Cloud Valley</h3>
                     <p>
-                        Enjoy mountain scenery, peaceful surroundings
-                        and beautiful cloud-covered hills.
+                        Floating sea of clouds, green hill tracks, and tribal culture 1,800 feet above sea level.
                     </p>
 
                     <button type="button"
-                            class="destination-explore-btn"
-                            data-destination="Rangamati">
+                            class="destination-explore-btn modern-pop-btn"
+                            onclick="openDestinationDetails('sajek-valley')">
                         Explore Destination →
                     </button>
                 </div>
             </article>
 
-            <article class="popular-destination-card">
-                <div class="popular-destination-visual visual-sylhet">
+            <article class="popular-destination-card modern-pop-card">
+                <div class="popular-destination-visual-wrap">
+                    <img src="images/destinations/sylhet.jpg" alt="Sylhet" class="popular-card-img">
                     <span class="destination-category">Tea Gardens</span>
-                    <span class="destination-number">03</span>
+                    <span class="pop-rating-chip">★ 4.8</span>
                 </div>
 
                 <div class="popular-destination-content">
-                    <h3>Sylhet</h3>
+                    <h3>Sylhet Ratargul & Jaflong</h3>
                     <p>
-                        Discover green tea gardens, rivers, waterfalls
-                        and natural attractions.
+                        Emerald green freshwater swamp forests, transparent mountain streams, and endless tea gardens.
                     </p>
 
                     <button type="button"
-                            class="destination-explore-btn"
-                            data-destination="Sylhet">
+                            class="destination-explore-btn modern-pop-btn"
+                            onclick="openDestinationDetails('sylhet')">
                         Explore Destination →
                     </button>
                 </div>
             </article>
 
-            <article class="popular-destination-card">
-                <div class="popular-destination-visual visual-bandarban">
+            <article class="popular-destination-card modern-pop-card">
+                <div class="popular-destination-visual-wrap">
+                    <img src="images/destinations/bandarban.jpg" alt="Bandarban" class="popular-card-img">
                     <span class="destination-category">Mountains</span>
-                    <span class="destination-number">04</span>
+                    <span class="pop-rating-chip">★ 4.8</span>
                 </div>
 
                 <div class="popular-destination-content">
-                    <h3>Bandarban</h3>
+                    <h3>Bandarban Nilgiri Peak</h3>
                     <p>
-                        Explore scenic hills, mountain roads
-                        and spectacular viewpoints.
+                        Highest mountain viewpoints in Bangladesh, foggy cloud trails, and trekking to Boga Lake.
                     </p>
 
                     <button type="button"
-                            class="destination-explore-btn"
-                            data-destination="Bandarban">
+                            class="destination-explore-btn modern-pop-btn"
+                            onclick="openDestinationDetails('bandarban')">
                         Explore Destination →
                     </button>
                 </div>
             </article>
 
-            <article class="popular-destination-card">
-                <div class="popular-destination-visual visual-sundarbans">
-                    <span class="destination-category">Wildlife</span>
-                    <span class="destination-number">05</span>
+            <article class="popular-destination-card modern-pop-card">
+                <div class="popular-destination-visual-wrap">
+                    <img src="images/destinations/sundarbans.jpg" alt="Sundarbans" class="popular-card-img">
+                    <span class="destination-category">Mangrove Wildlife</span>
+                    <span class="pop-rating-chip">★ 4.9</span>
                 </div>
 
                 <div class="popular-destination-content">
-                    <h3>Sundarbans</h3>
+                    <h3>Sundarbans Tiger Safari</h3>
                     <p>
-                        Discover the world's largest mangrove forest
-                        and its remarkable natural environment.
+                        World's largest halophytic mangrove forest and UNESCO heritage home of the Royal Bengal Tiger.
                     </p>
 
                     <button type="button"
-                            class="destination-explore-btn"
-                            data-destination="Bagerhat">
+                            class="destination-explore-btn modern-pop-btn"
+                            onclick="openDestinationDetails('sundarbans')">
                         Explore Destination →
                     </button>
                 </div>
             </article>
 
-            <article class="popular-destination-card">
-                <div class="popular-destination-visual visual-kuakata">
-                    <span class="destination-category">Coastal Escape</span>
-                    <span class="destination-number">06</span>
+            <article class="popular-destination-card modern-pop-card">
+                <div class="popular-destination-visual-wrap">
+                    <img src="images/destinations/kuakata.jpg" alt="Kuakata" class="popular-card-img">
+                    <span class="destination-category">Coastal Beach</span>
+                    <span class="pop-rating-chip">★ 4.7</span>
                 </div>
 
                 <div class="popular-destination-content">
-                    <h3>Kuakata</h3>
+                    <h3>Kuakata Sagar Kannya</h3>
                     <p>
-                        Enjoy coastal landscapes and famous sunrise
-                        and sunset views over the sea.
+                        The Daughter of the Sea where travelers witness both sunrise and sunset from the same beach.
                     </p>
 
                     <button type="button"
-                            class="destination-explore-btn"
-                            data-destination="Patuakhali">
+                            class="destination-explore-btn modern-pop-btn"
+                            onclick="openDestinationDetails('kuakata')">
                         Explore Destination →
                     </button>
                 </div>
@@ -282,33 +280,48 @@
 
         </div>
 
-        <!-- All Districts -->
-        <div class="all-districts-action">
-            <h3>Want to explore more?</h3>
-
+        <!-- All Districts Action -->
+        <div class="all-districts-action" style="display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center;">
+            <h3>Want to explore all 64 Districts of Bangladesh?</h3>
             <p>
-                Discover destinations from all 64 districts of Bangladesh.
+                Discover local attractions, district maps, and direct hotel and transport links for every corner of Bangladesh.
             </p>
-
-            <button
-                id="toggleDistrictsBtn"
-                class="primary-btn"
-                type="button"
-                aria-expanded="false"
-                aria-controls="allDistrictsPanel">
-                Explore All 64 Districts
-            </button>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+                <button
+                    id="toggleDistrictsBtn"
+                    class="primary-btn"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="allDistrictsPanel">
+                    Quick District Browser ▼
+                </button>
+                <a href="64-districts.html" class="primary-btn" style="background:#0284c7; border-color:#0284c7; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <span>🗺️ Open Dedicated 64 Districts Directory</span> <span>→</span>
+                </a>
+            </div>
         </div>
 
-        <div id="allDistrictsPanel" hidden>
+        <div id="allDistrictsPanel">
             <h2>Explore All Districts</h2>
 
             <p>Search for a district and discover places to visit.</p>
 
+            <div id="divisionFilterBar" class="division-filter-bar">
+                <button type="button" class="division-pill-btn active" data-division="ALL">All Divisions (64)</button>
+                <button type="button" class="division-pill-btn" data-division="Dhaka">Dhaka</button>
+                <button type="button" class="division-pill-btn" data-division="Chattogram">Chattogram</button>
+                <button type="button" class="division-pill-btn" data-division="Sylhet">Sylhet</button>
+                <button type="button" class="division-pill-btn" data-division="Rajshahi">Rajshahi</button>
+                <button type="button" class="division-pill-btn" data-division="Khulna">Khulna</button>
+                <button type="button" class="division-pill-btn" data-division="Barishal">Barishal</button>
+                <button type="button" class="division-pill-btn" data-division="Rangpur">Rangpur</button>
+                <button type="button" class="division-pill-btn" data-division="Mymensingh">Mymensingh</button>
+            </div>
+
             <input
                 type="text"
                 id="districtSearch"
-                placeholder="Search a district..."
+                placeholder="Search a district (e.g. Cox's Bazar, Sylhet, Bandarban)..."
                 aria-label="Search districts"
             >
 
@@ -416,127 +429,111 @@
         </div>
     </section>
 
+    <!-- Destination Details & Reviews Modal (Section E & F) -->
+    <div id="destinationModal" class="dest-modal-overlay" style="display: none;">
+        <div class="dest-modal-card">
+            <button type="button" class="dest-modal-close" id="destModalCloseBtn" aria-label="Close modal">×</button>
+
+            <div class="dest-modal-visual-wrap">
+                <img id="destModalImg" src="images/destinations/coxs-bazar.jpg" alt="Destination" class="dest-modal-img">
+                <span class="dest-modal-tag" id="destModalTag">Beach</span>
+            </div>
+
+            <div class="dest-modal-body">
+                <div class="dest-modal-header-row">
+                    <div>
+                        <h2 id="destModalTitle" class="dest-modal-title">Cox's Bazar Beach & Kolatoli Point</h2>
+                        <p id="destModalLocation" class="dest-modal-location">📍 Cox's Bazar District, Bangladesh</p>
+                    </div>
+                    <div class="dest-modal-rating-badge">
+                        <span class="dest-rating-star">★</span>
+                        <span id="destModalRatingVal" class="dest-rating-val">4.9</span>
+                        <span id="destModalReviewsCount" class="dest-reviews-count">(1420 reviews)</span>
+                    </div>
+                </div>
+
+                <p id="destModalDesc" class="dest-modal-desc">
+                    The world's longest unbroken natural sandy sea beach stretching 120 km along the Bay of Bengal. Famous for spectacular sunsets, fresh seafood stalls, and lively beach walks along Kolatoli, Laboni, and Sugandha beaches.
+                </p>
+
+                <!-- Information Chips -->
+                <div class="dest-info-chips-grid">
+                    <div class="dest-chip-card">
+                        <span class="dest-chip-label">ENTRANCE FEE</span>
+                        <strong id="destModalFee" class="dest-chip-value">Free Entry</strong>
+                    </div>
+                    <div class="dest-chip-card">
+                        <span class="dest-chip-label">OPERATING HOURS</span>
+                        <strong id="destModalHours" class="dest-chip-value">Open 24 Hours</strong>
+                    </div>
+                    <div class="dest-chip-card">
+                        <span class="dest-chip-label">BEST SEASON</span>
+                        <strong id="destModalSeason" class="dest-chip-value">October to March</strong>
+                    </div>
+                </div>
+
+                <!-- Action Button matching Screenshot -->
+                <div class="dest-actions-row">
+                    <a id="destModalMapBtn" href="route-map.html" class="dest-primary-btn">
+                        Plan Route On Map
+                    </a>
+                    <a id="destModalHotelBtn" href="hotel-booking.html" class="dest-secondary-btn">
+                        🏨 Find Hotels
+                    </a>
+                    <a id="destModalTransportBtn" href="transport.html" class="dest-secondary-btn">
+                        🚌 Book Transport
+                    </a>
+                </div>
+
+                <!-- Realistic Traveler Reviews Section (Section F) -->
+                <div class="dest-reviews-section">
+                    <div class="reviews-section-header">
+                        <h3>Traveler Ratings & Reviews</h3>
+                        <span id="reviewsStatusChip" class="reviews-status-chip">Verified Traveler Feedback</span>
+                    </div>
+
+                    <!-- Add Review Form -->
+                    <form id="destReviewForm" class="dest-review-form">
+                        <div class="review-form-top">
+                            <span style="font-weight:700; font-size:13px; color:var(--text-main, #0f172a);">Submit Your Star Rating:</span>
+                            <div class="star-rating-picker" id="starRatingPicker">
+                                <span class="star-pill" data-val="1">★</span>
+                                <span class="star-pill" data-val="2">★</span>
+                                <span class="star-pill" data-val="3">★</span>
+                                <span class="star-pill" data-val="4">★</span>
+                                <span class="star-pill active" data-val="5">★</span>
+                                <span id="starRatingNum" style="font-size:12px; font-weight:800; color:#087f5b; margin-left:6px;">5.0</span>
+                            </div>
+                        </div>
+
+                        <textarea id="destReviewText" rows="3" placeholder="Write about your journey, scenery, local seafood, best photo spots..." required></textarea>
+
+                        <div class="review-form-submit-row">
+                            <span id="destReviewFeedback" style="font-size:12px;"></span>
+                            <button type="submit" id="destReviewSubmitBtn" class="dest-review-submit-btn">
+                                Post Review →
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Real Reviews List Container -->
+                    <div id="destReviewsList" class="dest-reviews-list">
+                        <div style="padding:16px; text-align:center; color:#64748b; font-size:13px;">Loading destination reviews...</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <p>© 2026 Travel Kori Bangladesh</p>
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
-    <!-- Existing project JavaScript -->
+    <!-- App scripts -->
+    <script src="nav.js"></script>
     <script src="script.js"></script>
-
-    <!-- Homepage interactions -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-
-            const dateInput = document.getElementById("travelDate");
-            const destinationInput = document.getElementById("destination");
-            const searchForm = document.getElementById("homepageSearchForm");
-            const searchMessage = document.getElementById("searchMessage");
-
-            const toggleButton = document.getElementById("toggleDistrictsBtn");
-            const districtsPanel = document.getElementById("allDistrictsPanel");
-
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, "0");
-            const day = String(today.getDate()).padStart(2, "0");
-
-            dateInput.min = `${year}-${month}-${day}`;
-
-            // Fill the search box from popular destination buttons.
-            document.querySelectorAll("[data-destination]").forEach(function (button) {
-                button.addEventListener("click", function () {
-                    destinationInput.value = button.dataset.destination;
-
-                    document.getElementById("destinationSearchSection")
-                        .scrollIntoView({
-                            behavior: "smooth",
-                            block: "center"
-                        });
-
-                    destinationInput.focus();
-                });
-            });
-
-            // Toggle the district list.
-            toggleButton.addEventListener("click", function () {
-                const isOpening = districtsPanel.hidden;
-
-                districtsPanel.hidden = !isOpening;
-
-                toggleButton.setAttribute(
-                    "aria-expanded",
-                    String(isOpening)
-                );
-
-                toggleButton.textContent = isOpening
-                    ? "Hide All Districts"
-                    : "Explore All 64 Districts";
-
-                if (isOpening) {
-                    districtsPanel.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-                }
-            });
-
-            /*
-             * Avoid recursively clicking the submit button.
-             * The existing script.js may have its own search handler.
-             */
-            searchForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const destination = destinationInput.value.trim();
-    const travelDate = dateInput.value;
-
-    if (!destination) {
-        searchMessage.textContent = "Please select a destination.";
-        destinationInput.focus();
-        return;
-    }
-
-    if (travelDate && travelDate < dateInput.min) {
-        searchMessage.textContent = "Please select today or a future date.";
-        dateInput.focus();
-        return;
-    }
-
-    // Save the visitor's intended hotel search
-    const pendingSearch = {
-        destination: destination,
-        travelDate: travelDate
-    };
-
-    sessionStorage.setItem(
-        "travelKoriPendingHotelSearch",
-        JSON.stringify(pendingSearch)
-    );
-
-    // Check whether the user is already logged in
-    let currentUser = null;
-
-    try {
-        currentUser = JSON.parse(
-            sessionStorage.getItem("travelKoriUser") || "null"
-        );
-    } catch (error) {
-        currentUser = null;
-    }
-
-    if (currentUser && currentUser.id) {
-        // Already logged in: go directly to the hotel page
-        window.location.href = "hotel-booking.html";
-    } else {
-        // Not logged in: login first, then continue the saved search
-        window.location.href = "login.html";
-    }
-});
-
-        });
-    </script>
-
 </body>
 </html>

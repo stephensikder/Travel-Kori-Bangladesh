@@ -1,16 +1,18 @@
 const API_URL = "http://localhost:5000";
 
+// All 64 Districts of Bangladesh for origin & destination
 const cities = [
-    "Dhaka",
-    "Chattogram",
-    "Cox's Bazar",
-    "Sylhet",
-    "Rajshahi",
-    "Khulna",
-    "Rangpur",
-    "Mymensingh",
-    "Barishal",
-    "Cumilla"
+    "Dhaka", "Chattogram", "Cox's Bazar", "Sylhet", "Bandarban", "Rangamati", "Khagrachhari",
+    "Bagerhat", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria", "Chandpur",
+    "Chapai Nawabganj", "Chuadanga", "Cumilla", "Dinajpur", "Faridpur", "Feni",
+    "Gaibandha", "Gazipur", "Gopalganj", "Habiganj", "Jamalpur", "Jashore",
+    "Jhalokati", "Jhenaidah", "Joypurhat", "Khulna", "Kishoreganj", "Kurigram",
+    "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj",
+    "Meherpur", "Moulvibazar", "Munshiganj", "Mymensingh", "Naogaon", "Narail",
+    "Narayanganj", "Narsingdi", "Natore", "Netrokona", "Nilphamari", "Noakhali",
+    "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi",
+    "Rangpur", "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj",
+    "Tangail", "Thakurgaon"
 ];
 
 // ========================================
@@ -519,6 +521,51 @@ cities.forEach(function (city) {
 });
 
 // ========================================
+// LIVE ROUTE CALCULATION (FR-15 to FR-19)
+// ========================================
+let currentRouteInfo = null;
+async function updateRouteCalculation() {
+    const from = fromCity.value;
+    const to = toCity.value;
+    const existing = document.getElementById("transportRouteBanner");
+
+    if (from && to && from !== to) {
+        try {
+            const res = await fetch(`${API_URL}/api/routes?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+            const data = await res.json();
+            if (data.success) {
+                currentRouteInfo = data;
+                let b = document.getElementById("transportRouteBanner");
+                if (!b) {
+                    b = document.createElement("div");
+                    b.id = "transportRouteBanner";
+                    b.className = "route-summary-banner";
+                    const form = document.getElementById("transportSearchForm");
+                    form.parentNode.insertBefore(b, form.nextSibling);
+                }
+                b.innerHTML = `
+                    <div class="route-summary-info">
+                        📍 <strong>${data.from} ➔ ${data.to}</strong>: ~${data.distanceKm} km (Road Distance)
+                        <span style="margin: 0 8px; color: #cbd5e1;">|</span>
+                        🚌 Bus: ~${data.durations.bus} | 🚆 Train: ~${data.durations.train} | ✈️ Flight: ${data.durations.flight}
+                    </div>
+                    <a href="${data.directionsUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 13px; font-weight: 700; color: #087f5b; text-decoration: underline;">
+                        View Live Route on Google Maps ↗
+                    </a>
+                `;
+            }
+        } catch (e) {
+            console.warn("Route calc error:", e);
+        }
+    } else if (existing) {
+        existing.remove();
+    }
+}
+
+fromCity.addEventListener("change", updateRouteCalculation);
+toCity.addEventListener("change", updateRouteCalculation);
+
+// ========================================
 // BUS / TRAIN / FLIGHT TABS
 // ========================================
 
@@ -535,10 +582,11 @@ document.querySelectorAll(".transport-tab").forEach(function (tab) {
 
         results.replaceChildren();
 
-        document.getElementById("resultCount").textContent = "";
+        const featured = journeys.filter(j => j.type === selectedType).slice(0, 6);
+        renderResults(featured);
 
         document.getElementById("resultsSubtitle").textContent =
-            "Select your route and journey date.";
+            `Popular verified ${selectedType.toLowerCase()} routes across Bangladesh. Search above to filter by origin, destination and date.`;
 
         message.textContent = "";
 
@@ -554,13 +602,25 @@ document.querySelectorAll(".transport-tab").forEach(function (tab) {
     });
 });
 
+// Render initial default journeys
+function loadDefaultJourneys() {
+    searchDate = journeyDate.value || localDateString(new Date());
+    const featured = journeys.filter(j => j.type === selectedType).slice(0, 6);
+    renderResults(featured);
+    const subtitle = document.getElementById("resultsSubtitle");
+    if (subtitle) {
+        subtitle.textContent = "Popular verified routes across Bangladesh. Choose any journey below or search a custom route above.";
+    }
+}
+loadDefaultJourneys();
+
 // ========================================
 // TRANSPORT SEARCH
 // ========================================
 
 document.getElementById("transportSearchForm").addEventListener(
     "submit",
-    function (event) {
+    async function (event) {
         event.preventDefault();
 
         const from = fromCity.value;
@@ -598,13 +658,62 @@ document.getElementById("transportSearchForm").addEventListener(
 
         searchDate = date;
 
-        const matches = journeys.filter(function (journey) {
+        let matches = journeys.filter(function (journey) {
             return (
                 journey.type === selectedType &&
-                journey.from === from &&
-                journey.to === to
+                journey.from.toLowerCase() === from.toLowerCase() &&
+                journey.to.toLowerCase() === to.toLowerCase()
             );
         });
+
+        // Also fetch any dynamic routes from MongoDB
+        try {
+            const apiRes = await fetch(`${API_URL}/api/transportations?type=${selectedType}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+            const apiData = await apiRes.json();
+            const list = Array.isArray(apiData) ? apiData : (apiData.transportations || []);
+            list.forEach(item => {
+                if (!matches.some(m => m.operator === item.operator)) {
+                    matches.push({
+                        id: item._id || item.id || `TR-${Date.now()}`,
+                        type: item.type,
+                        operator: item.operator,
+                        from: item.from,
+                        to: item.to,
+                        departure: item.departureTime || "08:00 AM",
+                        duration: item.duration ? `${Math.round(item.duration/60)} hours` : "Approx. 5–7 hours",
+                        fare: item.farePerSeat || item.fare || 1000,
+                        scheduleUrl: "https://shohoz.com"
+                    });
+                }
+            });
+        } catch (e) {}
+
+        // Fallback dynamic generator using real road distances from 64 districts
+        if (matches.length === 0) {
+            if (!currentRouteInfo) await updateRouteCalculation();
+            const dist = currentRouteInfo ? currentRouteInfo.distanceKm : 220;
+            const dur = currentRouteInfo ? currentRouteInfo.durations : { bus: "5h 30m", train: "6h 00m", flight: "50 mins", flightAvailable: false };
+
+            if (selectedType === "Bus") {
+                const fareEstimate = Math.round(Math.max(450, dist * 3.2) / 50) * 50;
+                matches = [
+                    { id: `BUS-GREEN-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Green Line Paribahan (Scania AC)", from, to, departure: "08:30 AM", duration: dur.bus, fare: fareEstimate + 200, scheduleUrl: "https://greenlinebd.com" },
+                    { id: `BUS-HANIF-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Hanif Enterprise (AC Chair Coach)", from, to, departure: "10:00 AM", duration: dur.bus, fare: fareEstimate, scheduleUrl: "https://hanifenterprisebd.com" },
+                    { id: `BUS-SHOHOZ-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Shohoz Express Premium", from, to, departure: "09:30 PM", duration: dur.bus, fare: Math.max(400, fareEstimate - 100), scheduleUrl: "https://shohoz.com" }
+                ];
+            } else if (selectedType === "Train") {
+                const trainFare = Math.round(Math.max(250, dist * 1.8) / 20) * 20;
+                matches = [
+                    { id: `TRAIN-INTERCITY-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Train", operator: "Bangladesh Railway (Intercity Express)", from, to, departure: "07:15 AM", duration: dur.train, fare: trainFare, scheduleUrl: "https://eticket.railway.gov.bd" },
+                    { id: `TRAIN-SNIGDHA-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Train", operator: "Bangladesh Railway (Snigdha AC Chair)", from, to, departure: "03:45 PM", duration: dur.train, fare: trainFare + 250, scheduleUrl: "https://eticket.railway.gov.bd" }
+                ];
+            } else if (selectedType === "Flight" && (dur.flightAvailable || dist > 150)) {
+                matches = [
+                    { id: `FLIGHT-BIMAN-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Flight", operator: "Biman Bangladesh Airlines (Boeing 737)", from, to, departure: "11:30 AM", duration: "50 minutes", fare: 5500, scheduleUrl: "https://biman-airlines.com" },
+                    { id: `FLIGHT-USBAIR-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Flight", operator: "US-Bangla Airlines (ATR 72-600)", from, to, departure: "03:15 PM", duration: "45 minutes", fare: 4900, scheduleUrl: "https://usbair.com" }
+                ];
+            }
+        }
 
         renderResults(matches);
     }
@@ -644,54 +753,73 @@ function renderResults(matches) {
 
     matches.forEach(function (journey) {
         const card = document.createElement("article");
-        card.className = "transport-result-card";
+        card.className = "transport-result-card modern-transport-card";
 
-        const title = document.createElement("h3");
-        title.textContent = journey.operator;
+        const typeIcon = journey.type === "Flight" ? "✈️" : (journey.type === "Train" ? "🚆" : "🚌");
+        const classLabel = journey.type === "Flight" ? "Economy Class" : (journey.type === "Train" ? "Shovon Chair / AC" : "AC Multi-Axle Luxury");
+        const availableSeatsCount = Math.floor(Math.random() * 15) + 12;
 
-        const route = document.createElement("p");
-        route.textContent =
-            `${journey.from} → ${journey.to}`;
+        card.innerHTML = `
+            <div class="card-transport-top">
+                <div class="operator-info">
+                    <span class="operator-icon-badge">${typeIcon}</span>
+                    <div>
+                        <h3 class="operator-name">${journey.operator}</h3>
+                        <span class="transport-class-badge">${classLabel}</span>
+                    </div>
+                </div>
+                <div class="seat-badge-pill">
+                    <span class="seat-dot"></span>
+                    <span>${availableSeatsCount} seats left</span>
+                </div>
+            </div>
 
-        const time = document.createElement("p");
-        time.textContent =
-            `${journey.departure} – ${journey.arrival} (${journey.duration})`;
+            <div class="transport-route-timeline">
+                <div class="timeline-station">
+                    <span class="time-main">${journey.departure === "Schedule varies" ? "Daily Service" : journey.departure}</span>
+                    <span class="station-city">📍 ${journey.from}</span>
+                </div>
+                <div class="timeline-track">
+                    <span class="timeline-duration">${journey.duration}</span>
+                    <div class="timeline-line">
+                        <span class="track-dot start"></span>
+                        <span class="track-vehicle">${typeIcon}</span>
+                        <span class="track-dot end"></span>
+                    </div>
+                    <span class="timeline-direct">Express Route</span>
+                </div>
+                <div class="timeline-station right">
+                    <span class="time-main">${journey.arrival === "Schedule varies" ? "Direct Route" : journey.arrival}</span>
+                    <span class="station-city">📍 ${journey.to}</span>
+                </div>
+            </div>
 
-        const type = document.createElement("p");
-        type.textContent = `Transport: ${journey.type}`;
+            <div class="transport-amenities-row">
+                <span class="amenity-chip">❄️ Air Conditioned</span>
+                <span class="amenity-chip">💺 Reclining Seats</span>
+                <span class="amenity-chip">🔌 Charging Port</span>
+                <span class="amenity-chip">🛡️ Verified Route</span>
+            </div>
 
-        const fare = document.createElement("p");
-        fare.className = "transport-fare";
-        fare.textContent =
-            `৳${journey.fare.toLocaleString("en-BD")} per passenger`;
+            <div class="card-transport-bottom">
+                <div class="transport-fare-wrap">
+                    <span class="fare-label">Estimated Fare</span>
+                    <span class="transport-fare">৳${journey.fare.toLocaleString("en-BD")} <small>/ seat</small></span>
+                </div>
+                <div class="transport-card-actions">
+                    ${journey.scheduleUrl ? `<a href="${journey.scheduleUrl}" target="_blank" rel="noopener noreferrer" class="transport-operator-link">Official Portal ↗</a>` : ''}
+                    <button type="button" class="modern-select-journey-btn">
+                        <span>${journey.type === "Flight" ? "Select Flight" : (journey.type === "Train" ? "Select Train" : "Select Seats & Book")}</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        `;
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "signup-btn";
-        button.textContent =
-            journey.type === "Flight"
-                ? "Select Flight"
-                : "Select Journey";
-
-        button.addEventListener("click", function () {
+        card.querySelector(".modern-select-journey-btn").addEventListener("click", function () {
             chooseJourney(journey);
         });
 
-        card.append(title, route, time, type, fare);
-
-        if (journey.scheduleUrl) {
-            const scheduleLink = document.createElement("a");
-            scheduleLink.href = journey.scheduleUrl;
-            scheduleLink.target = "_blank";
-            scheduleLink.rel = "noopener noreferrer";
-            scheduleLink.className = "map-link";
-            scheduleLink.textContent =
-                "Check official schedule / booking";
-
-            card.appendChild(scheduleLink);
-        }
-
-        card.appendChild(button);
         results.appendChild(card);
     });
 }
@@ -960,6 +1088,73 @@ function renderSeatSelection(journey) {
 }
 
 // ========================================
+// USER & ACTIVE BADGE SETUP
+// ========================================
+
+try {
+    user = JSON.parse(sessionStorage.getItem("travelKoriUser") || "null");
+} catch (e) {
+    user = null;
+}
+
+function updateActiveUserBadge() {
+    const navLinks = document.querySelector(".nav-links");
+    if (!navLinks) return;
+
+    const existingBadge = document.getElementById("navActiveUserBadge");
+    if (existingBadge) existingBadge.remove();
+
+    if (user && user.name) {
+        const badge = document.createElement("li");
+        badge.id = "navActiveUserBadge";
+        const isAdmin = (user.userType || "").toLowerCase() === "admin";
+        badge.className = "user-active-badge " + (isAdmin ? "admin" : "traveler");
+        badge.innerHTML = `<span class="status-dot"></span><span>${isAdmin ? "🛡️ " + user.name + " (Admin Active)" : "👤 " + user.name + " (Active)"}</span>`;
+        navLinks.prepend(badge);
+
+        const dashboardLink = navLinks.querySelector('a[href="dashboard.html"]');
+        if (dashboardLink && isAdmin) {
+            dashboardLink.setAttribute("href", "admin.html");
+            dashboardLink.textContent = "Admin Panel";
+        }
+    }
+}
+
+function setupTransportPaymentListeners() {
+    const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+    const walletFields = document.getElementById("transportWalletFields");
+    const walletPhone = document.getElementById("transportPaymentPhone");
+
+    paymentRadios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+            const method = e.target.value;
+            if (method === "bkash" || method === "nagad") {
+                if (walletFields) {
+                    walletFields.hidden = false;
+                    if (walletPhone) {
+                        walletPhone.required = true;
+                        walletPhone.placeholder = method === "bkash" ? "017XXXXXXXX (bKash Wallet)" : "018XXXXXXXX (Nagad Wallet)";
+                    }
+                }
+            } else {
+                if (walletFields) {
+                    walletFields.hidden = true;
+                    if (walletPhone) {
+                        walletPhone.required = false;
+                        walletPhone.value = "";
+                    }
+                }
+            }
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateActiveUserBadge();
+    setupTransportPaymentListeners();
+});
+
+// ========================================
 // BOOKING SUBMISSION + PAYMENT
 // ========================================
 
@@ -999,17 +1194,14 @@ bookingForm.addEventListener("submit", async function (event) {
         'input[name="paymentMethod"]:checked'
     );
 
-    // If payment controls are missing from HTML, default to cash.
     const paymentMethod =
         paymentMethodInput ? paymentMethodInput.value : "cash";
 
+    const paymentPhoneInput = document.getElementById("transportPaymentPhone");
     const paymentPhone =
         paymentPhoneInput ? paymentPhoneInput.value.trim() : "";
 
-    const transactionReference =
-        transactionReferenceInput
-            ? transactionReferenceInput.value.trim()
-            : "";
+    const transactionReference = "";
 
     const button =
         document.getElementById("confirmTransportBtn");
@@ -1046,7 +1238,12 @@ bookingForm.addEventListener("submit", async function (event) {
                 },
                 body: JSON.stringify({
                     userId: user.id,
-                    journeyId: selectedJourney.id,
+                    journeyId: selectedJourney.id || `TRP-${selectedJourney.from}-${selectedJourney.to}`,
+                    from: selectedJourney.from,
+                    to: selectedJourney.to,
+                    type: selectedJourney.type,
+                    operator: selectedJourney.operator,
+                    fare: selectedJourney.fare,
                     journeyDate: searchDate,
                     passengers: Number(passengersInput.value),
                     seatNumbers: selectedSeats,
@@ -1081,19 +1278,52 @@ bookingForm.addEventListener("submit", async function (event) {
             cash: "Cash"
         }[payment.method] || payment.method;
 
-        bookingMessage.textContent =
-            `Booking request submitted! ` +
-            `Reference ID: ${data.booking.reference}. ` +
-            `Booking status: Pending. ` +
-            `Seats: ${selectedSeats.join(", ")}. ` +
-            `Payment: ${paymentLabel} — ${payment.status || "Pending"}. ` +
-            (
-                payment.transactionReference
-                    ? `Demo reference: ${payment.transactionReference}.`
-                    : ""
-            );
+        const totalFareAmount = selectedJourney.fare * Number(passengersInput.value);
 
-        bookingMessage.style.color = "#087f5b";
+        bookingMessage.innerHTML = `
+            <div style="background: #e6f7f0; border: 2px solid #087f5b; border-radius: 10px; padding: 20px; margin-top: 15px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                    <span style="color: #087f5b; font-weight: 800; font-size: 16px;">✅ Ticket Confirmed!</span>
+                    <span style="font-size: 12px; font-weight: 700; background: #087f5b; color: white; padding: 4px 10px; border-radius: 6px;">Ref: ${data.booking.reference}</span>
+                </div>
+                <p style="margin: 4px 0; font-size: 14px; color: #17382f;">
+                    <strong>Journey:</strong> ${selectedJourney.operator} (${selectedJourney.type}) • ${selectedJourney.from} ➔ ${selectedJourney.to}
+                </p>
+                <p style="margin: 4px 0; font-size: 13px; color: #475569;">
+                    <strong>Date:</strong> ${searchDate} • <strong>Seat(s):</strong> <span style="color:#087f5b; font-weight:700;">${selectedSeats.join(", ")}</span>
+                </p>
+                <p style="margin: 4px 0; font-size: 13px; color: #475569;">
+                    <strong>Payment:</strong> ${paymentLabel} — <span style="color: #087f5b; font-weight: 700;">Demo Paid</span> • <strong>Total:</strong> ৳${totalFareAmount.toLocaleString('en-BD')} BDT
+                </p>
+                <div style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+                    <button id="downloadTicketBtn" type="button" class="btn-download-pdf">
+                        📥 Download Official Ticket (PDF)
+                    </button>
+                    <a href="dashboard.html" class="signup-btn" style="padding: 8px 14px; font-size: 12px; text-decoration: none; border-radius: 7px; background: #17382f; color: white;">
+                        View in Dashboard →
+                    </a>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("downloadTicketBtn")?.addEventListener("click", function () {
+            if (window.TravelKoriPDF) {
+                window.TravelKoriPDF.downloadTransportTicket({
+                    reference: data.booking.reference,
+                    from: selectedJourney.from,
+                    to: selectedJourney.to,
+                    type: selectedJourney.type,
+                    operator: selectedJourney.operator,
+                    journeyDate: searchDate,
+                    passengerName: passengerName,
+                    passengerPhone: passengerPhone,
+                    seatNumbers: selectedSeats,
+                    passengers: Number(passengersInput.value),
+                    paymentMethod: paymentMethod,
+                    totalFare: totalFareAmount
+                });
+            }
+        });
     } catch (error) {
         console.error("Transport booking error:", error);
 

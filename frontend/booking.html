@@ -3,91 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Book Your Trip | Travel Kori Bangladesh</title>
-
+    <title>Domestic Trip Planner & Itinerary Builder | Travel Kori Bangladesh</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Navigation -->
+    <!-- Universal Navigation -->
     <nav class="navbar">
         <a href="index.html" class="logo">
-            TK <span>Travel Kori</span>
+            TK <span>Travel Kori Bangladesh</span>
         </a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <a href="dashboard.html">Dashboard</a>
+            <a href="64-districts.html">64 Districts</a>
+            <a href="hotel-booking.html">Hotels</a>
+            <a href="transport.html">Transport</a>
+            <a href="guides.html">Guides</a>
+            <a href="booking.html" class="active">Plan Trip</a>
+            <div id="navUserArea"></div>
         </div>
     </nav>
 
-    <!-- Booking Form -->
-    <main class="section booking-section">
+    <!-- Trip Planner Section -->
+    <main class="section" style="max-width: 960px; margin: 0 auto; padding: 40px 20px;">
 
-        <p class="section-label">PLAN YOUR JOURNEY</p>
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 36px;">
+            <span style="background: #e6f4ea; color: #087f5b; padding: 5px 14px; border-radius: 999px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-bottom: 12px;">
+                🗺️ Domestic Trip Planner & Itinerary Builder
+            </span>
+            <h1 style="font-size: 32px; font-weight: 900; color: var(--text-main, #0f172a); margin: 0 0 10px 0;">
+                Bangladesh Custom Itinerary & Smart Budget Estimator
+            </h1>
+            <p style="font-size: 15px; color: #64748b; max-width: 680px; margin: 0 auto; line-height: 1.6;">
+                Select your origin district, trip length, preferred comfort tier and destinations. Our planning engine generates an actionable day-by-day itinerary and realistic BDT expense breakdown.
+            </p>
+        </div>
 
-        <h1>Book Your Trip</h1>
+        <!-- Planner Form Card -->
+        <div class="portal-card" style="background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 36px;">
 
-        <p>
-            Choose your destination and submit your travel request.
-        </p>
+            <!-- 1. Trip Basics & Preferences -->
+            <div style="margin-bottom: 30px;">
+                <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main, #0f172a); margin: 0 0 18px 0; display: flex; align-items: center; gap: 8px;">
+                    <span style="background:#087f5b; color:white; width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:13px;">1</span>
+                    Trip Basics & Preferences
+                </h2>
 
-        <form id="bookingForm" class="booking-form">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                    <!-- Origin District -->
+                    <div>
+                        <label for="originDistrict" style="display: block; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                            ORIGIN DISTRICT
+                        </label>
+                        <select id="originDistrict" style="width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font: inherit; font-size: 14px; background: white; font-weight: 600;">
+                            <option value="Dhaka" selected>Dhaka (Capital)</option>
+                            <option value="Chattogram">Chattogram (Port City)</option>
+                            <option value="Sylhet">Sylhet (Surma Basin)</option>
+                            <option value="Rajshahi">Rajshahi (Silk City)</option>
+                            <option value="Khulna">Khulna (Sundarbans Gateway)</option>
+                            <option value="Barishal">Barishal (Riverine)</option>
+                            <option value="Rangpur">Rangpur</option>
+                            <option value="Mymensingh">Mymensingh</option>
+                            <option value="Cox's Bazar">Cox's Bazar</option>
+                            <option value="Bogura">Bogura</option>
+                            <option value="Cumilla">Cumilla</option>
+                        </select>
+                    </div>
 
-            <label for="district">District</label>
-            <input
-                type="text"
-                id="district"
-                name="district"
-                placeholder="Example: Dhaka"
-                required
-            >
+                    <!-- Travelers -->
+                    <div>
+                        <label for="travelersCount" style="display: block; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                            TRAVELERS
+                        </label>
+                        <select id="travelersCount" style="width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font: inherit; font-size: 14px; background: white; font-weight: 600;">
+                            <option value="1">1 Solo Traveler</option>
+                            <option value="2" selected>2 Travelers / Couple</option>
+                            <option value="3">3-4 Family / Friends</option>
+                            <option value="6">5+ Group Tour</option>
+                        </select>
+                    </div>
+                </div>
 
-            <label for="touristSpot">Tourist Spot</label>
-            <input
-                type="text"
-                id="touristSpot"
-                name="touristSpot"
-                placeholder="Example: Lalbagh Fort"
-                required
-            >
+                <!-- Duration Pills -->
+                <div style="margin-bottom: 22px;">
+                    <label style="display: block; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                        TRIP DURATION (DAYS)
+                    </label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="durationPillsGroup">
+                        <button type="button" class="planner-pill" data-days="1">1 Day (Day Trip)</button>
+                        <button type="button" class="planner-pill" data-days="2">2 Days (Weekend)</button>
+                        <button type="button" class="planner-pill active" data-days="3">3 Days (Recommended)</button>
+                        <button type="button" class="planner-pill" data-days="5">5 Days (Extended)</button>
+                        <button type="button" class="planner-pill" data-days="7">7 Days (Full Circuit)</button>
+                    </div>
+                </div>
 
-            <label for="visitDate">Visit Date</label>
-            <input
-                type="date"
-                id="visitDate"
-                name="visitDate"
-                required
-            >
+                <!-- Budget Tier Pills -->
+                <div>
+                    <label style="display: block; font-size: 12px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                        BUDGET CATEGORY & COMFORT
+                    </label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="budgetTierGroup">
+                        <button type="button" class="planner-pill" data-budget="economy">🎒 Budget / Economy</button>
+                        <button type="button" class="planner-pill active" data-budget="standard">🌟 Standard / Comfort</button>
+                        <button type="button" class="planner-pill" data-budget="luxury">💎 Luxury / Premium</button>
+                    </div>
+                </div>
+            </div>
 
-            <label for="people">Number of Visitors</label>
-            <input
-                type="number"
-                id="people"
-                name="people"
-                min="1"
-                max="50"
-                value="1"
-                required
-            >
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0;">
 
-            <button type="submit" class="signup-btn">
-                Submit Booking Request
-            </button>
+            <!-- 2. Where Do You Want to Visit? -->
+            <div style="margin-bottom: 30px;">
+                <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main, #0f172a); margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
+                    <span style="background:#087f5b; color:white; width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:13px;">2</span>
+                    Where Do You Want to Visit?
+                </h2>
+                <p style="font-size: 13px; color: #64748b; margin: 0 0 16px 0;">
+                    Select one or more destinations to include in your personalized route (click to select/unselect):
+                </p>
 
-            <p id="bookingMessage" aria-live="polite"></p>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;" id="destinationChipsGroup">
+                    <button type="button" class="planner-dest-chip active" data-dest="Cox's Bazar">🏖️ Cox's Bazar Sea Beach</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Sylhet & Sreemangal">🌿 Sylhet & Sreemangal</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Sajek Valley">☁️ Sajek Cloud Valley</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Sundarbans">🐅 Sundarbans Mangrove</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Saint Martin">🏝️ Saint Martin Coral Island</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Bandarban">⛰️ Bandarban Hills</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Kuakata">🌅 Kuakata Sunset Beach</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Kaptai & Rangamati">⛵ Rangamati Kaptai Lake</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Bogura">🏛️ Bogura & Mahasthangarh</button>
+                    <button type="button" class="planner-dest-chip" data-dest="Bagerhat">🕌 Bagerhat Sixty Dome</button>
+                </div>
+            </div>
 
-        </form>
+            <!-- Action Button -->
+            <div style="text-align: center; margin-top: 10px;">
+                <button type="button" id="calculatePlanBtn" class="primary-btn" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; box-shadow: 0 4px 14px rgba(8, 127, 91, 0.35); cursor: pointer;">
+                    Calculate Plan & Estimated Budget →
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Generated Plan Result Section (Dynamic) -->
+        <div id="planResultContainer" style="display: none;">
+
+            <!-- Cost Summary Cards -->
+            <div style="margin-bottom: 32px;">
+                <h3 style="font-size: 20px; font-weight: 800; color: var(--text-main, #0f172a); margin-bottom: 16px;">
+                    📊 Estimated Trip Budget Breakdown
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px;">
+                    <div class="planner-cost-card">
+                        <span class="cost-card-icon">🚌</span>
+                        <span class="cost-card-label">TRANSPORTATION</span>
+                        <strong class="cost-card-amount" id="costTransport">৳ 2,800</strong>
+                        <small class="cost-card-note" id="noteTransport">Roundtrip per person</small>
+                    </div>
+                    <div class="planner-cost-card">
+                        <span class="cost-card-icon">🏨</span>
+                        <span class="cost-card-label">HOTEL & RESORT</span>
+                        <strong class="cost-card-amount" id="costHotel">৳ 7,500</strong>
+                        <small class="cost-card-note" id="noteHotel">Standard room</small>
+                    </div>
+                    <div class="planner-cost-card">
+                        <span class="cost-card-icon">🍲</span>
+                        <span class="cost-card-label">FOOD & DINING</span>
+                        <strong class="cost-card-amount" id="costFood">৳ 3,600</strong>
+                        <small class="cost-card-note" id="noteFood">Local specialties</small>
+                    </div>
+                    <div class="planner-cost-card">
+                        <span class="cost-card-icon">🎟️</span>
+                        <span class="cost-card-label">SIGHTSEEING & TICKETS</span>
+                        <strong class="cost-card-amount" id="costSightseeing">৳ 1,200</strong>
+                        <small class="cost-card-note" id="noteSightseeing">Entry & boat rides</small>
+                    </div>
+                    <div class="planner-cost-card total-cost-card">
+                        <span class="cost-card-icon">💳</span>
+                        <span class="cost-card-label">TOTAL ESTIMATE</span>
+                        <strong class="cost-card-amount highlight" id="costTotal">৳ 15,100</strong>
+                        <small class="cost-card-note" id="noteTotal">Estimated for entire party</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day-by-Day Timeline Itinerary -->
+            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px;" class="portal-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 style="font-size: 20px; font-weight: 800; color: var(--text-main, #0f172a); margin: 0 0 4px 0;">
+                            🗓️ Suggested Day-by-Day Itinerary
+                        </h3>
+                        <p style="font-size: 13px; color: #64748b; margin: 0;" id="itinerarySubtitle">
+                            Optimized 3-Day route departing from Dhaka
+                        </p>
+                    </div>
+                    <button type="button" id="saveTripPlanBtn" class="btn-profile-green" style="padding: 10px 20px; font-size: 13px; font-weight: 700;">
+                        💾 Save Plan to My Profile
+                    </button>
+                </div>
+
+                <div id="itineraryTimelineList" style="display: flex; flex-direction: column; gap: 18px;">
+                    <!-- Dynamically populated timeline cards -->
+                </div>
+            </div>
+
+            <!-- Booking Shortcut CTAs -->
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 16px; padding: 22px 26px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 800; color: #166534;">
+                        Ready to make this trip a reality?
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #15803d;">
+                        Book your verified transport tickets, reserve top-rated hotels, or hire a certified local tour guide directly.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a id="ctaBookTransport" href="transport.html" class="primary-btn" style="font-size: 13px; padding: 10px 18px;">
+                        🚌 Book Transport →
+                    </a>
+                    <a id="ctaBookHotel" href="hotel-booking.html" class="primary-btn" style="background:#0284c7; border-color:#0284c7; font-size: 13px; padding: 10px 18px;">
+                        🏨 Book Hotel →
+                    </a>
+                    <a href="guides.html" class="primary-btn" style="background:#475569; border-color:#475569; font-size: 13px; padding: 10px 18px;">
+                        🧭 Find Guides →
+                    </a>
+                </div>
+            </div>
+
+        </div>
 
     </main>
 
     <!-- Footer -->
-    <footer>
-        <p>© 2026 Travel Kori Bangladesh</p>
+    <footer style="text-align: center; padding: 32px 24px; color: #94a3b8; font-size: 13px; border-top: 1px solid #e2e8f0; margin-top: 40px;">
+        <p>© 2026 Travel Kori Bangladesh • Connecting 64 Districts</p>
         <p>Explore Bangladesh with confidence.</p>
     </footer>
 
+    <!-- App Scripts -->
+    <script src="nav.js"></script>
     <script src="booking.js"></script>
 </body>
 </html>

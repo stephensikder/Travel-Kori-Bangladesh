@@ -1,88 +1,880 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Sign Up | Travel Kori Bangladesh</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-    <nav class="navbar">
-        <a href="index.html" class="logo">
-            TK <span>Travel Kori</span>
+    <style>
+        :root {
+            --brand-green: #087f5b;
+            --brand-green-hover: #066b4d;
+            --brand-light: #ecfdf5;
+            --brand-dark: #123328;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-bg: #ffffff;
+        }
+
+        body.auth-page {
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: 
+                radial-gradient(circle at 10% 15%, rgba(8, 127, 91, 0.08) 0%, transparent 35%),
+                radial-gradient(circle at 90% 20%, rgba(14, 165, 233, 0.06) 0%, transparent 30%),
+                radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+                #f8fafc;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Modern Glass Navbar */
+        .modern-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 7%;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(8, 127, 91, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-logo-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand-icon-badge {
+            background: linear-gradient(135deg, #087f5b 0%, #10b981 100%);
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 7px 11px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(8, 127, 91, 0.25);
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #17382f;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-text-title span {
+            color: var(--brand-green);
+        }
+
+        .modern-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .modern-nav-link {
+            text-decoration: none;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .modern-nav-link:hover {
+            color: var(--brand-green);
+            background: rgba(8, 127, 91, 0.06);
+        }
+
+        .nav-btn-pill {
+            text-decoration: none;
+            background: #ffffff;
+            color: var(--brand-green);
+            border: 1.5px solid #087f5b;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13.5px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(8, 127, 91, 0.08);
+        }
+
+        .nav-btn-pill:hover {
+            background: var(--brand-green);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(8, 127, 91, 0.2);
+        }
+
+        /* Centered Auth Card Container */
+        .auth-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 48px 20px 72px;
+            min-height: calc(100vh - 75px);
+            box-sizing: border-box;
+        }
+
+        .auth-card-modern {
+            width: 100%;
+            max-width: 660px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 44px 42px;
+            box-sizing: border-box;
+            border: 1px solid rgba(226, 232, 240, 0.85);
+            box-shadow: 
+                0 20px 45px -10px rgba(15, 23, 42, 0.07),
+                0 0 1px 1px rgba(15, 23, 42, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-top-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #087f5b 0%, #10b981 50%, #0284c7 100%);
+        }
+
+        .auth-pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #bbf7d0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .auth-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin: 0 0 8px;
+            line-height: 1.25;
+        }
+
+        .auth-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 24px;
+        }
+
+        /* Modern 4-Column Role Grid */
+        .role-section-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .modern-role-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 580px) {
+            .modern-role-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        .modern-role-btn {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 14px 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            outline: none;
+            user-select: none;
+        }
+
+        .modern-role-btn:hover {
+            border-color: #94a3b8;
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.05);
+        }
+
+        .modern-role-btn.active {
+            border-color: var(--brand-green);
+            background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+            box-shadow: 0 8px 20px -4px rgba(8, 127, 91, 0.18), 0 0 0 3px rgba(8, 127, 91, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .role-check-indicator {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: transparent;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modern-role-btn.active .role-check-indicator {
+            background: var(--brand-green);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(8, 127, 91, 0.3);
+        }
+
+        .role-icon-box {
+            font-size: 22px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .modern-role-btn:hover .role-icon-box {
+            transform: scale(1.08);
+        }
+
+        .modern-role-btn.active .role-icon-box {
+            background: #087f5b;
+            color: white;
+            border-color: #087f5b;
+        }
+
+        .role-btn-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        .modern-role-btn.active .role-btn-title {
+            color: var(--brand-green);
+        }
+
+        .role-btn-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            background: #e2e8f0;
+            padding: 2px 7px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .modern-role-btn.active .role-btn-badge {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        /* Modern Inputs */
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 520px) {
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modern-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .label-req {
+            color: #ef4444;
+            font-size: 13px;
+        }
+
+        .modern-input-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .modern-input-wrapper .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #94a3b8;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .modern-input-wrapper input,
+        .modern-input-wrapper select,
+        .modern-input-wrapper textarea {
+            width: 100%;
+            height: 48px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            background: #f8fafc;
+            padding: 0 16px 0 44px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #0f172a;
+            box-sizing: border-box;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modern-input-wrapper textarea {
+            height: auto;
+            padding: 12px 16px 12px 44px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modern-input-wrapper input:focus,
+        .modern-input-wrapper select:focus,
+        .modern-input-wrapper textarea:focus {
+            background: #ffffff;
+            border-color: var(--brand-green);
+            box-shadow: 0 0 0 4px rgba(8, 127, 91, 0.12);
+            outline: none;
+        }
+
+        .modern-input-wrapper:focus-within .input-icon {
+            color: var(--brand-green);
+        }
+
+        /* Specialized Subpanels */
+        .role-subpanel {
+            border-radius: 18px;
+            padding: 22px 20px;
+            margin: 8px 0 20px;
+            position: relative;
+            animation: panelFadeIn 0.25s ease-out;
+        }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .guide-subpanel {
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+        }
+
+        .hotel-subpanel {
+            background: #f0fdfa;
+            border: 1.5px solid #99f6e4;
+        }
+
+        .transport-subpanel {
+            background: #fff7ed;
+            border: 1.5px solid #fed7aa;
+        }
+
+        .subpanel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .subpanel-badge {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .guide-subpanel .subpanel-badge { color: #087f5b; }
+        .hotel-subpanel .subpanel-badge { color: #0f766e; }
+        .transport-subpanel .subpanel-badge { color: #c2410c; }
+
+        .subpanel-note {
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: #64748b;
+            margin: 10px 0 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        /* Modern CTA Submit Button */
+        .modern-submit-btn {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #087f5b 0%, #059669 100%);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 10px 24px -5px rgba(8, 127, 91, 0.35);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 10px;
+        }
+
+        .modern-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 28px -4px rgba(8, 127, 91, 0.45);
+            background: linear-gradient(135deg, #098862 0%, #047857 100%);
+        }
+
+        .modern-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-arrow {
+            transition: transform 0.2s ease;
+            font-size: 17px;
+        }
+
+        .modern-submit-btn:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Footer Prompt */
+        .auth-footer-prompt {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 13.5px;
+            color: #64748b;
+        }
+
+        .auth-link {
+            color: var(--brand-green);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .auth-link:hover {
+            color: var(--brand-green-hover);
+            text-decoration: underline;
+        }
+
+        #signupMessage {
+            margin-top: 14px;
+            font-size: 13.5px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 500px) {
+            .auth-card-modern {
+                padding: 30px 20px;
+                border-radius: 18px;
+            }
+            .auth-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body class="auth-page">
+
+    <!-- Modern Glass Navbar -->
+    <nav class="modern-navbar">
+        <a href="index.html" class="brand-logo-wrap">
+            <span class="brand-icon-badge">TK</span>
+            <span class="brand-text-title">Travel Kori <span>Bangladesh</span></span>
         </a>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="index.html#destinations">Districts</a>
+        <div class="modern-nav-links">
+            <a href="index.html" class="modern-nav-link">Home</a>
+            <a href="index.html#destinations" class="modern-nav-link">Districts</a>
+            <a href="login.html" class="nav-btn-pill">Login →</a>
         </div>
     </nav>
 
-    <main class="auth-container">
-        <div class="auth-card">
-            <p class="section-label">START YOUR JOURNEY</p>
+    <!-- Main Centered Auth Form -->
+    <main class="auth-wrapper">
+        <div class="auth-card-modern">
+            <div class="card-top-stripe"></div>
 
-            <h1>Create an Account</h1>
+            <div class="auth-pill-badge">
+                <span class="badge-dot"></span>
+                ALL 64 DISTRICTS OF BANGLADESH
+            </div>
 
-            <p>Join Travel Kori Bangladesh and explore the country.</p>
+            <h1 class="auth-title">Create Your Account</h1>
+            <p class="auth-subtitle">Join thousands of travelers, certified local guides, hotel partners, and transport operators across Bangladesh.</p>
 
             <form id="signupForm">
-                <label for="fullName">Full Name</label>
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter your full name"
-                    required
-                >
+                
+                <!-- Modern 4-Column Role Switcher -->
+                <label class="role-section-label">Select Your Account Type</label>
+                <div class="modern-role-grid">
+                    
+                    <button type="button" id="roleBtnTraveler" class="modern-role-btn active" aria-pressed="true">
+                        <span class="role-check-indicator">✓</span>
+                        <span class="role-icon-box">🧳</span>
+                        <span class="role-btn-title">Traveler</span>
+                        <span class="role-btn-badge">Explorer</span>
+                    </button>
 
-                <label for="signupEmail">Email Address</label>
-                <input
-                    type="email"
-                    id="signupEmail"
-                    placeholder="Enter your email"
-                    required
-                >
+                    <button type="button" id="roleBtnGuide" class="modern-role-btn" aria-pressed="false">
+                        <span class="role-check-indicator">✓</span>
+                        <span class="role-icon-box">🧭</span>
+                        <span class="role-btn-title">Tour Guide</span>
+                        <span class="role-btn-badge">Certified</span>
+                    </button>
 
-                <label for="signupPassword">Password</label>
-                <input
-                    type="password"
-                    id="signupPassword"
-                    placeholder="Create a password"
-                    minlength="8"
-                    required
-                >
+                    <button type="button" id="roleBtnHotel" class="modern-role-btn" aria-pressed="false">
+                        <span class="role-check-indicator">✓</span>
+                        <span class="role-icon-box">🏨</span>
+                        <span class="role-btn-title">Hotel Partner</span>
+                        <span class="role-btn-badge">Stays</span>
+                    </button>
 
-                <label for="confirmPassword">Confirm Password</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Enter your password again"
-                    minlength="8"
-                    required
-                >
+                    <button type="button" id="roleBtnTransport" class="modern-role-btn" aria-pressed="false">
+                        <span class="role-check-indicator">✓</span>
+                        <span class="role-icon-box">🚌</span>
+                        <span class="role-btn-title">Transport</span>
+                        <span class="role-btn-badge">Fleets</span>
+                    </button>
 
-                <button type="submit" class="primary-btn">
-                    Create Account
+                </div>
+
+                <!-- Primary Identity Fields -->
+                <label for="fullName" class="modern-label">
+                    <span>Full Name / Contact Person</span>
+                    <span class="label-req">*</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="e.g. Stephen Ahmed / Towki Hamid"
+                        required
+                    >
+                </div>
+
+                <label for="signupEmail" class="modern-label">
+                    <span>Email Address</span>
+                    <span class="label-req">*</span>
+                </label>
+                <div class="modern-input-wrapper">
+                    <span class="input-icon">✉️</span>
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="name@example.com"
+                        required
+                    >
+                </div>
+
+                <!-- Tour Guide Profile Subpanel -->
+                <div id="guideSpecificFields" class="role-subpanel guide-subpanel" style="display: none;">
+                    <div class="subpanel-header">
+                        <span style="font-size: 20px;">🧭</span>
+                        <span class="subpanel-badge">Certified Tour Guide Credentials</span>
+                    </div>
+
+                    <label for="guidePhone" class="modern-label">Contact Phone</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">📞</span>
+                        <input type="tel" id="guidePhone" placeholder="+8801700000000">
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div>
+                            <label for="guideDailyRate" class="modern-label">Daily Rate (৳ BDT)</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">৳</span>
+                                <input type="number" id="guideDailyRate" placeholder="2000" min="500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="guideExperience" class="modern-label">Experience (Years)</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">⭐</span>
+                                <input type="number" id="guideExperience" placeholder="3" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <label for="guideLanguages" class="modern-label">Spoken Languages</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">🗣️</span>
+                        <input type="text" id="guideLanguages" placeholder="e.g. Bengali, English, Sylheti">
+                    </div>
+
+                    <label for="guideSpecialization" class="modern-label">Supported Districts / Regions</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">📍</span>
+                        <input type="text" id="guideSpecialization" placeholder="e.g. Sylhet, Bandarban, Cox's Bazar">
+                    </div>
+
+                    <label for="guideBio" class="modern-label">Short Biography / Introduction</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">📝</span>
+                        <textarea id="guideBio" rows="2" placeholder="Tell travelers about your expertise, local insights, and guiding style..."></textarea>
+                    </div>
+
+                    <p class="subpanel-note">
+                        <span>ℹ️</span> Note: Newly registered tour guides undergo administrative verification before becoming active in the public directory.
+                    </p>
+                </div>
+
+                <!-- Hotel Partner Profile Subpanel -->
+                <div id="hotelSpecificFields" class="role-subpanel hotel-subpanel" style="display: none;">
+                    <div class="subpanel-header">
+                        <span style="font-size: 20px;">🏨</span>
+                        <span class="subpanel-badge">Hotel & Resort Property Details</span>
+                    </div>
+
+                    <label for="hotelName" class="modern-label">Hotel / Resort Name</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">🏢</span>
+                        <input type="text" id="hotelName" placeholder="e.g. Grand Sultan Tea Resort, Cox's Pearl Inn">
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div>
+                            <label for="hotelDistrict" class="modern-label">District / Location</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">📍</span>
+                                <input type="text" id="hotelDistrict" placeholder="e.g. Cox's Bazar, Sylhet, Dhaka">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="hotelPhone" class="modern-label">Front Desk Phone</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">📞</span>
+                                <input type="tel" id="hotelPhone" placeholder="+8801700000000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div>
+                            <label for="hotelMinPrice" class="modern-label">Starting Room Rate (৳)</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">৳</span>
+                                <input type="number" id="hotelMinPrice" placeholder="2500" min="500">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="hotelStars" class="modern-label">Property Category</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">⭐</span>
+                                <select id="hotelStars">
+                                    <option value="3">3-Star Comfort</option>
+                                    <option value="4">4-Star Premium</option>
+                                    <option value="5">5-Star Luxury Resort</option>
+                                    <option value="2">Standard Boutique / Guest House</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label for="hotelAddress" class="modern-label">Street / Property Address</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">📌</span>
+                        <input type="text" id="hotelAddress" placeholder="e.g. Kolatoli Beach Road, Cox's Bazar">
+                    </div>
+
+                    <label for="hotelDescription" class="modern-label">About the Property</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">📝</span>
+                        <textarea id="hotelDescription" rows="2" placeholder="Brief summary of room types, amenities, and guest hospitality services..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Transport Operator Profile Subpanel -->
+                <div id="transportSpecificFields" class="role-subpanel transport-subpanel" style="display: none;">
+                    <div class="subpanel-header">
+                        <span style="font-size: 20px;">🚌</span>
+                        <span class="subpanel-badge">Transport Fleet & Operations Details</span>
+                    </div>
+
+                    <label for="transportOperator" class="modern-label">Transport Company / Fleet Brand</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">🚍</span>
+                        <input type="text" id="transportOperator" placeholder="e.g. Green Line Paribahan, Padma Cruise Express">
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div>
+                            <label for="transportType" class="modern-label">Primary Fleet Mode</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">🚀</span>
+                                <select id="transportType">
+                                    <option value="Bus">Bus / Coach</option>
+                                    <option value="Train">Intercity Train</option>
+                                    <option value="Flight">Domestic Air / Flight</option>
+                                    <option value="Launch">River Launch / Ship</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="transportPhone" class="modern-label">Operations Phone</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">📞</span>
+                                <input type="tel" id="transportPhone" placeholder="+8801800000000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <label for="transportRoutes" class="modern-label">Service Routes / Destination Coverage</label>
+                    <div class="modern-input-wrapper">
+                        <span class="input-icon">🛣️</span>
+                        <input type="text" id="transportRoutes" placeholder="e.g. Dhaka - Cox's Bazar - Chittagong - Sylhet">
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div>
+                            <label for="transportFare" class="modern-label">Average Fare per Seat (৳)</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">৳</span>
+                                <input type="number" id="transportFare" placeholder="1200" min="100">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="transportLicense" class="modern-label">BRTA / Route License No.</label>
+                            <div class="modern-input-wrapper">
+                                <span class="input-icon">📄</span>
+                                <input type="text" id="transportLicense" placeholder="e.g. BRTA-DH-2026-991">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Fields -->
+                <div class="form-grid-2">
+                    <div>
+                        <label for="signupPassword" class="modern-label">
+                            <span>Password</span>
+                            <span class="label-req">*</span>
+                        </label>
+                        <div class="modern-input-wrapper">
+                            <span class="input-icon">🔒</span>
+                            <input
+                                type="password"
+                                id="signupPassword"
+                                placeholder="Min 8 characters"
+                                minlength="8"
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div>
+                        <label for="confirmPassword" class="modern-label">
+                            <span>Confirm Password</span>
+                            <span class="label-req">*</span>
+                        </label>
+                        <div class="modern-input-wrapper">
+                            <span class="input-icon">🛡️</span>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Re-enter password"
+                                minlength="8"
+                                required
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="signupSubmitBtn" class="modern-submit-btn">
+                    <span>Create Traveler Account</span>
+                    <span class="btn-arrow">→</span>
                 </button>
 
                 <p id="signupMessage" role="status"></p>
+
             </form>
 
-            <p>
-                Already have an account?
-                <a href="login.html">Login</a>
-            </p>
+            <div class="auth-footer-prompt">
+                Already have an account? 
+                <a href="login.html" class="auth-link">Login to your account →</a>
+            </div>
+
         </div>
     </main>
 
-    <footer>
-        <p>© 2026 Travel Kori Bangladesh</p>
+    <footer style="text-align: center; padding: 24px; color: #94a3b8; font-size: 13px;">
+        <p>© 2026 Travel Kori Bangladesh • Connecting 64 Districts</p>
     </footer>
 
+    <script src="nav.js"></script>
     <script src="auth.js"></script>
 </body>
 </html>
