@@ -422,7 +422,7 @@
         // Load 64 Districts for Selectors
         async function loadDistrictsList() {
             try {
-                const res = await fetch("http://localhost:5000/api/districts");
+                const res = await fetch("/api/districts");
                 const data = await res.json();
                 if (data.success && Array.isArray(data.districts)) {
                     const sorted = data.districts.slice().sort((a, b) => a.name.localeCompare(b.name));
@@ -446,7 +446,7 @@
         // Load Guides from Backend
         async function loadGuides() {
             try {
-                const res = await fetch("http://localhost:5000/api/tourguides");
+                const res = await fetch("/api/tourguides");
                 const data = await res.json();
                 if (data.success && Array.isArray(data.guides)) {
                     allGuides = data.guides;
@@ -597,7 +597,7 @@
             reviewsModal.style.display = "flex";
 
             try {
-                const res = await fetch(`http://localhost:5000/api/guide-reviews/${encodeURIComponent(guideId)}`);
+                const res = await fetch(`/api/guide-reviews/${encodeURIComponent(guideId)}`);
                 const data = await res.json();
 
                 if (data.success && Array.isArray(data.reviews) && data.reviews.length > 0) {
@@ -692,7 +692,7 @@
             const paymentMethod = document.querySelector('input[name="guidePayment"]:checked')?.value || "cash";
 
             try {
-                const res = await fetch("http://localhost:5000/api/tourguide-bookings", {
+                const res = await fetch("/api/tourguide-bookings", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

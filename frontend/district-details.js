@@ -3,7 +3,7 @@
 // Live Google Maps Integration & MongoDB 64 Districts
 // ============================================
 
-const API_URL = "http://localhost:5000";
+const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
 
 // Fallback spots in case offline
 const districtSpots = {

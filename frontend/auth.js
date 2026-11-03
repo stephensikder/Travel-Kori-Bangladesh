@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = ((window.location.origin && window.location.origin !== "null") ? window.location.origin : "") + "/api/auth";
 
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");

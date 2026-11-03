@@ -4783,9 +4783,9 @@ async function startServer() {
 
         await seedDefaultPartnerAccounts();
 
-        app.listen(PORT, function () {
+        app.listen(PORT, "0.0.0.0", function () {
             console.log(
-                `Server is running at http://localhost:${PORT}`
+                `Server is running at http://0.0.0.0:${PORT} (local: http://localhost:${PORT})`
             );
         });
 

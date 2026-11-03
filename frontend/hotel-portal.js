@@ -3,7 +3,7 @@
 // Handles hotel reservations, incoming guest check-ins, execution completions, and timeline filters
 // ===================================================
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = ((window.location.origin && window.location.origin !== "null") ? window.location.origin : "") + "/api";
 
 let currentUser = null;
 let allHotelBookings = [];

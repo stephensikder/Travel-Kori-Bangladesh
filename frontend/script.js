@@ -86,7 +86,7 @@ const districtSpots = {
     "Thakurgaon": ["Baliadangi Surjapuri Mango Tree", "King Jangal", "Shalbagan"]
 };
 
-const API_URL = "http://localhost:5000/api/favorites";
+const API_URL = ((window.location.origin && window.location.origin !== "null") ? window.location.origin : "") + "/api/favorites";
 
 const districtGrid = document.getElementById("districtGrid");
 const districtSearch = document.getElementById("districtSearch");
@@ -740,7 +740,7 @@ async function loadDestinationReviews(dest) {
 
     let reviews = [];
     try {
-        const res = await fetch(`http://localhost:5000/api/destinations/${encodeURIComponent(dest.title)}/reviews`);
+        const res = await fetch(`/api/destinations/${encodeURIComponent(dest.title)}/reviews`);
         if (res.ok) {
             const data = await res.json();
             if (data.reviews && data.reviews.length > 0) {
@@ -816,7 +816,7 @@ if (destReviewForm) {
 
         try {
             const destTitle = currentModalDestination ? currentModalDestination.title : "Cox's Bazar Beach & Kolatoli Point";
-            const res = await fetch(`http://localhost:5000/api/destinations/${encodeURIComponent(destTitle)}/reviews`, {
+            const res = await fetch(`/api/destinations/${encodeURIComponent(destTitle)}/reviews`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

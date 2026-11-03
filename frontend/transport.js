@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000";
+const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
 
 // All 64 Districts of Bangladesh for origin & destination
 const cities = [

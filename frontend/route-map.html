@@ -319,7 +319,7 @@
         // Load Districts from Backend
         async function loadDistricts() {
             try {
-                const res = await fetch("http://localhost:5000/api/districts");
+                const res = await fetch("/api/districts");
                 const data = await res.json();
                 if (data.success && Array.isArray(data.districts)) {
                     // Sort alphabetically
@@ -359,7 +359,7 @@
             }
 
             try {
-                const res = await fetch(`http://localhost:5000/api/routes?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+                const res = await fetch(`/api/routes?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
                 const data = await res.json();
 
                 if (data.success) {

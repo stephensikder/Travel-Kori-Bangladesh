@@ -1,5 +1,5 @@
 // API URL
-const API_URL = "http://localhost:5000";
+const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
 
 // Get logged-in user
 let user = null;
@@ -432,7 +432,7 @@ async function loadGuideBookings() {
     }
 
     try {
-        const response = await fetch(`http://localhost:5000/api/bookings/${user.id}`);
+        const response = await fetch(`/api/bookings/${user.id}`);
         const data = await response.json();
 
         if (!response.ok) throw new Error(data.message || "Failed to load bookings.");
@@ -559,7 +559,7 @@ if (guideReviewForm) {
         reviewSubmitMsg.textContent = "";
 
         try {
-            const res = await fetch("http://localhost:5000/api/guide-reviews", {
+            const res = await fetch("/api/guide-reviews", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -598,7 +598,7 @@ if (guideReviewForm) {
 ========================================= */
 
 (function initTransportDashboard() {
-    const API_URL = "http://localhost:5000";
+    const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
 
     const container = document.getElementById("myTransportBookings");
     const message = document.getElementById("transportBookingsMessage");
@@ -942,7 +942,7 @@ async function loadNotifications() {
     if (!listEl || !msgEl || !user || !user.id) return;
 
     try {
-        const res = await fetch(`http://localhost:5000/api/notifications/${encodeURIComponent(user.id)}`);
+        const res = await fetch(`/api/notifications/${encodeURIComponent(user.id)}`);
         const data = await res.json();
 
         if (data.success && Array.isArray(data.notifications)) {
@@ -981,7 +981,7 @@ async function loadNotifications() {
             if (markAllBtn) {
                 markAllBtn.onclick = async function() {
                     for (const n of notifications.filter(x => !x.read)) {
-                        await fetch(`http://localhost:5000/api/notifications/${n._id}/read`, { method: "PUT" });
+                        await fetch(`/api/notifications/${n._id}/read`, { method: "PUT" });
                     }
                     loadNotifications();
                 };
@@ -995,7 +995,7 @@ async function loadNotifications() {
 
 async function markNotificationRead(id) {
     try {
-        const res = await fetch(`http://localhost:5000/api/notifications/${id}/read`, { method: "PUT" });
+        const res = await fetch(`/api/notifications/${id}/read`, { method: "PUT" });
         const data = await res.json();
         if (data.success) {
             loadNotifications();
@@ -1477,9 +1477,9 @@ function updateStarPickerVisuals(selectedRating) {
             try {
                 // Collect all bookings for this user
                 const [hotelRes, transportRes, guideRes] = await Promise.all([
-                    fetch(`http://localhost:5000/api/hotel-bookings/${currentUser.id}`).catch(() => null),
-                    fetch(`http://localhost:5000/api/transport-bookings/${currentUser.id}`).catch(() => null),
-                    fetch(`http://localhost:5000/api/my-guide-bookings/${currentUser.id}`).catch(() => null)
+                    fetch(`/api/hotel-bookings/${currentUser.id}`).catch(() => null),
+                    fetch(`/api/transport-bookings/${currentUser.id}`).catch(() => null),
+                    fetch(`/api/my-guide-bookings/${currentUser.id}`).catch(() => null)
                 ]);
 
                 const hotels = hotelRes && hotelRes.ok ? (await hotelRes.json()).bookings || [] : [];
@@ -1514,7 +1514,7 @@ function updateStarPickerVisuals(selectedRating) {
         if (!grid) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/trip-plans/${currentUser.id}`);
+            const res = await fetch(`/api/trip-plans/${currentUser.id}`);
             if (!res.ok) throw new Error("Could not load trip plans.");
             const data = await res.json();
             const plans = data.plans || [];
@@ -1567,7 +1567,7 @@ function updateStarPickerVisuals(selectedRating) {
                     const planId = this.getAttribute("data-id");
                     if (!confirm("Are you sure you want to remove this saved trip plan?")) return;
                     try {
-                        await fetch(`http://localhost:5000/api/trip-plans/${planId}`, { method: "DELETE" });
+                        await fetch(`/api/trip-plans/${planId}`, { method: "DELETE" });
                         loadSavedTripPlans();
                     } catch (e) {
                         alert("Could not remove plan.");

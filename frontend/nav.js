@@ -52,7 +52,7 @@
     async function fetchUserNotifications(userId) {
         if (!userId) return [];
         try {
-            const res = await fetch(`http://localhost:5000/api/notifications/${userId}`);
+            const res = await fetch(`/api/notifications/${userId}`);
             if (!res.ok) return [];
             const data = await res.json();
             return data.notifications || [];
@@ -63,14 +63,14 @@
 
     async function markNotificationRead(id, userId) {
         try {
-            await fetch(`http://localhost:5000/api/notifications/${id}/read`, { method: "PUT" });
+            await fetch(`/api/notifications/${id}/read`, { method: "PUT" });
             updateNotificationsUI(userId);
         } catch (e) {}
     }
 
     async function markAllNotificationsRead(userId) {
         try {
-            await fetch(`http://localhost:5000/api/notifications/${userId}/read-all`, { method: "PUT" });
+            await fetch(`/api/notifications/${userId}/read-all`, { method: "PUT" });
             updateNotificationsUI(userId);
         } catch (e) {}
     }

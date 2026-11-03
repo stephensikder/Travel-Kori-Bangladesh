@@ -501,7 +501,7 @@
         // 2. Load Guide Profile
         async function loadGuideProfile() {
             try {
-                const res = await fetch(`http://localhost:5000/api/guide/profile/${currentGuideId}`);
+                const res = await fetch(`/api/guide/profile/${currentGuideId}`);
                 const data = await res.json();
                 if (data.success && data.guide) {
                     guideProfileData = data.guide;
@@ -551,7 +551,7 @@
             const newStatus = !guideProfileData.isAvailable;
             toggleAvailBtn.disabled = true;
             try {
-                const res = await fetch(`http://localhost:5000/api/guide/availability/${currentGuideId}`, {
+                const res = await fetch(`/api/guide/availability/${currentGuideId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ isAvailable: newStatus })
@@ -571,7 +571,7 @@
         // 4. Load Requests for this Guide
         async function loadRequests() {
             try {
-                const res = await fetch(`http://localhost:5000/api/guide/bookings/${currentGuideId}`);
+                const res = await fetch(`/api/guide/bookings/${currentGuideId}`);
                 const data = await res.json();
                 if (data.success && Array.isArray(data.bookings)) {
                     allRequests = data.bookings;
@@ -684,7 +684,7 @@
         // Update Booking Status Handler
         async function updateBookingStatus(bookingId, status) {
             try {
-                const res = await fetch(`http://localhost:5000/api/guide/bookings/${bookingId}/status`, {
+                const res = await fetch(`/api/guide/bookings/${bookingId}/status`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -722,7 +722,7 @@
             settingsMsg.textContent = "";
 
             try {
-                const res = await fetch(`http://localhost:5000/api/guide/profile/${currentGuideId}`, {
+                const res = await fetch(`/api/guide/profile/${currentGuideId}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

@@ -3,6 +3,9 @@
 // Configure restricted browser keys here.
 // ===================================================
 
+// Dynamic API Base URL: Automatically works on both localhost and Render production
+window.API_BASE = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "http://localhost:5000";
+
 // Google Maps API Key
 // If empty, the Route Map page seamlessly uses high-resolution CartoDB Voyager tiles with full marker routing.
 // To use official Google Maps JavaScript API:
