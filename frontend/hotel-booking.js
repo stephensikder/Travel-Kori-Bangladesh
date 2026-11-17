@@ -1,5 +1,9 @@
 const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
 
+function escapeHTML(str) {
+    return String(str || "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
 const districts = [
     "Bagerhat", "Bandarban", "Barguna", "Barishal",
     "Bhola", "Bogura", "Brahmanbaria", "Chandpur",
@@ -204,7 +208,8 @@ function renderHotels(list) {
         title.textContent = hotel.name;
 
         const location = document.createElement("p");
-        location.innerHTML = `📍 ${hotel.district} <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.name + ', ' + hotel.district + ', Bangladesh')}" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#087f5b; margin-left:8px; text-decoration:underline; font-weight:600;">View on Google Maps ↗</a>`;
+        location.className = "hotel-card-location";
+        location.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px; margin-right:4px; color:#087f5b;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${escapeHTML(hotel.district)} <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.name + ', ' + hotel.district + ', Bangladesh')}" target="_blank" rel="noopener noreferrer" style="font-size:12px; color:#087f5b; margin-left:8px; text-decoration:underline; font-weight:600;">View on Google Maps ↗</a>`;
 
         const description = document.createElement("p");
         description.textContent = hotel.description;
@@ -214,16 +219,30 @@ function renderHotels(list) {
         price.textContent =
             `From ৳${Math.min(...Object.values(hotel.prices)).toLocaleString("en-BD")} / night`;
 
+        const btnRow = document.createElement("div");
+        btnRow.className = "hotel-card-btn-row";
+        btnRow.style.display = "flex";
+        btnRow.style.gap = "8px";
+        btnRow.style.marginTop = "12px";
+
+        const detailsLink = document.createElement("a");
+        detailsLink.href = `hotel-details.html?id=${encodeURIComponent(hotel.id || hotel.name)}`;
+        detailsLink.className = "btn-secondary-details";
+        detailsLink.textContent = "View Details →";
+        detailsLink.style.cssText = "flex:1; text-align:center; padding:9px 12px; border-radius:8px; font-weight:700; font-size:13px; text-decoration:none; background:var(--bg-surface, #f1f5f9); border:1px solid var(--border-color, #cbd5e1); color:var(--text-main, #0f172a); white-space:nowrap; display:inline-flex; align-items:center; justify-content:center;";
+
         const button = document.createElement("button");
         button.type = "button";
         button.className = "signup-btn";
         button.textContent = "Select Hotel";
+        button.style.cssText = "flex:1; white-space:nowrap; padding:9px 12px; font-size:13px;";
 
         button.addEventListener("click", function () {
             selectHotel(hotel);
         });
 
-        content.append(title, location, description, price, button);
+        btnRow.append(detailsLink, button);
+        content.append(title, location, description, price, btnRow);
         card.append(image, content);
         hotelList.appendChild(card);
     });
@@ -772,4 +791,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Clear the pending search after it has been applied
     sessionStorage.removeItem("travelKoriPendingHotelSearch");
+
+    // Handle incoming direct hotel or room booking via URL query
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const directHotelName = urlParams.get("hotel");
+        const directRoomType = urlParams.get("roomType");
+        if (directHotelName) {
+            const found = hotels.find(h => h.name.toLowerCase() === directHotelName.toLowerCase() || (h.id && h.id === directHotelName));
+            if (found) {
+                selectHotel(found);
+                if (directRoomType && hotelRoomType) {
+                    const normalizedType = directRoomType.toLowerCase();
+                    if (normalizedType.includes("deluxe") || normalizedType.includes("executive")) hotelRoomType.value = "Deluxe";
+                    else if (normalizedType.includes("family") || normalizedType.includes("suite")) hotelRoomType.value = "Family";
+                    else hotelRoomType.value = "Standard";
+                    calculatePrice();
+                }
+                const bookingSection = document.getElementById("hotelBookingSection");
+                if (bookingSection) {
+                    bookingSection.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+        }
+    } catch (e) {}
 });

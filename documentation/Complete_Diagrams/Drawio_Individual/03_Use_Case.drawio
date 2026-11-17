@@ -1,0 +1,269 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="03_use_case" name="03_Use_Case">
+    <mxGraphModel dx="2913" dy="1719" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1350" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="Use Case Diagram" vertex="1">
+          <mxGeometry height="40" width="1700" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sys_bound" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;TRAVEL KORI BANGLADESH PLATFORM BOUNDARY&lt;/b&gt;" vertex="1">
+          <mxGeometry height="1180" width="1040" x="380" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_tp" parent="sys_bound" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC12: Manage Fleet Schedules&lt;br&gt;&amp;amp; Seat Allocations" vertex="1">
+          <mxGeometry height="70" width="280" x="710" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_trans_b" parent="sys_bound" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC05: Select Seats &amp;amp; Reserve&lt;br&gt;Multimodal Transport" vertex="1">
+          <mxGeometry height="70" width="270" x="490" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_gp" parent="sys_bound" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC13: Guide Operations Portal&lt;br&gt;&amp;amp; Photo / Rate Settings" vertex="1">
+          <mxGeometry height="70" width="260" x="370" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_reg" parent="sys_bound" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC03: User Account&lt;br&gt;Registration &amp;amp; Login" vertex="1">
+          <mxGeometry height="70" width="270" x="60" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="c_inc_trans" edge="1" parent="sys_bound" source="uc_trans_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="uc_reg" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" x="-0.043" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="475" />
+              <mxPoint x="410" y="475" />
+              <mxPoint x="410" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="act_visitor" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Visitor&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="120" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="act_reg_user" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Registered&lt;br&gt;User&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="120" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="act_traveler" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Authenticated&lt;br&gt;Traveler&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="120" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="act_guide" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Tour Guide&lt;br&gt;Partner&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="120" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="act_hotel" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Hotel Owner&lt;br&gt;Partner&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="1560" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="act_provider" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Service&lt;br&gt;Provider&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="1450" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="act_trans" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;Transport&lt;br&gt;Operator&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="1560" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="act_admin" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="&lt;b&gt;System&lt;br&gt;Administrator&lt;/b&gt;" vertex="1">
+          <mxGeometry height="130" width="90" x="1560" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_dist" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC01: Explore 64 Districts&lt;br&gt;&amp;amp; Route Network" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_attr" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC02: View Attractions&lt;br&gt;&amp;amp; Entrance Fees" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_hotel_b" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC04: Search &amp;amp; Book&lt;br&gt;Hotel Accommodations" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_guide_b" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC06: Hire Certified Local&lt;br&gt;Tour Guide" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_plan" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC07: Plan Custom Trip&lt;br&gt;&amp;amp; Budget Estimation" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_rev" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC08: Submit Guide Review&lt;br&gt;&amp;amp; Star Rating" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_pdf" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC09: Download PDF Ticket&lt;br&gt;&amp;amp; Itinerary Receipt" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_prof" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC10: Manage Profile&lt;br&gt;&amp;amp; Upload Avatar" vertex="1">
+          <mxGeometry height="70" width="270" x="430" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_hp" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC11: Manage Hotel Bookings&lt;br&gt;&amp;amp; Confirm Stay Status" vertex="1">
+          <mxGeometry height="70" width="280" x="1080" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_adm1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC14: Master Bookings Audit&lt;br&gt;&amp;amp; Status Overrides" vertex="1">
+          <mxGeometry height="70" width="280" x="1080" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_adm2" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC15: User Account Moderation&lt;br&gt;&amp;amp; RBAC Suspension" vertex="1">
+          <mxGeometry height="70" width="280" x="1080" y="860" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_adm3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC16: Catalog CRUD Management&lt;br&gt;(Hotels/Transport/Spots)" vertex="1">
+          <mxGeometry height="70" width="280" x="1080" y="960" as="geometry" />
+        </mxCell>
+        <mxCell id="uc_adm4" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="UC17: Security Monitoring&lt;br&gt;&amp;amp; Audit Log Inspection" vertex="1">
+          <mxGeometry height="70" width="280" x="1080" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="c_vis_1" edge="1" parent="1" source="act_visitor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_dist" value="">
+          <mxGeometry relative="1" x="-0.1086" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="200" />
+              <mxPoint x="270" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_vis_2" edge="1" parent="1" source="act_visitor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_attr" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_vis_3" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;entryX=0.07;entryY=0.269;entryDx=0;entryDy=0;entryPerimeter=0;" target="uc_reg" value="">
+          <mxGeometry relative="1" x="0.1149" as="geometry">
+            <Array as="points">
+              <mxPoint x="290" y="270" />
+              <mxPoint x="290" y="350" />
+              <mxPoint x="458.9" y="350" />
+            </Array>
+            <mxPoint x="210" y="270" as="sourcePoint" />
+            <mxPoint x="440" y="449.9999999999998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_reg_1" edge="1" parent="1" source="act_reg_user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_reg" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_reg_2" edge="1" parent="1" source="act_reg_user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_prof" value="">
+          <mxGeometry relative="1" x="-0.0282" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="430" />
+              <mxPoint x="250" y="1095" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_trav_1" edge="1" parent="1" source="act_traveler" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_hotel_b" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="565" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_trav_2" edge="1" parent="1" source="act_traveler" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_trans_b" value="">
+          <mxGeometry relative="1" x="0.034" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="610" />
+              <mxPoint x="540" y="640" />
+              <mxPoint x="1005" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_trav_3" edge="1" parent="1" source="act_traveler" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_guide_b" value="">
+          <mxGeometry relative="1" x="0.1643" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_trav_4" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" value="">
+          <mxGeometry relative="1" x="-0.0815" as="geometry">
+            <Array as="points">
+              <mxPoint x="610" y="570" />
+            </Array>
+            <mxPoint x="210" y="570" as="sourcePoint" />
+            <mxPoint x="610" y="772.0016835446279" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_guide_1" edge="1" parent="1" source="act_guide" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_gp" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_hotel_1" edge="1" parent="1" source="act_hotel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_hp" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1410" y="225" />
+              <mxPoint x="1410" y="225" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_trans_1" edge="1" parent="1" source="act_trans" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_tp" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_adm_1" edge="1" parent="1" source="act_admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_adm1" value="">
+          <mxGeometry relative="1" x="-0.1045" as="geometry">
+            <Array as="points">
+              <mxPoint x="1490" y="930" />
+              <mxPoint x="1490" y="795" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_adm_2" edge="1" parent="1" source="act_admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_adm2" value="">
+          <mxGeometry relative="1" x="0.0182" as="geometry">
+            <Array as="points">
+              <mxPoint x="1460" y="970" />
+              <mxPoint x="1460" y="895" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_adm_3" edge="1" parent="1" source="act_admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_adm3" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1480" y="995" />
+              <mxPoint x="1480" y="995" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_adm_4" edge="1" parent="1" source="act_admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;" target="uc_adm4" value="">
+          <mxGeometry relative="1" x="-0.2" as="geometry">
+            <Array as="points">
+              <mxPoint x="1520" y="1020" />
+              <mxPoint x="1520" y="1095" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_gen_hotel" edge="1" parent="1" source="act_hotel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=0;endArrow=block;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="act_provider" value="">
+          <mxGeometry relative="1" x="-0.1892" as="geometry">
+            <Array as="points">
+              <mxPoint x="1495" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_gen_trans" edge="1" parent="1" source="act_trans" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=0;endArrow=block;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="act_provider" value="">
+          <mxGeometry relative="1" x="-0.1795" as="geometry">
+            <Array as="points">
+              <mxPoint x="1495" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_inc_hotel" edge="1" parent="1" source="uc_hotel_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="uc_reg" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="495" />
+              <mxPoint x="740" y="395" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_inc_guide" edge="1" parent="1" source="uc_guide_b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="uc_reg" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" x="-0.0218" as="geometry">
+            <Array as="points">
+              <mxPoint x="840" y="670" />
+              <mxPoint x="840" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_ext_rev" edge="1" parent="1" source="uc_rev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="uc_guide_b" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" x="0.0223" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="900" />
+              <mxPoint x="740" y="695" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_ext_pdf_h" edge="1" parent="1" source="uc_pdf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="uc_hotel_b" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" x="-0.5576" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="770" y="995" />
+              <mxPoint x="770" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_ext_pdf_t" edge="1" parent="1" source="uc_pdf" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" target="uc_trans_b" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" x="0.0031" as="geometry">
+            <Array as="points">
+              <mxPoint x="1030" y="1010" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

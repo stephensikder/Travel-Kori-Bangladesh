@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Details | Travel Kori Bangladesh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hotel-detail-container {
+            max-width: 1200px;
+            margin: 28px auto 60px;
+            padding: 0 20px;
+        }
+
+        .back-nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color, #087f5b);
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            transition: all 0.2s ease;
+        }
+
+        .btn-back-link:hover {
+            background: var(--bg-hover, #f1f5f9);
+            border-color: var(--primary-color, #087f5b);
+        }
+
+        /* 1. Header & Gallery Section */
+        .hotel-header-card {
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            margin-bottom: 30px;
+        }
+
+        .hotel-gallery-wrapper {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background: #0f172a;
+            overflow: hidden;
+        }
+
+        .hotel-gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .hotel-gallery-badge {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hotel-header-body {
+            padding: 26px 30px;
+        }
+
+        .hotel-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .hotel-title-row h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main, #0f172a);
+            letter-spacing: -0.3px;
+        }
+
+        .hotel-rating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        body.dark-theme .hotel-rating-badge {
+            background: #064e3b;
+            color: #a7f3d0;
+            border-color: #047857;
+        }
+
+        /* 2. Location & Short Description */
+        .hotel-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            color: var(--text-muted, #64748b);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .hotel-location-pin {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted, #64748b);
+            font-weight: 500;
+        }
+
+        .hotel-map-link {
+            color: var(--primary-color, #087f5b);
+            font-weight: 700;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+
+        .hotel-description-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-body, #334155);
+            max-width: 900px;
+            margin: 0;
+        }
+
+        /* Section Block Style */
+        .detail-section-block {
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 16px;
+            padding: 26px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            margin-bottom: 30px;
+        }
+
+        .detail-section-block h2 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main, #0f172a);
+            margin: 0 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 3. Room Options (Clean text-based cards, NO images) */
+        .room-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .room-text-card {
+            background: var(--bg-surface, #f8fafc);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .room-text-card:hover {
+            border-color: var(--primary-color, #087f5b);
+            box-shadow: 0 6px 18px rgba(8, 127, 91, 0.08);
+            transform: translateY(-2px);
+        }
+
+        body.dark-theme .room-text-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .room-card-header {
+            margin-bottom: 14px;
+        }
+
+        .room-card-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-main, #0f172a);
+            margin: 0 0 6px;
+        }
+
+        .room-badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .room-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--card-bg, #ffffff);
+            border: 1px solid var(--border-color, #e2e8f0);
+            color: var(--text-muted, #475569);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .room-seats-pill {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+            font-weight: 800;
+        }
+
+        body.dark-theme .room-seats-pill {
+            background: #450a0a;
+            color: #fca5a5;
+            border-color: #7f1d1d;
+        }
+
+        .room-specs-list {
+            margin: 0 0 16px;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-body, #334155);
+        }
+
+        .room-specs-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .room-specs-item svg {
+            width: 15px;
+            height: 15px;
+            color: var(--primary-color, #087f5b);
+            flex-shrink: 0;
+        }
+
+        .room-card-bottom {
+            border-top: 1px solid var(--border-color, #e2e8f0);
+            padding-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .room-price-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .room-price-val {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary-color, #087f5b);
+        }
+
+        .room-price-sub {
+            font-size: 11px;
+            color: var(--text-muted, #64748b);
+        }
+
+        .btn-book-room {
+            background: var(--primary-color, #087f5b);
+            color: #ffffff;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-book-room:hover {
+            background: #065f46;
+            transform: translateY(-1px);
+        }
+
+        /* 4. Facilities Grid */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+
+        .facility-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-surface, #f8fafc);
+            border: 1px solid var(--border-color, #e2e8f0);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main, #1e293b);
+        }
+
+        body.dark-theme .facility-item {
+            background: #1e293b;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        .facility-icon-wrap {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #ecfdf5;
+            color: #087f5b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        body.dark-theme .facility-icon-wrap {
+            background: #064e3b;
+            color: #6ee7b7;
+        }
+
+        .facility-icon-wrap svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 5. Check-in & Check-out */
+        .policy-timing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .timing-box {
+            background: var(--bg-surface, #f8fafc);
+            border: 1px solid var(--border-color, #e2e8f0);
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        body.dark-theme .timing-box {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .timing-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: var(--primary-color, #087f5b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        body.dark-theme .timing-icon-box {
+            background: #0f172a;
+        }
+
+        .timing-info-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted, #64748b);
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .timing-info-val {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main, #0f172a);
+        }
+
+        /* 6. Guest Reviews */
+        .reviews-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .review-clean-card {
+            background: var(--bg-surface, #f8fafc);
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        body.dark-theme .review-clean-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .review-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-main, #0f172a);
+        }
+
+        .review-date-str {
+            font-size: 12px;
+            color: var(--text-muted, #64748b);
+        }
+
+        .review-stars-row {
+            color: #eab308;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+
+        .review-comment-body {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-body, #475569);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hotel-gallery-wrapper {
+                height: 260px;
+            }
+            .hotel-title-row h1 {
+                font-size: 22px;
+            }
+            .hotel-header-body, .detail-section-block {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Universal Navigation -->
+    <nav class="navbar">
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
+            <span class="brand-mark">TK</span>
+            <span class="brand-name">Travel Kori Bangladesh</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="64-districts.html">64 Districts</a>
+            <a href="hotel-booking.html" class="active">Hotels</a>
+            <a href="transport.html">Transport</a>
+            <a href="guides.html">Guides</a>
+            <a href="booking.html">Plan Trip</a>
+            <a href="route-map.html">Route Map</a>
+            <div id="navUserArea"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="hotel-detail-container" id="hotelDetailRoot">
+        
+        <!-- Back Navigation Row -->
+        <div class="back-nav-row">
+            <a href="hotel-booking.html" class="btn-back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to All Hotels
+            </a>
+            <a id="reserveDirectLink" href="#roomOptionsSection" class="btn-book-room" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                View Available Rooms ↓
+            </a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="hotelDetailLoading" style="text-align:center; padding: 60px 20px;">
+            <p style="font-size:16px; font-weight:600; color:#64748b;">Loading hotel details from Travel Kori MongoDB...</p>
+        </div>
+
+        <!-- Dynamic Hotel View Wrapper (populated by hotel-details.js) -->
+        <div id="hotelDetailContent" style="display:none;">
+
+            <!-- 1. Hotel Gallery, Name, Star Category, Rating -->
+            <article class="hotel-header-card">
+                <div class="hotel-gallery-wrapper">
+                    <img id="detailHeroImage" src="" alt="Hotel" class="hotel-gallery-img">
+                    <span class="hotel-gallery-badge" id="detailStarBadge">
+                        ★ 5-Star Luxury
+                    </span>
+                </div>
+                <div class="hotel-header-body">
+                    <div class="hotel-title-row">
+                        <div>
+                            <h1 id="detailHotelName">Hotel Name</h1>
+                            <div class="hotel-meta-row" style="margin-top: 8px;">
+                                <span class="hotel-location-pin" id="detailLocationText">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    <span id="detailDistrict">District</span>
+                                </span>
+                                <a id="detailMapLink" href="#" target="_blank" rel="noopener noreferrer" class="hotel-map-link">
+                                    View on Google Maps ↗
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="hotel-rating-badge" id="detailRatingBadge">
+                            <span>★</span>
+                            <span id="detailRatingNum">4.8</span>
+                            <span style="font-weight:500; font-size:12px; opacity:0.85;">(<span id="detailReviewsCount">128</span> reviews)</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Location & Short Description -->
+                    <p class="hotel-description-text" id="detailDescription">
+                        Hotel description.
+                    </p>
+                </div>
+            </article>
+
+            <!-- 3. Available Room Types (Text-based cards, NO images) -->
+            <section class="detail-section-block" id="roomOptionsSection">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path><path d="M6 8v9"></path></svg>
+                    Available Room Options
+                </h2>
+                <div class="room-cards-grid" id="detailRoomsGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+            <!-- 4. Main Facilities (Clean 2D Icons) -->
+            <section class="detail-section-block">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                    Featured Facilities & Amenities
+                </h2>
+                <div class="facilities-grid" id="detailFacilitiesGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+            <!-- 5. Check-in & Check-out Times -->
+            <section class="detail-section-block">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Check-in & Check-out Schedule
+                </h2>
+                <div class="policy-timing-grid">
+                    <div class="timing-box">
+                        <div class="timing-icon-box">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                        </div>
+                        <div>
+                            <div class="timing-info-label">Standard Check-in</div>
+                            <div class="timing-info-val" id="detailCheckInTime">02:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="timing-box">
+                        <div class="timing-icon-box">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        </div>
+                        <div>
+                            <div class="timing-info-label">Standard Check-out</div>
+                            <div class="timing-info-val" id="detailCheckOutTime">12:00 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Guest Reviews Section -->
+            <section class="detail-section-block">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    Guest Experiences & Reviews
+                </h2>
+                <div class="reviews-list-grid" id="detailReviewsGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Professional Modern Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column brand-col">
+                <div class="footer-logo">
+                    <span class="brand-mark">TK</span>
+                    <span class="brand-name">Travel Kori Bangladesh</span>
+                </div>
+                <p class="footer-desc">
+                    Your premier digital gateway to discovering breathtaking destinations, comfortable hotels, and trusted journeys across all 64 districts of Bangladesh.
+                </p>
+                <p class="footer-copy">© 2026 Travel Kori Bangladesh. All rights reserved.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="64-districts.html">64 Districts Directory</a></li>
+                    <li><a href="hotel-booking.html">Hotel Booking</a></li>
+                    <li><a href="transport.html">Transport Services</a></li>
+                    <li><a href="guides.html">Certified Tour Guides</a></li>
+                    <li><a href="route-map.html">Interactive Route Map</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Partner Portals</h4>
+                <ul class="footer-links">
+                    <li><a href="hotel-portal.html">Hotel Operations Portal</a></li>
+                    <li><a href="transport-portal.html">Transport Operator Portal</a></li>
+                    <li><a href="guide-portal.html">Tour Guide Workspace</a></li>
+                    <li><a href="dashboard.html">Traveler Dashboard</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact-list">
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <a href="tel:01709146149">01709146149</a>
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <a href="tel:01559667473">01559667473</a>
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <a href="mailto:stephensikder@gmail.com">stephensikder@gmail.com</a>
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        <a href="mailto:towkitahmid@gmail.com">towkitahmid@gmail.com</a>
+                    </li>
+                    <li style="color:var(--text-muted, #64748b); font-size:13px; line-height:1.5;">
+                        Dhaka, Bangladesh • Supporting seamless travel across all administrative divisions.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="nav.js"></script>
+    <script src="hotel-details.js"></script>
+</body>
+</html>
+

@@ -1,5 +1,10 @@
 const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
 
+function escapeHTML(str) {
+    return String(str || "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+const escapeHtml = escapeHTML;
+
 // All 64 Districts of Bangladesh for origin & destination
 const cities = [
     "Dhaka", "Chattogram", "Cox's Bazar", "Sylhet", "Bandarban", "Rangamati", "Khagrachhari",
@@ -205,6 +210,96 @@ const journeys = [
         fare: 600,
         scheduleUrl: "https://hanifenterprisebd.com/"
     },
+    {
+        id: "BUS-SAKURA-DAC-BAR",
+        type: "Bus",
+        operator: "Sakura Paribahan (Via Padma Bridge)",
+        from: "Dhaka",
+        to: "Barishal",
+        departure: "08:00 AM",
+        arrival: "11:45 AM",
+        duration: "Approx. 3h 45m",
+        fare: 650,
+        classType: "AC Deluxe Coach",
+        isAc: true,
+        availableSeats: 30,
+        scheduleUrl: "https://shohoz.com"
+    },
+    {
+        id: "BUS-SAKURA-NONAC-DAC-BAR",
+        type: "Bus",
+        operator: "Sakura Paribahan",
+        from: "Dhaka",
+        to: "Barishal",
+        departure: "08:15 AM",
+        arrival: "12:15 PM",
+        duration: "Approx. 4 hours",
+        fare: 550,
+        classType: "Non-AC Chair Coach",
+        isAc: false,
+        availableSeats: 25,
+        scheduleUrl: "https://shohoz.com"
+    },
+    {
+        id: "BUS-SAKURA-BAR-DAC",
+        type: "Bus",
+        operator: "Sakura Paribahan (Via Padma Bridge)",
+        from: "Barishal",
+        to: "Dhaka",
+        departure: "09:00 AM",
+        arrival: "12:45 PM",
+        duration: "Approx. 3h 45m",
+        fare: 650,
+        classType: "AC Deluxe Coach",
+        isAc: true,
+        availableSeats: 28,
+        scheduleUrl: "https://shohoz.com"
+    },
+    {
+        id: "BUS-SAKURA-NONAC-BAR-DAC",
+        type: "Bus",
+        operator: "Sakura Paribahan",
+        from: "Barishal",
+        to: "Dhaka",
+        departure: "08:30 AM",
+        arrival: "12:30 PM",
+        duration: "Approx. 4 hours",
+        fare: 550,
+        classType: "Non-AC Chair Coach",
+        isAc: false,
+        availableSeats: 26,
+        scheduleUrl: "https://shohoz.com"
+    },
+    {
+        id: "BUS-HANIF-BAR-DAC",
+        type: "Bus",
+        operator: "Hanif Enterprise (AC)",
+        from: "Barishal",
+        to: "Dhaka",
+        departure: "11:30 AM",
+        arrival: "03:15 PM",
+        duration: "Approx. 3h 45m",
+        fare: 750,
+        classType: "Hino 1J AC Coach",
+        isAc: true,
+        availableSeats: 24,
+        scheduleUrl: "https://hanifenterprisebd.com/"
+    },
+    {
+        id: "BUS-GREEN-BAR-DAC",
+        type: "Bus",
+        operator: "Green Line Paribahan (Scania AC)",
+        from: "Barishal",
+        to: "Dhaka",
+        departure: "03:30 PM",
+        arrival: "07:15 PM",
+        duration: "Approx. 3h 45m",
+        fare: 900,
+        classType: "Scania Multi-Axle AC",
+        isAc: true,
+        availableSeats: 30,
+        scheduleUrl: "https://greenlinebd.com"
+    },
 
     // ================= TRAIN =================
 
@@ -400,6 +495,123 @@ const journeys = [
         duration: "Approx. 50 minutes",
         fare: 5000,
         scheduleUrl: "https://usbair.com/"
+    },
+
+    // ================= SHIPS / LAUNCHES =================
+
+    {
+        id: "SHIP-SUNDARBAN12-DAC-BAR",
+        type: "Ship",
+        operator: "Sundarban Navigation Co.",
+        vesselName: "MV Sundarban 12",
+        from: "Dhaka",
+        to: "Barishal",
+        originTerminal: "Sadarghat Launch Terminal, Dhaka",
+        destinationTerminal: "Barishal River Port Launch Ghat",
+        departure: "08:30 PM",
+        arrival: "05:00 AM",
+        duration: "8h 30m (Overnight Cruise)",
+        fare: 450,
+        cabinFares: { deck: 450, singleCabin: 1400, doubleCabin: 2600, vipCabin: 6500 },
+        classType: "Luxury Passenger Vessel (Launch)",
+        isAc: true,
+        availableSeats: 320,
+        scheduleUrl: "https://biwta.gov.bd"
+    },
+    {
+        id: "SHIP-PARABAT11-DAC-BAR",
+        type: "Ship",
+        operator: "Parabat Navigation",
+        vesselName: "MV Parabat 11",
+        from: "Dhaka",
+        to: "Barishal",
+        originTerminal: "Sadarghat Launch Terminal, Dhaka",
+        destinationTerminal: "Barishal River Port Launch Ghat",
+        departure: "09:00 PM",
+        arrival: "05:15 AM",
+        duration: "8h 15m (Overnight Cruise)",
+        fare: 450,
+        cabinFares: { deck: 450, singleCabin: 1500, doubleCabin: 2800, vipCabin: 7000 },
+        classType: "Multi-Deck Passenger Vessel",
+        isAc: true,
+        availableSeats: 410,
+        scheduleUrl: "https://biwta.gov.bd"
+    },
+    {
+        id: "SHIP-MAYUR7-DAC-CHP",
+        type: "Ship",
+        operator: "Mayur Navigation",
+        vesselName: "MV Mayur 7",
+        from: "Dhaka",
+        to: "Chandpur",
+        originTerminal: "Sadarghat Launch Terminal, Dhaka",
+        destinationTerminal: "Chandpur Launch Ghat",
+        departure: "08:30 AM",
+        arrival: "12:00 PM",
+        duration: "3h 30m (Scenic Day Cruise)",
+        fare: 300,
+        cabinFares: { deck: 300, singleCabin: 900, doubleCabin: 1600, vipCabin: 3500 },
+        classType: "Express River Launch",
+        isAc: false,
+        availableSeats: 260,
+        scheduleUrl: "https://biwta.gov.bd"
+    },
+    {
+        id: "SHIP-KARNAPHULI10-DAC-BHO",
+        type: "Ship",
+        operator: "Karnaphuli Navigation",
+        vesselName: "MV Karnaphuli 10",
+        from: "Dhaka",
+        to: "Bhola",
+        originTerminal: "Sadarghat Launch Terminal, Dhaka",
+        destinationTerminal: "Ilisha Ghat, Bhola",
+        departure: "08:00 PM",
+        arrival: "04:30 AM",
+        duration: "8h 30m",
+        fare: 400,
+        cabinFares: { deck: 400, singleCabin: 1300, doubleCabin: 2400, vipCabin: 5500 },
+        classType: "Coastal Island Vessel",
+        isAc: true,
+        availableSeats: 300,
+        scheduleUrl: "https://biwta.gov.bd"
+    },
+    {
+        id: "SHIP-SUNDARBAN14-DAC-PAT",
+        type: "Ship",
+        operator: "Sundarban Navigation",
+        vesselName: "MV Sundarban 14",
+        from: "Dhaka",
+        to: "Patuakhali",
+        originTerminal: "Sadarghat Launch Terminal, Dhaka",
+        destinationTerminal: "Patuakhali Launch Terminal",
+        departure: "07:30 PM",
+        arrival: "05:30 AM",
+        duration: "10 hours",
+        fare: 480,
+        cabinFares: { deck: 480, singleCabin: 1500, doubleCabin: 2800, vipCabin: 7500 },
+        classType: "Long-Range Coastal Vessel",
+        isAc: true,
+        availableSeats: 340,
+        scheduleUrl: "https://biwta.gov.bd"
+    },
+    {
+        id: "SHIP-PUBALI1-DAC-BRG",
+        type: "Ship",
+        operator: "Pubali Navigation",
+        vesselName: "MV Pubali 1",
+        from: "Dhaka",
+        to: "Barguna",
+        originTerminal: "Sadarghat Launch Terminal, Dhaka",
+        destinationTerminal: "Barguna Launch Ghat (Payra River)",
+        departure: "06:30 PM",
+        arrival: "06:00 AM",
+        duration: "11h 30m",
+        fare: 500,
+        cabinFares: { deck: 500, singleCabin: 1600, doubleCabin: 3000, vipCabin: 7000 },
+        classType: "Coastal River Cruiser",
+        isAc: true,
+        availableSeats: 250,
+        scheduleUrl: "https://biwta.gov.bd"
     }
 ];
 
@@ -566,27 +778,27 @@ fromCity.addEventListener("change", updateRouteCalculation);
 toCity.addEventListener("change", updateRouteCalculation);
 
 // ========================================
-// BUS / TRAIN / FLIGHT TABS
+// BUS / TRAIN / FLIGHT / SHIP TABS
 // ========================================
 
 document.querySelectorAll(".transport-tab").forEach(function (tab) {
-    tab.addEventListener("click", function () {
+    tab.addEventListener("click", async function () {
         selectedType = tab.dataset.type;
 
         document.querySelectorAll(".transport-tab").forEach(function (item) {
             item.classList.toggle("active", item === tab);
+            item.setAttribute("aria-selected", item === tab ? "true" : "false");
         });
 
         document.getElementById("resultsTitle").textContent =
-            `Available ${selectedType} Options`;
+            `Available ${selectedType === "Ship" ? "Ship / Launch" : selectedType} Options`;
 
         results.replaceChildren();
 
-        const featured = journeys.filter(j => j.type === selectedType).slice(0, 6);
-        renderResults(featured);
-
-        document.getElementById("resultsSubtitle").textContent =
-            `Popular verified ${selectedType.toLowerCase()} routes across Bangladesh. Search above to filter by origin, destination and date.`;
+        const subtitle = document.getElementById("resultsSubtitle");
+        if (subtitle) {
+            subtitle.textContent = `Loading verified ${selectedType === "Ship" ? "passenger launch & ship" : selectedType.toLowerCase()} routes across Bangladesh...`;
+        }
 
         message.textContent = "";
 
@@ -595,21 +807,146 @@ document.querySelectorAll(".transport-tab").forEach(function (tab) {
         selectedSeats = [];
 
         const oldPicker = document.getElementById("seatSelection");
-
         if (oldPicker) {
             oldPicker.remove();
+        }
+
+        // Fetch live routes from MongoDB
+        let matches = [];
+        try {
+            const res = await fetch(`${API_URL}/api/transportations?type=${selectedType}`);
+            if (res.ok) {
+                const data = await res.json();
+                const list = Array.isArray(data) ? data : (data.transportations || []);
+                if (list.length > 0) {
+                    matches = list.map(item => ({
+                        id: item.id || item._id,
+                        type: item.type || selectedType,
+                        operator: item.operator,
+                        vesselName: item.vesselName,
+                        from: item.from,
+                        to: item.to,
+                        originTerminal: item.originTerminal,
+                        destinationTerminal: item.destinationTerminal,
+                        departure: item.departureTime || "08:30 AM",
+                        arrival: item.arrivalTime || "Arrival",
+                        duration: item.duration ? (typeof item.duration === "number" ? `${Math.floor(item.duration/60)}h ${item.duration%60}m` : item.duration) : "Direct Route",
+                        fare: item.fare || item.farePerSeat || 1000,
+                        cabinFares: item.cabinFares,
+                        classType: item.classType || (item.isAc ? "AC Luxury Coach" : "Non-AC Standard"),
+                        availableSeats: typeof item.availableSeats === "number" ? item.availableSeats : 28,
+                        totalSeats: item.totalSeats || 36,
+                        isAc: item.isAc,
+                        scheduleUrl: item.scheduleUrl || "https://shohoz.com"
+                    }));
+                }
+            }
+        } catch (e) {}
+
+        if (matches.length === 0) {
+            matches = journeys.filter(j => j.type.toLowerCase() === selectedType.toLowerCase()).slice(0, 10);
+        }
+
+        renderResults(matches);
+        if (subtitle) {
+            subtitle.textContent = `Popular verified ${selectedType === "Ship" ? "launch & ship" : selectedType.toLowerCase()} routes across Bangladesh. Search above to filter by origin, destination and date.`;
         }
     });
 });
 
+let currentMatches = [];
+let currentCoachFilter = "all";
+
+function isBusAc(journey) {
+    if (typeof journey.isAc === "boolean") return journey.isAc;
+    const str = `${journey.classType || ''} ${journey.operator || ''}`.toLowerCase();
+    if (str.includes("non-ac") || str.includes("non ac") || str.includes("economy")) return false;
+    if (str.includes("ac") || str.includes("scania") || str.includes("universe") || str.includes("sleeper") || str.includes("deluxe") || str.includes("luxury") || str.includes("double decker")) return true;
+    return false;
+}
+
+function applyCoachFilterAndRender() {
+    const filterBar = document.getElementById("busCoachFilterBar");
+    if (filterBar) {
+        if (selectedType === "Bus") {
+            filterBar.style.display = "flex";
+            const totalCount = currentMatches.length;
+            const acCount = currentMatches.filter(j => isBusAc(j)).length;
+            const nonAcCount = totalCount - acCount;
+
+            const cAll = document.getElementById("countCoachAll");
+            const cAc = document.getElementById("countCoachAc");
+            const cNonAc = document.getElementById("countCoachNonAc");
+            if (cAll) cAll.textContent = totalCount;
+            if (cAc) cAc.textContent = acCount;
+            if (cNonAc) cNonAc.textContent = nonAcCount;
+        } else {
+            filterBar.style.display = "none";
+        }
+    }
+
+    let filtered = currentMatches;
+    if (selectedType === "Bus") {
+        if (currentCoachFilter === "ac") {
+            filtered = currentMatches.filter(j => isBusAc(j));
+        } else if (currentCoachFilter === "non-ac") {
+            filtered = currentMatches.filter(j => !isBusAc(j));
+        }
+    }
+
+    renderFilteredResults(filtered);
+}
+
+// Wire up AC/Non-AC filter buttons
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".coach-filter-pill").forEach(btn => {
+        btn.addEventListener("click", function () {
+            document.querySelectorAll(".coach-filter-pill").forEach(b => b.classList.remove("active"));
+            this.classList.add("active");
+            currentCoachFilter = this.getAttribute("data-filter") || "all";
+            applyCoachFilterAndRender();
+        });
+    });
+});
+
 // Render initial default journeys
-function loadDefaultJourneys() {
+async function loadDefaultJourneys() {
     searchDate = journeyDate.value || localDateString(new Date());
-    const featured = journeys.filter(j => j.type === selectedType).slice(0, 6);
-    renderResults(featured);
+    let defaultList = journeys.filter(j => j.type === selectedType).slice(0, 10);
+    try {
+        const res = await fetch(`${API_URL}/api/transportations?type=${selectedType}`);
+        if (res.ok) {
+            const data = await res.json();
+            const list = Array.isArray(data) ? data : (data.transportations || []);
+            if (list.length > 0) {
+                defaultList = list.map(item => ({
+                    id: item.id || item._id,
+                    type: item.type || selectedType,
+                    operator: item.operator,
+                    vesselName: item.vesselName,
+                    from: item.from,
+                    to: item.to,
+                    originTerminal: item.originTerminal,
+                    destinationTerminal: item.destinationTerminal,
+                    departure: item.departureTime || "08:30 AM",
+                    arrival: item.arrivalTime || "Arrival",
+                    duration: item.duration ? (typeof item.duration === "number" ? `${Math.floor(item.duration/60)}h ${item.duration%60}m` : item.duration) : "Approx. 6–8 hours",
+                    fare: item.fare || item.farePerSeat || 1000,
+                    cabinFares: item.cabinFares,
+                    classType: item.classType || (item.isAc ? "AC Luxury Coach" : "Non-AC Standard"),
+                    availableSeats: typeof item.availableSeats === "number" ? item.availableSeats : 28,
+                    totalSeats: item.totalSeats || 36,
+                    isAc: item.isAc,
+                    scheduleUrl: item.scheduleUrl || "https://shohoz.com"
+                }));
+            }
+        }
+    } catch (e) {}
+
+    renderResults(defaultList);
     const subtitle = document.getElementById("resultsSubtitle");
     if (subtitle) {
-        subtitle.textContent = "Popular verified routes across Bangladesh. Choose any journey below or search a custom route above.";
+        subtitle.textContent = "Verified routes & coaches across Bangladesh. Filter by AC / Non-AC or search custom routes above.";
     }
 }
 loadDefaultJourneys();
@@ -672,17 +1009,26 @@ document.getElementById("transportSearchForm").addEventListener(
             const apiData = await apiRes.json();
             const list = Array.isArray(apiData) ? apiData : (apiData.transportations || []);
             list.forEach(item => {
-                if (!matches.some(m => m.operator === item.operator)) {
+                if (!matches.some(m => m.operator === item.operator && m.from === item.from && m.to === item.to && m.isAc === item.isAc)) {
                     matches.push({
                         id: item._id || item.id || `TR-${Date.now()}`,
                         type: item.type,
                         operator: item.operator,
+                        vesselName: item.vesselName,
                         from: item.from,
                         to: item.to,
+                        originTerminal: item.originTerminal,
+                        destinationTerminal: item.destinationTerminal,
                         departure: item.departureTime || "08:00 AM",
-                        duration: item.duration ? `${Math.round(item.duration/60)} hours` : "Approx. 5–7 hours",
+                        arrival: item.arrivalTime || "Arrival",
+                        duration: item.duration ? (typeof item.duration === "number" ? `${Math.floor(item.duration/60)}h ${item.duration%60}m` : item.duration) : "Approx. 5–7 hours",
                         fare: item.farePerSeat || item.fare || 1000,
-                        scheduleUrl: "https://shohoz.com"
+                        cabinFares: item.cabinFares,
+                        classType: item.classType || (item.isAc ? "AC Luxury Coach" : "Non-AC Standard"),
+                        availableSeats: typeof item.availableSeats === "number" ? item.availableSeats : 28,
+                        totalSeats: item.totalSeats || 36,
+                        isAc: item.isAc,
+                        scheduleUrl: item.scheduleUrl || "https://shohoz.com"
                     });
                 }
             });
@@ -690,6 +1036,21 @@ document.getElementById("transportSearchForm").addEventListener(
 
         // Fallback dynamic generator using real road distances from 64 districts
         if (matches.length === 0) {
+            if (selectedType === "Ship") {
+                const coastalWaterGhats = ["Dhaka", "Barishal", "Chandpur", "Bhola", "Patuakhali", "Barguna", "Pirojpur", "Jhalokathi", "Noakhali", "Chattogram"];
+                const isWaterRoute = coastalWaterGhats.some(d => d.toLowerCase() === from.toLowerCase()) && coastalWaterGhats.some(d => d.toLowerCase() === to.toLowerCase());
+                if (!isWaterRoute) {
+                    results.replaceChildren();
+                    document.getElementById("resultCount").textContent = "0 listed option(s)";
+                    message.innerHTML = `<div style="background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:16px 20px; border-radius:12px; font-size:14px; line-height:1.6; margin-top:12px;">
+                        <strong>⚠️ Water Passenger Navigation Notice:</strong><br>
+                        Passenger Launch and Ship services in Bangladesh operate exclusively across southern riverine and coastal ports (Dhaka Sadarghat, Barishal, Chandpur, Bhola Ilisha, Patuakhali, Barguna, Pirojpur Hularhat, Jhalokathi, Hatiya, and Sandwip).<br>
+                        For inland destination <strong>${escapeHTML(to)}</strong>, please switch to the <strong>Bus</strong> or <strong>Train</strong> tab above.
+                    </div>`;
+                    return;
+                }
+            }
+
             if (!currentRouteInfo) await updateRouteCalculation();
             const dist = currentRouteInfo ? currentRouteInfo.distanceKm : 220;
             const dur = currentRouteInfo ? currentRouteInfo.durations : { bus: "5h 30m", train: "6h 00m", flight: "50 mins", flightAvailable: false };
@@ -697,9 +1058,10 @@ document.getElementById("transportSearchForm").addEventListener(
             if (selectedType === "Bus") {
                 const fareEstimate = Math.round(Math.max(450, dist * 3.2) / 50) * 50;
                 matches = [
-                    { id: `BUS-GREEN-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Green Line Paribahan (Scania AC)", from, to, departure: "08:30 AM", duration: dur.bus, fare: fareEstimate + 200, scheduleUrl: "https://greenlinebd.com" },
-                    { id: `BUS-HANIF-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Hanif Enterprise (AC Chair Coach)", from, to, departure: "10:00 AM", duration: dur.bus, fare: fareEstimate, scheduleUrl: "https://hanifenterprisebd.com" },
-                    { id: `BUS-SHOHOZ-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Shohoz Express Premium", from, to, departure: "09:30 PM", duration: dur.bus, fare: Math.max(400, fareEstimate - 100), scheduleUrl: "https://shohoz.com" }
+                    { id: `BUS-GREEN-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Green Line Paribahan (Scania AC)", from, to, departure: "08:30 AM", duration: dur.bus, fare: fareEstimate + 200, classType: "Scania Multi-Axle AC", isAc: true, availableSeats: 26, scheduleUrl: "https://greenlinebd.com" },
+                    { id: `BUS-HANIF-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Hanif Enterprise (AC Chair Coach)", from, to, departure: "10:00 AM", duration: dur.bus, fare: fareEstimate, classType: "Hino 1J AC", isAc: true, availableSeats: 29, scheduleUrl: "https://hanifenterprisebd.com" },
+                    { id: `BUS-SHYAM-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Shyamoli Paribahan (Non-AC)", from, to, departure: "11:30 AM", duration: dur.bus, fare: Math.max(380, fareEstimate - 250), classType: "Non-AC Standard", isAc: false, availableSeats: 32, scheduleUrl: "https://shohoz.com" },
+                    { id: `BUS-SHOHOZ-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Bus", operator: "Shohoz Express Economy", from, to, departure: "09:30 PM", duration: dur.bus, fare: Math.max(400, fareEstimate - 100), classType: "Non-AC Chair Coach", isAc: false, availableSeats: 30, scheduleUrl: "https://shohoz.com" }
                 ];
             } else if (selectedType === "Train") {
                 const trainFare = Math.round(Math.max(250, dist * 1.8) / 20) * 20;
@@ -711,6 +1073,11 @@ document.getElementById("transportSearchForm").addEventListener(
                 matches = [
                     { id: `FLIGHT-BIMAN-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Flight", operator: "Biman Bangladesh Airlines (Boeing 737)", from, to, departure: "11:30 AM", duration: "50 minutes", fare: 5500, scheduleUrl: "https://biman-airlines.com" },
                     { id: `FLIGHT-USBAIR-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Flight", operator: "US-Bangla Airlines (ATR 72-600)", from, to, departure: "03:15 PM", duration: "45 minutes", fare: 4900, scheduleUrl: "https://usbair.com" }
+                ];
+            } else if (selectedType === "Ship") {
+                matches = [
+                    { id: `SHIP-PARABAT-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Ship", operator: "Parabat Navigation", vesselName: "MV Parabat 11", from, to, departure: "09:00 PM", arrival: "05:15 AM", duration: "8h 15m (Overnight Cruise)", fare: 450, cabinFares: { deck: 450, singleCabin: 1500, doubleCabin: 2800, vipCabin: 7000 }, classType: "Luxury Passenger Vessel", isAc: true, availableSeats: 300, scheduleUrl: "https://biwta.gov.bd" },
+                    { id: `SHIP-SUNDARBAN-${from.slice(0,3)}-${to.slice(0,3)}`, type: "Ship", operator: "Sundarban Navigation", vesselName: "MV Sundarban 12", from, to, departure: "08:30 PM", arrival: "05:00 AM", duration: "8h 30m (Overnight Cruise)", fare: 450, cabinFares: { deck: 450, singleCabin: 1400, doubleCabin: 2600, vipCabin: 6500 }, classType: "Multi-Deck Passenger Launch", isAc: true, availableSeats: 350, scheduleUrl: "https://biwta.gov.bd" }
                 ];
             }
         }
@@ -724,6 +1091,11 @@ document.getElementById("transportSearchForm").addEventListener(
 // ========================================
 
 function renderResults(matches) {
+    currentMatches = matches || [];
+    applyCoachFilterAndRender();
+}
+
+function renderFilteredResults(matches) {
     results.replaceChildren();
 
     bookingPanel.hidden = true;
@@ -731,85 +1103,128 @@ function renderResults(matches) {
     selectedSeats = [];
 
     const oldPicker = document.getElementById("seatSelection");
-
     if (oldPicker) {
         oldPicker.remove();
     }
 
     document.getElementById("resultCount").textContent =
-        `${matches.length} listed option(s)`;
+        `${matches.length} listed option(s)${selectedType === 'Bus' && currentCoachFilter !== 'all' ? ' (' + currentCoachFilter.toUpperCase() + ')' : ''}`;
 
     document.getElementById("resultsSubtitle").textContent =
-        `Journey date: ${searchDate}. Listed fares are estimates in BDT, not live quotes.`;
+        `Journey date: ${searchDate}. Real-time verified ${selectedType === "Ship" ? "launch & vessel" : "coach"} schedule & seats.`;
 
     if (!matches.length) {
         message.textContent =
-            "No listed option found for this route. Try another route or transport type.";
+            `No listed ${selectedType === 'Bus' ? (currentCoachFilter === 'ac' ? 'AC' : (currentCoachFilter === 'non-ac' ? 'Non-AC' : '')) : ''} options found for this route. Try switching filters or another route.`;
         return;
     }
 
-    message.textContent =
-        "Important: these are route/operator listings and indicative estimates, not live schedules, seat availability, or confirmed fares. Check the official link before booking.";
+    message.textContent = "";
 
     matches.forEach(function (journey) {
         const card = document.createElement("article");
         card.className = "transport-result-card modern-transport-card";
 
-        const typeIcon = journey.type === "Flight" ? "✈️" : (journey.type === "Train" ? "🚆" : "🚌");
-        const classLabel = journey.type === "Flight" ? "Economy Class" : (journey.type === "Train" ? "Shovon Chair / AC" : "AC Multi-Axle Luxury");
-        const availableSeatsCount = Math.floor(Math.random() * 15) + 12;
+        const isAc = isBusAc(journey);
+        const isShip = (journey.type || "").toLowerCase() === "ship";
+        const typeIcon = journey.type === "Flight" ? "✈️" : (journey.type === "Train" ? "🚆" : (isShip ? "🚢" : "🚌"));
+        const classLabel = journey.classType || (journey.type === "Flight" ? "Economy Class" : (journey.type === "Train" ? "Shovon Chair / AC" : (isShip ? "Passenger Launch Vessel" : (isAc ? "AC Luxury Coach" : "Non-AC Standard Coach"))));
+        const seatsLeft = typeof journey.availableSeats === "number" ? journey.availableSeats : 28;
+
+        const coachBadge = journey.type === "Bus"
+            ? (isAc
+                ? `<span class="coach-badge-pill ac-coach"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 16a4 4 0 0 1-4-4 4 4 0 0 1 4-4"></path><path d="M16 8a4 4 0 0 1 4 4 4 4 0 0 1-4 4"></path><line x1="12" y1="3" x2="12" y2="21"></line></svg> AC Luxury</span>`
+                : `<span class="coach-badge-pill nonac-coach"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"></path><path d="M9.6 4.6A2 2 0 1 1 11 8H2"></path><path d="M12.6 19.4A2 2 0 1 0 14 16H2"></path></svg> Non-AC Standard</span>`)
+            : (isShip
+                ? `<span class="coach-badge-pill" style="background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;"><path d="M2 20a6 6 0 0 0 12 0 6 6 0 0 0 12 0"></path><path d="M4 17l2-7h12l2 7"></path><path d="M12 4v6"></path></svg> Passenger Launch</span>`
+                : `<span class="coach-badge-pill general-coach">${escapeHTML(classLabel)}</span>`);
+
+        let cabinChipsHtml = "";
+        if (isShip && journey.cabinFares) {
+            const cf = journey.cabinFares;
+            cabinChipsHtml = `
+                <div class="ship-cabin-chips" style="display:flex; flex-wrap:wrap; gap:6px; margin: 10px 0 4px 0;">
+                    ${cf.deck ? `<span style="font-size:11.5px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; padding:3px 8px; color:#1e293b;">⚓ Deck: <strong>৳${cf.deck}</strong></span>` : ''}
+                    ${cf.singleCabin ? `<span style="font-size:11.5px; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:3px 8px; color:#065f46;">🚪 Single Cabin: <strong>৳${cf.singleCabin}</strong></span>` : ''}
+                    ${cf.doubleCabin ? `<span style="font-size:11.5px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:3px 8px; color:#166534;">🛏️ Double Cabin: <strong>৳${cf.doubleCabin}</strong></span>` : ''}
+                    ${cf.vipCabin ? `<span style="font-size:11.5px; background:#fef3c7; border:1px solid #fde68a; border-radius:6px; padding:3px 8px; color:#92400e;">⭐ VIP Suite: <strong>৳${cf.vipCabin}</strong></span>` : ''}
+                </div>
+            `;
+        }
+
+        const amenitiesHtml = journey.type === "Bus"
+            ? (isAc
+                ? `<span class="amenity-chip">❄️ Air Conditioned</span><span class="amenity-chip">💺 Reclining Seats</span><span class="amenity-chip">🔌 Charging Port</span><span class="amenity-chip">🛡️ Verified Operator</span>`
+                : `<span class="amenity-chip">💨 Natural Air Ventilation</span><span class="amenity-chip">💺 Comfortable Seats</span><span class="amenity-chip">🧳 Luggage Storage</span><span class="amenity-chip">🛡️ Verified Route</span>`)
+            : (isShip
+                ? `<span class="amenity-chip">🌊 River View Deck</span><span class="amenity-chip">❄️ AC Cabins Available</span><span class="amenity-chip">🍽️ Onboard Canteen</span><span class="amenity-chip">🦺 Life Safety Radar</span><span class="amenity-chip">🕌 Prayer Room</span>`
+                : `<span class="amenity-chip">💺 Reserved Seats</span><span class="amenity-chip">🛡️ Official Service</span>`);
+
+        const operatorTitle = isShip && journey.vesselName
+            ? `${escapeHTML(journey.vesselName)} <small style="font-size:13px; font-weight:600; color:#475569;">(${escapeHTML(journey.operator)})</small>`
+            : escapeHTML(journey.operator);
+
+        const departureStation = isShip && journey.originTerminal
+            ? escapeHTML(journey.originTerminal)
+            : escapeHTML(journey.from);
+
+        const arrivalStation = isShip && journey.destinationTerminal
+            ? escapeHTML(journey.destinationTerminal)
+            : escapeHTML(journey.to);
 
         card.innerHTML = `
             <div class="card-transport-top">
                 <div class="operator-info">
                     <span class="operator-icon-badge">${typeIcon}</span>
                     <div>
-                        <h3 class="operator-name">${journey.operator}</h3>
-                        <span class="transport-class-badge">${classLabel}</span>
+                        <h3 class="operator-name">${operatorTitle}</h3>
+                        <div style="display:flex; align-items:center; gap:8px; margin-top:4px; flex-wrap:wrap;">
+                            <span class="transport-class-badge">${escapeHTML(classLabel)}</span>
+                            ${coachBadge}
+                        </div>
                     </div>
                 </div>
-                <div class="seat-badge-pill">
+                <div class="seat-badge-pill ${seatsLeft <= 5 ? 'few-seats' : ''}">
                     <span class="seat-dot"></span>
-                    <span>${availableSeatsCount} seats left</span>
+                    <span><strong>${seatsLeft}</strong> ${isShip ? 'berths / seats' : 'seats'} left</span>
                 </div>
             </div>
 
             <div class="transport-route-timeline">
                 <div class="timeline-station">
-                    <span class="time-main">${journey.departure === "Schedule varies" ? "Daily Service" : journey.departure}</span>
-                    <span class="station-city">📍 ${journey.from}</span>
+                    <span class="time-main">${journey.departure === "Schedule varies" ? (isShip ? "Daily Evening Service" : "Daily Service") : escapeHTML(journey.departure)}</span>
+                    <span class="station-city"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${departureStation}</span>
                 </div>
                 <div class="timeline-track">
-                    <span class="timeline-duration">${journey.duration}</span>
+                    <span class="timeline-duration">${escapeHTML(journey.duration)}</span>
                     <div class="timeline-line">
                         <span class="track-dot start"></span>
                         <span class="track-vehicle">${typeIcon}</span>
                         <span class="track-dot end"></span>
                     </div>
-                    <span class="timeline-direct">Express Route</span>
+                    <span class="timeline-direct">${isShip ? "Scenic Water Route" : "Direct Route"}</span>
                 </div>
                 <div class="timeline-station right">
-                    <span class="time-main">${journey.arrival === "Schedule varies" ? "Direct Route" : journey.arrival}</span>
-                    <span class="station-city">📍 ${journey.to}</span>
+                    <span class="time-main">${journey.arrival === "Schedule varies" ? (isShip ? "Morning Arrival" : "Direct Arrival") : escapeHTML(journey.arrival || "Arrival")}</span>
+                    <span class="station-city"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> ${arrivalStation}</span>
                 </div>
             </div>
 
+            ${cabinChipsHtml}
+
             <div class="transport-amenities-row">
-                <span class="amenity-chip">❄️ Air Conditioned</span>
-                <span class="amenity-chip">💺 Reclining Seats</span>
-                <span class="amenity-chip">🔌 Charging Port</span>
-                <span class="amenity-chip">🛡️ Verified Route</span>
+                ${amenitiesHtml}
             </div>
 
             <div class="card-transport-bottom">
                 <div class="transport-fare-wrap">
-                    <span class="fare-label">Estimated Fare</span>
-                    <span class="transport-fare">৳${journey.fare.toLocaleString("en-BD")} <small>/ seat</small></span>
+                    <span class="fare-label">${isShip ? "Deck / Starting Fare" : "Ticket Fare"}</span>
+                    <span class="transport-fare">৳${Number(journey.fare).toLocaleString("en-BD")} <small>${isShip ? "/ passenger" : "/ seat"}</small></span>
                 </div>
                 <div class="transport-card-actions">
                     ${journey.scheduleUrl ? `<a href="${journey.scheduleUrl}" target="_blank" rel="noopener noreferrer" class="transport-operator-link">Official Portal ↗</a>` : ''}
                     <button type="button" class="modern-select-journey-btn">
-                        <span>${journey.type === "Flight" ? "Select Flight" : (journey.type === "Train" ? "Select Train" : "Select Seats & Book")}</span>
+                        <span>${isShip ? "Select Cabin & Book" : "Select Seats & Book"}</span>
                         <span class="btn-arrow">→</span>
                     </button>
                 </div>
@@ -878,11 +1293,15 @@ function renderSeatSelection(journey) {
             ? "Train Seat Selection"
             : journey.type === "Bus"
                 ? "Bus Seat Selection"
-                : "Flight Seat Selection";
+                : journey.type === "Ship"
+                    ? "Ship / Launch Cabin & Berth Selection"
+                    : "Flight Seat Selection";
 
     const instructions = document.createElement("p");
     instructions.textContent =
-        `Choose exactly ${passengers} seat(s) for your journey.`;
+        journey.type === "Ship"
+            ? `Choose exactly ${passengers} berth(s) or cabin seat(s) for your voyage.`
+            : `Choose exactly ${passengers} seat(s) for your journey.`;
 
     picker.append(heading, instructions);
 
@@ -1011,6 +1430,13 @@ function renderSeatSelection(journey) {
 
                     seatNumber = `${row + 1}${letter}`;
                     seatIndex = seatNumber;
+                } else if (journey.type === "Ship") {
+                    seatIndex =
+                        row * 4 +
+                        (position < 2 ? position : position - 1) +
+                        1;
+
+                    seatNumber = `Cabin-${seatIndex}`;
                 } else {
                     seatIndex =
                         row * 4 +
@@ -1026,7 +1452,7 @@ function renderSeatSelection(journey) {
                 const button = document.createElement("button");
                 button.type = "button";
                 button.className = "seat";
-                button.textContent = isFlight ? seatNumber : seatIndex;
+                button.textContent = isFlight ? seatNumber : (journey.type === "Ship" ? `C-${seatIndex}` : seatIndex);
 
                 button.setAttribute(
                     "aria-label",

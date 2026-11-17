@@ -13,13 +13,28 @@
     function createPdfDocument() {
         const streams = [];
 
-        function escapePdfText(str) {
+        function sanitizePdfText(str) {
             if (!str) return "";
             return String(str)
+                .replace(/[\u2022\u25cf\u25cb\u25aa\u25ab]/g, " | ")
+                .replace(/[\u2013\u2014]/g, " - ")
+                .replace(/[\u2192\u2794\u279c]/g, " -> ")
+                .replace(/[\u2190]/g, " <- ")
+                .replace(/[\u09F3\u09F2]/g, "BDT ")
+                .replace(/[৳]/g, "BDT ")
+                .replace(/[\u2018\u2019]/g, "'")
+                .replace(/[\u201c\u201d]/g, '"')
+                .replace(/[\u2026]/g, "...");
+        }
+
+        function escapePdfText(str) {
+            if (!str) return "";
+            const sanitized = sanitizePdfText(str);
+            return sanitized
                 .replace(/\\/g, "\\\\")
                 .replace(/\(/g, "\\(")
                 .replace(/\)/g, "\\)")
-                .replace(/[^\x20-\x7E]/g, "?");
+                .replace(/[^\x20-\x7E]/g, " ");
         }
 
         function hexToRgb(hex) {
@@ -204,7 +219,7 @@
         doc.drawText("||||| || |||||| ||| |||| | ||| |||||||| |||| ||||||", marginX + 25, barcodeY, { font: "/F3", size: 14, color: "#17382f" });
         doc.drawText(`Verification Code: ${id}  -  Present ticket at boarding counter`, marginX + 25, barcodeY - 16, { font: "/F1", size: 9, color: "#62766d" });
 
-        doc.drawText("Travel Kori Bangladesh • Centralized Tourism & Transport Platform", marginX + 25, boxBottom + 20, { font: "/F2", size: 8, color: "#087f5b" });
+        doc.drawText("Travel Kori Bangladesh | Centralized Tourism & Transport Platform", marginX + 25, boxBottom + 20, { font: "/F2", size: 8, color: "#087f5b" });
         doc.drawText(`Issued: ${new Date().toLocaleDateString("en-GB")}`, marginX + width - 110, boxBottom + 20, { font: "/F1", size: 8, color: "#62766d" });
 
         const safeId = id.replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -279,7 +294,7 @@
         doc.drawText(payStatus, marginX + 275, tableY - 124, { font: "/F2", size: 11, color: "#17382f" });
 
         doc.drawText("CHECK-IN POLICY", marginX + 25, tableY - 153, { font: "/F1", size: 9, color: "#62766d" });
-        doc.drawText("Standard Check-in 12:00 PM • Check-out 11:00 AM", marginX + 25, tableY - 169, { font: "/F1", size: 10, color: "#17382f" });
+        doc.drawText("Standard Check-in 12:00 PM | Check-out 11:00 AM", marginX + 25, tableY - 169, { font: "/F1", size: 10, color: "#17382f" });
         doc.drawText("TOTAL CHARGES", marginX + 275, tableY - 153, { font: "/F1", size: 9, color: "#62766d" });
         doc.drawText(`BDT ${totalPrice}`, marginX + 275, tableY - 169, { font: "/F2", size: 14, color: "#087f5b" });
 
@@ -288,7 +303,7 @@
         doc.drawText("||||| || |||||| ||| |||| | ||| |||||||| |||| ||||||", marginX + 25, barcodeY, { font: "/F3", size: 14, color: "#17382f" });
         doc.drawText(`Verification Code: ${id}  -  Present this voucher at hotel front desk`, marginX + 25, barcodeY - 16, { font: "/F1", size: 9, color: "#62766d" });
 
-        doc.drawText("Travel Kori Bangladesh • Official Hospitality Network", marginX + 25, boxBottom + 20, { font: "/F2", size: 8, color: "#087f5b" });
+        doc.drawText("Travel Kori Bangladesh | Official Hospitality Network", marginX + 25, boxBottom + 20, { font: "/F2", size: 8, color: "#087f5b" });
         doc.drawText(`Issued: ${new Date().toLocaleDateString("en-GB")}`, marginX + width - 110, boxBottom + 20, { font: "/F1", size: 8, color: "#62766d" });
 
         const safeId = id.replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -369,7 +384,7 @@
         doc.drawText("||||| || |||||| ||| |||| | ||| |||||||| |||| ||||||", marginX + 25, barcodeY, { font: "/F3", size: 14, color: "#17382f" });
         doc.drawText(`Verification Code: ${id}  -  Certified Local Tour Guide Services`, marginX + 25, barcodeY - 16, { font: "/F1", size: 9, color: "#62766d" });
 
-        doc.drawText("Travel Kori Bangladesh • Official Tour Guide Network", marginX + 25, boxBottom + 20, { font: "/F2", size: 8, color: "#087f5b" });
+        doc.drawText("Travel Kori Bangladesh | Official Tour Guide Network", marginX + 25, boxBottom + 20, { font: "/F2", size: 8, color: "#087f5b" });
         doc.drawText(`Issued: ${new Date().toLocaleDateString("en-GB")}`, marginX + width - 110, boxBottom + 20, { font: "/F1", size: 8, color: "#62766d" });
 
         const safeId = id.replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -401,8 +416,8 @@
         // User Profile Summary Box
         doc.drawRect(marginX, 680, width, 65, "#f8fafc", "#cbd5e1", 1);
         doc.drawText("TRAVELER PROFILE", marginX + 16, 730, { font: "/F2", size: 9, color: "#64748b" });
-        doc.drawText(`Name: ${userName}  •  Email: ${email}  •  Phone: ${phone}`, marginX + 16, 712, { font: "/F2", size: 11, color: "#0f172a" });
-        doc.drawText(`Total Bookings: ${totalTrips}  •  Total Cumulative Investment: BDT ${totalSpent.toLocaleString("en-BD")}  •  Account Status: Active Explorer`, marginX + 16, 694, { font: "/F1", size: 10, color: "#087f5b" });
+        doc.drawText(`Name: ${userName}  |  Email: ${email}  |  Phone: ${phone}`, marginX + 16, 712, { font: "/F2", size: 11, color: "#0f172a" });
+        doc.drawText(`Total Bookings: ${totalTrips}  |  Total Cumulative Investment: BDT ${totalSpent.toLocaleString("en-BD")}  |  Account Status: Active Explorer`, marginX + 16, 694, { font: "/F1", size: 10, color: "#087f5b" });
 
         // Bookings Table Header
         let y = 645;
@@ -441,7 +456,7 @@
 
         // Footer
         doc.drawText("This official document summarizes verified domestic tourism reservations recorded in Travel Kori Bangladesh.", marginX, 60, { font: "/F1", size: 8, color: "#64748b" });
-        doc.drawText(`Generated on ${new Date().toLocaleString("en-GB")}  •  Student Project Evaluation Report`, marginX, 45, { font: "/F2", size: 8, color: "#087f5b" });
+        doc.drawText(`Generated on ${new Date().toLocaleString("en-GB")}  |  Student Project Evaluation Report`, marginX, 45, { font: "/F2", size: 8, color: "#087f5b" });
 
         doc.download(`Travel-History-Summary-${userName.replace(/\s+/g, "_")}.pdf`);
     }
@@ -465,8 +480,8 @@
 
         doc.drawRect(marginX, 680, width, 65, "#f8fafc", "#cbd5e1", 1);
         doc.drawText("HOTEL PARTNER PROFILE", marginX + 16, 730, { font: "/F2", size: 9, color: "#64748b" });
-        doc.drawText(`Property / Partner: ${pName}  •  District: ${p.district || "Bangladesh"}`, marginX + 16, 712, { font: "/F2", size: 11, color: "#0f172a" });
-        doc.drawText(`Total Booked Rooms: ${bList.length}  •  Gross Revenue: BDT ${totalRev.toLocaleString("en-BD")}  •  Execution Status: Fully Operational`, marginX + 16, 694, { font: "/F1", size: 10, color: "#087f5b" });
+        doc.drawText(`Property / Partner: ${pName}  |  District: ${p.district || "Bangladesh"}`, marginX + 16, 712, { font: "/F2", size: 11, color: "#0f172a" });
+        doc.drawText(`Total Booked Rooms: ${bList.length}  |  Gross Revenue: BDT ${totalRev.toLocaleString("en-BD")}  |  Execution Status: Fully Operational`, marginX + 16, 694, { font: "/F1", size: 10, color: "#087f5b" });
 
         let y = 645;
         doc.drawRect(marginX, y, width, 24, "#0f172a", null, 0);
@@ -516,8 +531,8 @@
 
         doc.drawRect(marginX, 680, width, 65, "#f8fafc", "#cbd5e1", 1);
         doc.drawText("TRANSPORT OPERATOR PROFILE", marginX + 16, 730, { font: "/F2", size: 9, color: "#64748b" });
-        doc.drawText(`Operator: ${pName}  •  District: ${p.district || "Dhaka"}`, marginX + 16, 712, { font: "/F2", size: 11, color: "#0f172a" });
-        doc.drawText(`Total Booked Tickets: ${bList.length}  •  Ticketing Revenue: BDT ${totalRev.toLocaleString("en-BD")}  •  Fleet Execution: Active`, marginX + 16, 694, { font: "/F1", size: 10, color: "#c2410c" });
+        doc.drawText(`Operator: ${pName}  |  District: ${p.district || "Dhaka"}`, marginX + 16, 712, { font: "/F2", size: 11, color: "#0f172a" });
+        doc.drawText(`Total Booked Tickets: ${bList.length}  |  Ticketing Revenue: BDT ${totalRev.toLocaleString("en-BD")}  |  Fleet Execution: Active`, marginX + 16, 694, { font: "/F1", size: 10, color: "#c2410c" });
 
         let y = 645;
         doc.drawRect(marginX, y, width, 24, "#0f172a", null, 0);

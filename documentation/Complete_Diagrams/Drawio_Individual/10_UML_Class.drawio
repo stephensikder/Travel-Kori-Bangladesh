@@ -1,0 +1,65 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="10_uml_class" name="10_UML_Class">
+    <mxGraphModel dx="2049" dy="1219" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="UML Class &amp;amp; Logical Component Architecture" vertex="1">
+          <mxGeometry height="40" width="1600" x="50" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_nav" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;TravelKoriNav (Client)&lt;/b&gt;&lt;br&gt;+ user: Object&lt;br&gt;+ notifsPollInterval: Timer&lt;br&gt;--------------------------&lt;br&gt;+ setupUniversalNavbar(): void&lt;br&gt;+ updateNotificationsUI(userId): void&lt;br&gt;+ markNotificationRead(id): void&lt;br&gt;+ initBackToTop(): void" vertex="1">
+          <mxGeometry height="180" width="320" x="100" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_trans_c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;TransportController (Client)&lt;/b&gt;&lt;br&gt;+ currentCategory: String&lt;br&gt;+ selectedSeats: Array&amp;lt;String&amp;gt;&lt;br&gt;--------------------------&lt;br&gt;+ searchJourneys(query): void&lt;br&gt;+ renderSeatMatrix(journey): void&lt;br&gt;+ submitBooking(data): Promise" vertex="1">
+          <mxGeometry height="180" width="320" x="100" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_hotel_c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;HotelController (Client)&lt;/b&gt;&lt;br&gt;+ activeFilter: Object&lt;br&gt;--------------------------&lt;br&gt;+ loadHotels(district): void&lt;br&gt;+ openBookingModal(hotelId): void&lt;br&gt;+ submitReservation(form): Promise" vertex="1">
+          <mxGeometry height="180" width="320" x="900" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_admin_c" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;AdminController (Client)&lt;/b&gt;&lt;br&gt;+ activeTab: String&lt;br&gt;--------------------------&lt;br&gt;+ loadMasterBookings(): void&lt;br&gt;+ toggleAccountStatus(userId): void&lt;br&gt;+ loadSecurityAlerts(): void&lt;br&gt;+ executeCatalogCRUD(): void" vertex="1">
+          <mxGeometry height="180" width="320" x="1280" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_srv" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;ExpressAppServer (Backend Core)&lt;/b&gt;&lt;br&gt;+ app: ExpressInstance&lt;br&gt;+ db: MongoDatabase&lt;br&gt;+ port: Number = 5000&lt;br&gt;--------------------------&lt;br&gt;+ configureMiddleware(): void&lt;br&gt;+ registerRoutes(): void&lt;br&gt;+ connectMongoDB(): Promise&lt;br&gt;+ listen(): void" vertex="1">
+          <mxGeometry height="190" width="340" x="580" y="415" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_auth_s" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;AuthenticationService&lt;/b&gt;&lt;br&gt;+ failedAttemptsMap: Map&lt;br&gt;--------------------------&lt;br&gt;+ hashPassword(plain): String&lt;br&gt;+ verifyPassword(plain, hash): Boolean&lt;br&gt;+ checkAccountLock(email): Boolean&lt;br&gt;+ generateResetToken(email): String&lt;br&gt;+ sendRecoveryEmail(email, token): void" vertex="1">
+          <mxGeometry height="190" width="350" x="1250" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="cls_db_m" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="&lt;b&gt;MongoRepository (Data Engine)&lt;/b&gt;&lt;br&gt;+ collections: Map&amp;lt;String, Collection&amp;gt;&lt;br&gt;--------------------------&lt;br&gt;+ find(filter, projection): Array&lt;br&gt;+ findOne(filter): Document&lt;br&gt;+ insertOne(doc): InsertResult&lt;br&gt;+ updateOne(filter, update): UpdateResult&lt;br&gt;+ deleteOne(filter): DeleteResult" vertex="1">
+          <mxGeometry height="190" width="350" x="720" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="cls_nav" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="cls_srv" value="Fetch REST">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="cls_trans_c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="cls_srv" value="Fetch REST">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="cls_hotel_c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="cls_srv" value="Fetch REST">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="cls_admin_c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="cls_srv" value="Fetch REST">
+          <mxGeometry relative="1" x="0.1493" as="geometry">
+            <Array as="points">
+              <mxPoint x="1440" y="360" />
+              <mxPoint x="790" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="cls_srv" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="cls_auth_s" value="Delegates Auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="cls_srv" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="cls_db_m" value="Executes Queries">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

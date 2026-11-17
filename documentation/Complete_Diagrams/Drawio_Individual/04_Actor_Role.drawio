@@ -1,0 +1,90 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="04_actor_role" name="04_Actor_Role">
+    <mxGraphModel dx="1684" dy="994" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;" value="&amp;nbsp;Actor and Role Hierarchy (RBAC Capability Matrix)" vertex="1">
+          <mxGeometry height="40" width="1500" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="c_4" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#333333;fontFamily=Times New Roman;fontSize=18;fontStyle=2;" value="&lt;span style=&quot;font-style: normal;&quot;&gt;Role Inheritance and Security Boundary Model&lt;/span&gt;" vertex="1">
+          <mxGeometry height="25" width="1500" x="50" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="r_vis" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;verticalAlign=middle;" value="&lt;b&gt;ROLE 1: PUBLIC VISITOR&lt;/b&gt;&lt;br&gt;• Browse 64 Districts Directory&lt;br&gt;• Search Hotels &amp;amp; Transport&lt;br&gt;• View Attractions &amp;amp; Tour Guides&lt;br&gt;• Access Route Map Network" vertex="1">
+          <mxGeometry height="140" width="380" x="270" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="r_trav" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;verticalAlign=middle;" value="&lt;b&gt;ROLE 2: AUTHENTICATED TRAVELER&lt;/b&gt;&lt;br&gt;(Inherits Visitor Capabilities)&lt;br&gt;• Book Hotels, Seats, Tour Guides&lt;br&gt;• Generate Trip Itineraries &amp;amp; Budgets&lt;br&gt;• Download PDF Travel Tickets&lt;br&gt;• Submit Verified Guide Reviews&lt;br&gt;• Profile &amp;amp; Photo Management" vertex="1">
+          <mxGeometry height="160" width="420" x="1060" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="p_lane" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;startSize=40;collapsible=0;verticalAlign=middle;" value="&lt;b&gt;SERVICE PROVIDER PARTNER ROLES (Pending / Approved Admin Verification)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="300" width="1400" x="100" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="c_11" edge="1" parent="p_lane" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;entryX=0.943;entryY=-0.009;entryDx=0;entryDy=0;entryPerimeter=0;" target="r_admin" value="Supervised &amp;amp; Approved By">
+          <mxGeometry relative="1" x="-0.5492" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1100" y="370" />
+              <mxPoint x="1098.7" y="370" />
+            </Array>
+            <mxPoint x="1100" y="240" as="sourcePoint" />
+            <mxPoint x="740" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r_hotel" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" value="&lt;b&gt;ROLE 3: HOTEL OWNER&lt;/b&gt;&lt;br&gt;• Hotel Partner Portal Access&lt;br&gt;• Manage Incoming Room Bookings&lt;br&gt;• Update Stay Status (Confirmed/Cancel)&lt;br&gt;• Manage Property Meta &amp;amp; Rates" vertex="1">
+          <mxGeometry height="160" width="360" x="140" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="r_trans" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" value="&lt;b&gt;ROLE 4: TRANSPORT OPERATOR&lt;/b&gt;&lt;br&gt;• Transport Portal Access&lt;br&gt;• Review Coach/Train/Ship Bookings&lt;br&gt;• Verify Passenger PNR Status&lt;br&gt;• Monitor Occupancy Rates" vertex="1">
+          <mxGeometry height="160" width="360" x="560" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="r_guide" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" value="&lt;b&gt;ROLE 5: TOUR GUIDE&lt;/b&gt;&lt;br&gt;• Guide Operations Portal Access&lt;br&gt;• Accept / Conclude Tour Requests&lt;br&gt;• Toggle Available / Unavailable&lt;br&gt;• Upload &amp;amp; Sync Guide Photo&lt;br&gt;• Manage Daily Rate &amp;amp; Bio" vertex="1">
+          <mxGeometry height="160" width="360" x="980" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="r_admin" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;verticalAlign=middle;" value="&lt;b&gt;ROLE 6: SYSTEM ADMINISTRATOR (Root Governance)&lt;/b&gt;&lt;br&gt;• Isolated Admin Navigation Layout (No Public Links on Admin Interfaces)&lt;br&gt;• Master Bookings Audit &amp;amp; Status Overrides&lt;br&gt;• User Account Moderation &amp;amp; RBAC Suspension (Active / Suspended Reason Logging)&lt;br&gt;• Tour Guide Verification &amp;amp; Licensing&lt;br&gt;• Comprehensive Catalog Management (Districts, Spots, Hotels, Schedules)&lt;br&gt;• Real-Time Security Alerts &amp;amp; Immutable Audit Log Trail" vertex="1">
+          <mxGeometry height="200" width="900" x="350" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="r_vis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" target="r_trav" value="User Registration / Login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="r_trav" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" target="r_hotel" value="Partner Registration Application">
+          <mxGeometry relative="1" x="-0.1111" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="r_trav" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" target="r_trans" value="Partner Registration Application">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1270" y="300" />
+              <mxPoint x="740" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="r_trav" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" target="r_guide" value="Partner Registration Application">
+          <mxGeometry relative="1" x="0.1395" as="geometry">
+            <Array as="points">
+              <mxPoint x="1330" y="380" />
+              <mxPoint x="1160" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="r_hotel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;verticalAlign=middle;" target="r_admin" value="Supervised By">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="700" />
+              <mxPoint x="800" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;dashed=1;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;entryX=0.599;entryY=-0.001;entryDx=0;entryDy=0;entryPerimeter=0;verticalAlign=middle;" target="r_admin" value="Supervised By">
+          <mxGeometry relative="1" x="-0.3879" y="-1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+            <mxPoint x="890" y="670" as="sourcePoint" />
+            <mxPoint x="870" y="800" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,121 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="16_traveler_booking" name="16_Traveler_Booking">
+    <mxGraphModel dx="1178" dy="701" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1200" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;" value="Universal Traveler Booking Workflow Diagram" vertex="1">
+          <mxGeometry height="40" width="1600" x="50" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_l1" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;TRAVELER CLIENT&lt;/b&gt;" vertex="1">
+          <mxGeometry height="1000" width="380" x="60" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_l2" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;FRONTEND CONTROLLER (DOM/Fetch)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="1000" width="420" x="440" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_fc1" parent="tb_l2" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Populate Modal &amp;amp; Calculate&lt;br&gt;Live Price Subtotal" vertex="1">
+          <mxGeometry height="70" width="260" x="130" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_l3" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;EXPRESS REST API&lt;/b&gt;" vertex="1">
+          <mxGeometry height="1000" width="420" x="860" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_l4" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;MONGODB PERSISTENCE&lt;/b&gt;" vertex="1">
+          <mxGeometry height="1000" width="380" x="1280" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_s" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=19;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="230" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_u1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Browse Catalog by District&lt;br&gt;(Hotel / Transport / Guide)" vertex="1">
+          <mxGeometry height="70" width="230" x="130" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_u2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Select Option &amp;amp; Click&lt;br&gt;&#39;Book Now&#39;" vertex="1">
+          <mxGeometry height="70" width="230" x="130" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_u3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Enter Guest Details, Dates,&lt;br&gt;and Payment Mode" vertex="1">
+          <mxGeometry height="70" width="230" x="130" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_u4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="View Booking in Dashboard&lt;br&gt;&amp;amp; Export PDF Ticket" vertex="1">
+          <mxGeometry height="80" width="230" x="130" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_e" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=19;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="230" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_fc2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Validate Form &amp;amp; Send&lt;br&gt;POST Request to API" vertex="1">
+          <mxGeometry height="70" width="260" x="520" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_fc3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Receive JSON Response&lt;br&gt;&amp;amp; Trigger Navbar Alert" vertex="1">
+          <mxGeometry height="70" width="260" x="520" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_api1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Verify User Session &amp;amp;&lt;br&gt;Validate Availability" vertex="1">
+          <mxGeometry height="70" width="260" x="940" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_api2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Generate Unique Reference&lt;br&gt;(e.g. HB-8921-2026)" vertex="1">
+          <mxGeometry height="70" width="260" x="940" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_api3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Dispatch JSON Confirmation&lt;br&gt;with Booking Payload" vertex="1">
+          <mxGeometry height="70" width="260" x="940" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_db1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Write Record to Collection&lt;br&gt;(hotelBookings/&lt;div&gt;transportBookings)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="260" x="1340" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_db2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="Insert Notification Document&lt;br&gt;in notifications collection" vertex="1">
+          <mxGeometry height="70" width="260" x="1340" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="tb_s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_u1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="tb_u1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_u2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="tb_u2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_fc1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="405" />
+              <mxPoint x="465" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="tb_fc1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_u3" value="Render Modal">
+          <mxGeometry relative="1" x="0.0417" as="geometry">
+            <Array as="points">
+              <mxPoint x="465" y="460" />
+              <mxPoint x="465" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="tb_u3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_fc2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="tb_fc2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_api1" value="Fetch POST">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_11" edge="1" parent="1" source="tb_api1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_api2" value="Confirmed">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_12" edge="1" parent="1" source="tb_api2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_db1" value="Commit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_13" edge="1" parent="1" source="tb_db1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_db2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_14" edge="1" parent="1" source="tb_db2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_api3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_15" edge="1" parent="1" source="tb_api3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_fc3" value="HTTP 200">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_16" edge="1" parent="1" source="tb_fc3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_u4" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="865" />
+              <mxPoint x="410" y="865" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_17" edge="1" parent="1" source="tb_u4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="tb_e" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

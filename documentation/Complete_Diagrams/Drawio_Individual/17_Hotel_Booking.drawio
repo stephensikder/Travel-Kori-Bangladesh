@@ -1,0 +1,112 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="17_hotel_booking" name="17_Hotel_Booking">
+    <mxGraphModel dx="2946" dy="1752" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1150" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;" value="Hotel Reservation Activity Diagram with UML Swimlanes" vertex="1">
+          <mxGeometry height="40" width="1600" x="50" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_l1" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;TRAVELER&lt;/b&gt;" vertex="1">
+          <mxGeometry height="950" width="360" x="60" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_l2" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;HOTEL BOOKING UI (hotel-booking.js)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="950" width="380" x="420" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_l3" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;BACKEND API (POST /api/hotel-bookings)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="950" width="420" x="800" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_l4" parent="1" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;startSize=40;collapsible=0;" value="&lt;b&gt;HOTEL OWNER PORTAL (hotel-portal.js)&lt;/b&gt;" vertex="1">
+          <mxGeometry height="950" width="420" x="1220" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_s" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=18;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="225" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="VU2QbypQMgBsBXZr2iIX-1" edge="1" parent="1" source="hb_u1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;defaultLabelBackgroundColor=page;fontSize=18;" target="hb_u2" value="">
+          <mxGeometry relative="1" x="0.1351" as="geometry">
+            <Array as="points">
+              <mxPoint x="170" y="360" />
+              <mxPoint x="170" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hb_u1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Select District &amp;amp; Filter Hotels&lt;br&gt;by Price / Star Rating" vertex="1">
+          <mxGeometry height="70" width="250" x="115" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_u2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Choose Room Type &amp;amp; Nights&lt;br&gt;in Booking Modal" vertex="1">
+          <mxGeometry height="70" width="250" x="115" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_u3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Receive Status Notification&lt;br&gt;&amp;amp; View Stay in Dashboard" vertex="1">
+          <mxGeometry height="70" width="250" x="115" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_e" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=18;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="225" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_ui1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Fetch Hotels from /api/hotels&lt;br&gt;&amp;amp; Render Cards Dynamically" vertex="1">
+          <mxGeometry height="70" width="250" x="485" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_ui2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Compute Total = Nights * Rate&lt;br&gt;and Validate Inputs" vertex="1">
+          <mxGeometry height="70" width="250" x="485" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_ui3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Submit Reservation Payload&lt;br&gt;via POST /api/hotel-bookings" vertex="1">
+          <mxGeometry height="70" width="250" x="485" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_api1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Verify Hotel Existence &amp;amp;&lt;br&gt;Validate Dates / Guests" vertex="1">
+          <mxGeometry height="70" width="250" x="885" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_api2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Generate HB-XXXX-YYYY&lt;br&gt;Insert in hotelBookings" vertex="1">
+          <mxGeometry height="70" width="250" x="885" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_hp1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Hotel Partner Reviews Stay&lt;br&gt;via GET /api/hotel-portal/bookings" vertex="1">
+          <mxGeometry height="70" width="250" x="1305" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="hb_hp2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Partner Updates Status&lt;br&gt;(Confirmed / Completed)" vertex="1">
+          <mxGeometry height="70" width="250" x="1305" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="hb_s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_u1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="hb_u1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_ui1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="280" />
+              <mxPoint x="440" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="hb_ui1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_u2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="610" y="370" />
+              <mxPoint x="240" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="hb_u2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_ui2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="hb_ui2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_ui3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="hb_ui3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_api1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_11" edge="1" parent="1" source="hb_api1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_api2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_12" edge="1" parent="1" source="hb_api2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_hp1" value="Notify Partner">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_13" edge="1" parent="1" source="hb_hp1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_hp2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_14" edge="1" parent="1" source="hb_hp2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_u3" value="Notify Traveler">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_15" edge="1" parent="1" source="hb_u3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="hb_e" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

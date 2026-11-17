@@ -603,6 +603,74 @@
                 align-items: stretch;
             }
         }
+
+        /* Full Dark Theme Support for Transport Portal */
+        body.dark-theme, [data-theme="dark"] body {
+            background-color: #0b1320 !important;
+            color: #f1f5f9 !important;
+        }
+        body.dark-theme .portal-content-box, [data-theme="dark"] .portal-content-box {
+            background: #14213d !important;
+            border-color: #1e3a5f !important;
+            color: #f8fafc !important;
+        }
+        body.dark-theme .stat-card, [data-theme="dark"] .stat-card {
+            background: #14213d !important;
+            border-color: #1e3a5f !important;
+            color: #f8fafc !important;
+        }
+        body.dark-theme .stat-value, [data-theme="dark"] .stat-value {
+            color: #ffffff !important;
+        }
+        body.dark-theme .content-title-area h2, [data-theme="dark"] .content-title-area h2 {
+            color: #ffffff !important;
+        }
+        body.dark-theme .content-header-row, [data-theme="dark"] .content-header-row {
+            border-bottom-color: #1e3a5f !important;
+        }
+        body.dark-theme .tab-btn, [data-theme="dark"] .tab-btn {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            color: #cbd5e1 !important;
+        }
+        body.dark-theme .tab-btn:hover, [data-theme="dark"] .tab-btn:hover {
+            background: #334155 !important;
+            color: #ffffff !important;
+        }
+        body.dark-theme .tab-btn.active, [data-theme="dark"] .tab-btn.active {
+            background: #0284c7 !important;
+            border-color: #0284c7 !important;
+            color: #ffffff !important;
+        }
+        body.dark-theme .search-input-box input, [data-theme="dark"] .search-input-box input,
+        body.dark-theme .date-filter-select, [data-theme="dark"] .date-filter-select {
+            background: #0f172a !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        body.dark-theme .portal-table, [data-theme="dark"] .portal-table {
+            background: #14213d !important;
+        }
+        body.dark-theme .portal-table th, [data-theme="dark"] .portal-table th {
+            background: #0f172a !important;
+            color: #94a3b8 !important;
+            border-color: #1e293b !important;
+        }
+        body.dark-theme .portal-table td, [data-theme="dark"] .portal-table td {
+            border-color: #1e293b !important;
+            color: #e2e8f0 !important;
+        }
+        body.dark-theme .portal-table tr:hover, [data-theme="dark"] .portal-table tr:hover {
+            background: #1e293b !important;
+        }
+        body.dark-theme .empty-portal-box, [data-theme="dark"] .empty-portal-box {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            color: #cbd5e1 !important;
+        }
+        body.dark-theme .empty-portal-box h3, [data-theme="dark"] .empty-portal-box h3 {
+            color: #ffffff !important;
+        }
     </style>
 </head>
 <body>
@@ -618,7 +686,6 @@
         </a>
 
         <div class="portal-user-area" style="display:flex; align-items:center; gap:10px;">
-            <button type="button" class="theme-toggle-btn modern-theme-btn" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3); color:white; padding:5px 10px; border-radius:999px; font-size:12px; font-weight:700; cursor:pointer;">🌙 Dark</button>
             <span class="user-tag" id="portalUserBadge">
                 🚌 Loading Operator Profile...
             </span>
@@ -665,16 +732,16 @@
             
             <div class="content-header-row">
                 <div class="content-title-area">
-                    <h2>🚌 Transport Tickets & Departure Manifest</h2>
-                    <p>Track passenger rosters (Kara Kara), route destinations (Kon Jaigar), departure schedule (Kon Somoyer & Kobe), and trips executed (Execution Completed).</p>
+                    <h2>Passenger Manifest & Departure Roster</h2>
+                    <p>Track passenger rosters, destination routes, departure timelines, and verified trip execution status.</p>
                 </div>
 
                 <button type="button" id="refreshBtn" class="btn-act btn-act-details" style="padding:8px 14px; font-size:13px;">
-                    🔄 Refresh Manifest
+                    Refresh Manifest
                 </button>
             </div>
 
-            <!-- Filters & Search Bar -->
+            <!-- Filters & Search Bar Directly Above Table -->
             <div class="filter-controls-row">
                 
                 <!-- Status & Timing Tabs -->
@@ -683,35 +750,37 @@
                         All Tickets <span class="tab-count" id="countAll">0</span>
                     </button>
                     <button type="button" class="tab-btn" data-filter="incoming">
-                        📥 Incoming Departures <span class="tab-count" id="countIncoming">0</span>
+                        Incoming Departures <span class="tab-count" id="countIncoming">0</span>
                     </button>
                     <button type="button" class="tab-btn" data-filter="today">
-                        ⚡ Today's Trips <span class="tab-count" id="countToday">0</span>
+                        Today's Trips <span class="tab-count" id="countToday">0</span>
                     </button>
                     <button type="button" class="tab-btn" data-filter="tomorrow">
-                        ⏰ Tomorrow <span class="tab-count" id="countTomorrow">0</span>
+                        Tomorrow <span class="tab-count" id="countTomorrow">0</span>
                     </button>
                     <button type="button" class="tab-btn" data-filter="completed">
-                        ✅ Execution Complete <span class="tab-count" id="countCompleted">0</span>
+                        Execution Complete <span class="tab-count" id="countCompleted">0</span>
                     </button>
                     <button type="button" class="tab-btn" data-filter="cancelled">
-                        ❌ Cancelled <span class="tab-count" id="countCancelled">0</span>
+                        Cancelled <span class="tab-count" id="countCancelled">0</span>
                     </button>
                 </div>
 
                 <!-- Search and Mode Filter -->
                 <div class="search-and-date-tools">
                     <div class="search-input-box">
-                        <span class="search-icon">🔍</span>
+                        <span class="search-icon">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </span>
                         <input type="text" id="searchInput" placeholder="Search passenger, route, ticket ref, operator...">
                     </div>
 
                     <select id="typeFilterSelect" class="date-filter-select">
                         <option value="all">All Vehicle Types</option>
-                        <option value="Bus">🚌 Bus / Coach</option>
-                        <option value="Flight">✈️ Flight</option>
-                        <option value="Train">🚆 Intercity Train</option>
-                        <option value="Launch">🚢 River Launch</option>
+                        <option value="Bus">Bus / Coach</option>
+                        <option value="Flight">Flight</option>
+                        <option value="Train">Intercity Train</option>
+                        <option value="Ship">Ship / River Launch</option>
                     </select>
                 </div>
 
@@ -722,13 +791,13 @@
                 <table class="portal-table">
                     <thead>
                         <tr>
-                            <th>Passenger (Kara Kara)</th>
-                            <th>Route & Operator (Kon Jaigar)</th>
-                            <th>Journey Date & Schedule (Kon Somoyer / Kobe)</th>
+                            <th>Passenger Details</th>
+                            <th>Route & Vehicle</th>
+                            <th>Date & Schedule</th>
                             <th>Departure Status</th>
                             <th>Fare & Payment</th>
                             <th>Execution Status</th>
-                            <th style="text-align: right;">Operations / Action</th>
+                            <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="ticketsTableBody">

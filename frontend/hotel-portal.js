@@ -30,7 +30,10 @@ function checkAuth() {
         const userBadge = document.getElementById("portalUserBadge");
         if (userBadge) {
             const propertyName = currentUser.hotelName || "Partner Hotel";
-            userBadge.innerHTML = `🏨 <span>${currentUser.fullName || "Hotel Partner"}</span> <small style="opacity:0.8; font-weight:400;">(${propertyName})</small>`;
+            const avatarHtml = (currentUser.avatar && (currentUser.avatar.startsWith("data:image") || currentUser.avatar.startsWith("http") || currentUser.avatar.startsWith("/")))
+                ? `<img src="${currentUser.avatar}" alt="Partner Avatar" style="width:26px; height:26px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:6px; border:1.5px solid #ffffff; display:inline-block;">`
+                : `<span style="display:inline-block; vertical-align:middle; margin-right:6px;">🏨</span>`;
+            userBadge.innerHTML = `${avatarHtml}<span>${currentUser.fullName || "Hotel Partner"}</span> <small style="opacity:0.8; font-weight:400;">(${propertyName})</small>`;
         }
 
         return true;
@@ -231,7 +234,7 @@ function renderBookingsTable() {
 
         return `
             <tr data-booking-id="${b.id}">
-                <!-- Kara Kara (Guest Information) -->
+                <!-- Guest Information -->
                 <td>
                     <div class="customer-info">
                         <span class="customer-name">${escapeHtml(b.guestName || 'Traveler')}</span>
@@ -243,7 +246,7 @@ function renderBookingsTable() {
                     </div>
                 </td>
 
-                <!-- Kon Jaigar (Property & Place) -->
+                <!-- Property & Room Information -->
                 <td>
                     <div class="place-info">
                         <span class="place-hotel">${escapeHtml(b.hotelName)}</span>
@@ -257,7 +260,7 @@ function renderBookingsTable() {
                     </div>
                 </td>
 
-                <!-- Kon Somoyer / Kobe (Dates) -->
+                <!-- Stay Dates & Schedule -->
                 <td>
                     <div class="timing-info">
                         <span class="timing-date">Check-in: ${escapeHtml(b.checkIn)}</span>
@@ -375,7 +378,7 @@ window.openDetailsModal = function (bookingId) {
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; font-size: 13px;">
             <div style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">
-                <p style="margin:0 0 4px; font-weight:700; color:#475569;">GUEST (KARA KARA)</p>
+                <p style="margin:0 0 4px; font-weight:700; color:#475569;">GUEST DETAILS</p>
                 <div style="font-size:15px; font-weight:800; color:#0f172a;">${escapeHtml(booking.guestName)}</div>
                 <div style="color:#334155;">📞 ${escapeHtml(booking.guestPhone)}</div>
                 <div style="color:#334155;">✉️ ${escapeHtml(booking.guestEmail)}</div>
@@ -383,7 +386,7 @@ window.openDetailsModal = function (bookingId) {
             </div>
 
             <div style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">
-                <p style="margin:0 0 4px; font-weight:700; color:#475569;">SCHEDULE (KON SOMOYER / KOBE)</p>
+                <p style="margin:0 0 4px; font-weight:700; color:#475569;">STAY SCHEDULE</p>
                 <div>Check-in: <strong>${escapeHtml(booking.checkIn)}</strong></div>
                 <div>Check-out: <strong>${escapeHtml(booking.checkOut)}</strong></div>
                 <div>Duration: <strong>${booking.nights} night(s)</strong></div>
@@ -485,7 +488,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (exportReportBtn) {
         exportReportBtn.addEventListener("click", function () {
             if (typeof window.downloadHotelPartnerReport === "function") {
-                window.downloadHotelPartnerReport(currentPartner, allBookings);
+                window.downloadHotelPartnerReport(currentUser || {}, allHotelBookings || []);
             } else {
                 alert("Report generator is initializing. Please try again.");
             }

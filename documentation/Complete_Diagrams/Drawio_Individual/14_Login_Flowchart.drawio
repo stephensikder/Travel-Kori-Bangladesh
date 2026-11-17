@@ -1,0 +1,88 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="14_login_flowchart" name="14_Login_Flowchart">
+    <mxGraphModel dx="2438" dy="1450" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1250" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="Authentication &amp;amp; Security Lockout Flowchart" vertex="1">
+          <mxGeometry height="40" width="1500" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="l_start" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=17;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="785" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="l_step1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="User enters Email &amp;amp; Password&lt;br&gt;in login.html" vertex="1">
+          <mxGeometry height="80" width="280" x="660" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="l_dec1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="Account locked?&lt;br&gt;(lockUntil &amp;gt; Now)" vertex="1">
+          <mxGeometry height="110" width="240" x="680" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="l_err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="Reject Login (HTTP 403):&lt;br&gt;&#39;Account temporarily locked&#39;" vertex="1">
+          <mxGeometry height="70" width="260" x="280" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="l_dec2" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="Email exists &amp;amp;&lt;br&gt;Password matches?" vertex="1">
+          <mxGeometry height="95" width="240" x="680" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="l_err2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="Increment failedLoginAttempts&lt;br&gt;Log security alert in DB" vertex="1">
+          <mxGeometry height="80" width="260" x="1080" y="452.5" as="geometry" />
+        </mxCell>
+        <mxCell id="l_dec3" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="Account isActive&lt;br&gt;== true?" vertex="1">
+          <mxGeometry height="70" width="200" x="700" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="l_err3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="Reject Login (HTTP 403):&lt;br&gt;&#39;Account suspended by admin&#39;" vertex="1">
+          <mxGeometry height="70" width="260" x="280" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="l_dec4" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="For Partners:&lt;br&gt;isApproved == true?" vertex="1">
+          <mxGeometry height="130" width="240" x="680" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="l_err4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="Reject Login (HTTP 403):&lt;br&gt;&#39;Account pending admin approval&#39;" vertex="1">
+          <mxGeometry height="70" width="260" x="1060" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="l_succ" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="Reset failedLoginAttempts=0&lt;br&gt;Store session in sessionStorage" vertex="1">
+          <mxGeometry height="80" width="280" x="660" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="l_redir" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" value="RBAC Redirection:&lt;br&gt;• Admin -&amp;gt; admin.html&lt;br&gt;• Guide -&amp;gt; guide-portal.html&lt;br&gt;• Hotel -&amp;gt; hotel-portal.html&lt;br&gt;• Transport -&amp;gt; transport-portal.html&lt;br&gt;• Traveler -&amp;gt; dashboard.html" vertex="1">
+          <mxGeometry height="120" width="340" x="630" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="l_end" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=17;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="785" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="l_start" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_step1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="l_step1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_dec1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="l_dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_err1" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="l_dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_dec2" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="l_dec2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_err2" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="l_dec2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_dec3" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_11" edge="1" parent="1" source="l_dec3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_err3" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_12" edge="1" parent="1" source="l_dec3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_dec4" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_13" edge="1" parent="1" source="l_dec4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_err4" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_14" edge="1" parent="1" source="l_dec4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_succ" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_15" edge="1" parent="1" source="l_succ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_redir" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_16" edge="1" parent="1" source="l_redir" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;" target="l_end" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

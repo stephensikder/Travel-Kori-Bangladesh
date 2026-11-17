@@ -1,0 +1,70 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="23_api_request_response" name="23_API_Request_Response">
+    <mxGraphModel dx="1746" dy="1038" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;" value="REST API Request-Response Lifecycle Flow" vertex="1">
+          <mxGeometry height="40" width="1500" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="api_s" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=18;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="785" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="api_1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="1. Client Browser Invokes Fetch API&lt;br&gt;fetch(&#39;/api/...&#39;, { method, headers, body })" vertex="1">
+          <mxGeometry height="70" width="340" x="630" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="api_2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="2. Express Middleware Pipeline&lt;br&gt;• CORS Headers (Access-Control-Allow-Origin)&lt;br&gt;• express.json({ limit: &#39;15mb&#39; }) Body Parser" vertex="1">
+          <mxGeometry height="80" width="340" x="630" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="api_3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="3. Express Router Matching&lt;br&gt;Match HTTP Method &amp;amp; Parameterized Route Path" vertex="1">
+          <mxGeometry height="70" width="340" x="630" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="api_4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="4. Route Handler &amp;amp; Input Validation&lt;br&gt;Validate Types, Bounds, Dates, Base64 MIME" vertex="1">
+          <mxGeometry height="70" width="340" x="630" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="api_dec1" parent="1" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;fontStyle=1;" value="Validation&lt;br&gt;Passed?" vertex="1">
+          <mxGeometry height="80" width="150" x="725" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="api_err1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="Return HTTP 400 Bad Request&lt;br&gt;{ success: false, message: &#39;...&#39; }" vertex="1">
+          <mxGeometry height="70" width="260" x="280" y="595" as="geometry" />
+        </mxCell>
+        <mxCell id="api_5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="5. MongoDB Driver Query Execution&lt;br&gt;db.collection(...).find() / insertOne() / updateOne()" vertex="1">
+          <mxGeometry height="70" width="340" x="630" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="api_6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" value="6. JSON Serialization &amp;amp; Header Transmission&lt;br&gt;res.status(200).json({ success: true, ... })" vertex="1">
+          <mxGeometry height="70" width="340" x="630" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="api_e" parent="1" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;strokeWidth=2;fontSize=18;" value="" vertex="1">
+          <mxGeometry height="30" width="30" x="785" y="930" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="api_s" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="api_1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="api_2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="api_3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="api_4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_dec1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="api_dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_err1" value="No">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_11" edge="1" parent="1" source="api_dec1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_5" value="Yes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_12" edge="1" parent="1" source="api_5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_13" edge="1" parent="1" source="api_6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=18;" target="api_e" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

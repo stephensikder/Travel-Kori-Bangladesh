@@ -31,7 +31,10 @@ function checkAuth() {
         if (userBadge) {
             const operatorTitle = currentUser.operatorName || "Transport Partner";
             const mode = currentUser.transportType || "Fleet";
-            userBadge.innerHTML = `🚌 <span>${currentUser.fullName || "Transport Partner"}</span> <small style="opacity:0.85; font-weight:400;">(${operatorTitle} • ${mode})</small>`;
+            const avatarHtml = (currentUser.avatar && (currentUser.avatar.startsWith("data:image") || currentUser.avatar.startsWith("http") || currentUser.avatar.startsWith("/")))
+                ? `<img src="${currentUser.avatar}" alt="Operator Avatar" style="width:26px; height:26px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:6px; border:1.5px solid #ffffff; display:inline-block;">`
+                : `<span style="display:inline-block; vertical-align:middle; margin-right:6px;">🚌</span>`;
+            userBadge.innerHTML = `${avatarHtml}<span>${currentUser.fullName || "Transport Partner"}</span> <small style="opacity:0.85; font-weight:400;">(${operatorTitle} • ${mode})</small>`;
         }
 
         return true;
@@ -209,11 +212,11 @@ function renderTicketsTable() {
         let modeIcon = "🚌";
         if (t.transportType === "Flight") modeIcon = "✈️";
         else if (t.transportType === "Train") modeIcon = "🚆";
-        else if (t.transportType === "Launch") modeIcon = "🚢";
+        else if (t.transportType === "Launch" || t.transportType === "Ship") modeIcon = "🚢";
 
         return `
             <tr data-ticket-id="${t.id}">
-                <!-- Kara Kara (Passenger Information) -->
+                <!-- Passenger Information -->
                 <td>
                     <div class="passenger-info">
                         <span class="passenger-name">${escapeHtml(t.passengerName || 'Traveler')}</span>
@@ -225,7 +228,7 @@ function renderTicketsTable() {
                     </div>
                 </td>
 
-                <!-- Kon Jaigar (Route & Operator) -->
+                <!-- Route & Vehicle Information -->
                 <td>
                     <div class="route-info">
                         <span class="route-name">
@@ -241,7 +244,7 @@ function renderTicketsTable() {
                     </div>
                 </td>
 
-                <!-- Kon Somoyer / Kobe (Journey Date & Schedule) -->
+                <!-- Journey Date & Schedule -->
                 <td>
                     <div class="timing-info">
                         <span class="timing-date">📅 ${escapeHtml(t.journeyDate)}</span>
@@ -349,7 +352,7 @@ window.openTicketModal = function (ticketId) {
     let modeIcon = "🚌";
     if (ticket.transportType === "Flight") modeIcon = "✈️";
     else if (ticket.transportType === "Train") modeIcon = "🚆";
-    else if (ticket.transportType === "Launch") modeIcon = "🚢";
+    else if (ticket.transportType === "Launch" || ticket.transportType === "Ship") modeIcon = "🚢";
 
     content.innerHTML = `
         <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 16px;">
@@ -363,7 +366,7 @@ window.openTicketModal = function (ticketId) {
 
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; font-size: 13px;">
             <div style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">
-                <p style="margin:0 0 4px; font-weight:700; color:#475569;">PASSENGER (KARA KARA)</p>
+                <p style="margin:0 0 4px; font-weight:700; color:#475569;">PASSENGER DETAILS</p>
                 <div style="font-size:15px; font-weight:800; color:#0f172a;">${escapeHtml(ticket.passengerName)}</div>
                 <div style="color:#334155;">📞 ${escapeHtml(ticket.passengerPhone)}</div>
                 <div style="color:#334155;">✉️ ${escapeHtml(ticket.passengerEmail)}</div>
@@ -371,7 +374,7 @@ window.openTicketModal = function (ticketId) {
             </div>
 
             <div style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0;">
-                <p style="margin:0 0 4px; font-weight:700; color:#475569;">SCHEDULE & ROUTE (KON SOMOYER / KOBE)</p>
+                <p style="margin:0 0 4px; font-weight:700; color:#475569;">SCHEDULE & ROUTE</p>
                 <div>Departure Date: <strong>${escapeHtml(ticket.journeyDate)}</strong></div>
                 <div>Origin: <strong>${escapeHtml(ticket.from)}</strong></div>
                 <div>Destination: <strong>${escapeHtml(ticket.to)}</strong></div>
@@ -473,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (exportReportBtn) {
         exportReportBtn.addEventListener("click", function () {
             if (typeof window.downloadTransportPartnerReport === "function") {
-                window.downloadTransportPartnerReport(currentOperator, allTickets);
+                window.downloadTransportPartnerReport(currentUser || {}, allTransportTickets || []);
             } else {
                 alert("Report generator is initializing. Please try again.");
             }

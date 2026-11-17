@@ -47,6 +47,8 @@ function setupTabs() {
 
             // Trigger data refresh on tab switch
             if (targetId === "tabBookings") loadAdminBookings();
+            if (targetId === "tabAccounts") loadAdminAccounts();
+            if (targetId === "tabSecurity") loadAdminSecurity();
             if (targetId === "tabSpots") loadSpots();
             if (targetId === "tabHotels") loadHotels();
             if (targetId === "tabTransport") loadTransports();
@@ -952,6 +954,320 @@ if (adminAddGuideForm) {
     });
 }
 
+// ==========================================
+// PHASE 11: USER & PARTNER ACCOUNT MANAGEMENT
+// ==========================================
+let currentAccRoleFilter = "all";
+let currentAccStatusFilter = "all";
+let accSearchDebounce = null;
+
+async function loadAdminAccounts() {
+    const tableBody = document.getElementById("accountsTableBody");
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#64748b;">Loading user and partner accounts...</td></tr>';
+
+    const search = document.getElementById("accSearchInput")?.value || "";
+
+    try {
+        const queryParams = new URLSearchParams({
+            role: currentAccRoleFilter,
+            status: currentAccStatusFilter,
+            search
+        });
+
+        const res = await fetch(`${API_URL}/api/admin/accounts/${encodeURIComponent(user.id)}?${queryParams.toString()}`);
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message || "Failed to load accounts.");
+
+        const stats = data.stats || {};
+        const accounts = data.accounts || [];
+
+        // Update stats summary cards
+        const elTotal = document.getElementById("accStatTotal");
+        const elTrav = document.getElementById("accStatTravelers");
+        const elHot = document.getElementById("accStatHotels");
+        const elTrans = document.getElementById("accStatTransports");
+        const elGuide = document.getElementById("accStatGuides");
+        const elAct = document.getElementById("accStatActive");
+        const elSusp = document.getElementById("accStatSuspended");
+
+        if (elTotal) elTotal.textContent = stats.total ?? 0;
+        if (elTrav) elTrav.textContent = stats.travelers ?? 0;
+        if (elHot) elHot.textContent = stats.hotels ?? 0;
+        if (elTrans) elTrans.textContent = stats.transports ?? 0;
+        if (elGuide) elGuide.textContent = stats.guides ?? 0;
+        if (elAct) elAct.textContent = stats.active ?? 0;
+        if (elSusp) elSusp.textContent = stats.suspended ?? 0;
+
+        if (!accounts.length) {
+            tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px; color:#64748b;">No accounts found matching your selected filters.</td></tr>';
+            return;
+        }
+
+        tableBody.innerHTML = accounts.map(acc => {
+            const role = (acc.userType || "traveler").toLowerCase();
+            let roleBadgeBg = "#e0f2fe";
+            let roleBadgeColor = "#0369a1";
+            let roleLabel = "Traveler";
+
+            if (role === "admin") { roleBadgeBg = "#fef2f2"; roleBadgeColor = "#991b1b"; roleLabel = "Admin"; }
+            else if (role === "hotel") { roleBadgeBg = "#fef3c7"; roleBadgeColor = "#92400e"; roleLabel = "Hotel Partner"; }
+            else if (role === "transport") { roleBadgeBg = "#ffedd5"; roleBadgeColor = "#c2410c"; roleLabel = "Transport Partner"; }
+            else if (role === "guide") { roleBadgeBg = "#ecfdf5"; roleBadgeColor = "#065f46"; roleLabel = "Tour Guide"; }
+
+            const isActive = acc.isActive !== false;
+            const statusBadge = isActive
+                ? '<span style="background:#dcfce7; color:#15803d; font-size:11px; font-weight:800; padding:3px 8px; border-radius:999px;">Active</span>'
+                : '<span style="background:#fee2e2; color:#b91c1c; font-size:11px; font-weight:800; padding:3px 8px; border-radius:999px;" title="' + escapeAttr(acc.statusReason || "Suspended") + '">Suspended</span>';
+
+            const createdDate = acc.createdAt ? new Date(acc.createdAt).toLocaleDateString("en-GB") : "N/A";
+            const isSelf = user.id === acc.id;
+
+            const actionBtn = isSelf
+                ? '<span style="font-size:11px; color:#94a3b8; font-weight:700;">(Current Admin)</span>'
+                : `<button type="button" class="admin-action-btn ${isActive ? 'btn-delete' : 'btn-edit'} btn-toggle-acc-status" data-id="${acc.id}" data-name="${escapeAttr(acc.fullName)}" data-status="${isActive ? 'suspended' : 'active'}">
+                    ${isActive ? 'Deactivate' : 'Reactivate'}
+                   </button>`;
+
+            let extraInfo = "";
+            if (acc.hotelName) extraInfo = `<br><small style="color:#64748b; font-size:11px;">Property: ${escapeHTML(acc.hotelName)}</small>`;
+            else if (acc.operatorName) extraInfo = `<br><small style="color:#64748b; font-size:11px;">Fleet: ${escapeHTML(acc.operatorName)}</small>`;
+
+            return `
+                <tr>
+                    <td><strong>${escapeHTML(acc.fullName)}</strong>${extraInfo}</td>
+                    <td>${escapeHTML(acc.email)}</td>
+                    <td>${escapeHTML(acc.phone)}</td>
+                    <td><span style="background:${roleBadgeBg}; color:${roleBadgeColor}; font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px;">${roleLabel}</span></td>
+                    <td>${statusBadge}</td>
+                    <td>${createdDate}</td>
+                    <td>${actionBtn}</td>
+                </tr>
+            `;
+        }).join("");
+
+        // Attach status toggle click handlers
+        tableBody.querySelectorAll(".btn-toggle-acc-status").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const targetId = btn.getAttribute("data-id");
+                const targetName = btn.getAttribute("data-name");
+                const nextStatus = btn.getAttribute("data-status");
+                openAccountStatusModal(targetId, targetName, nextStatus);
+            });
+        });
+
+    } catch (err) {
+        console.error("Load accounts error:", err);
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:red;">${err.message}</td></tr>`;
+    }
+}
+
+// Modal handling
+function openAccountStatusModal(userId, userName, nextStatus) {
+    const modal = document.getElementById("accountStatusModal");
+    const title = document.getElementById("accStatusModalTitle");
+    const desc = document.getElementById("accStatusModalDesc");
+    const reasonInput = document.getElementById("accStatusReason");
+    const targetUserIdInput = document.getElementById("accStatusTargetUserId");
+    const targetNewStatusInput = document.getElementById("accStatusTargetNewStatus");
+    const confirmBtn = document.getElementById("confirmAccStatusBtn");
+
+    if (!modal) return;
+
+    targetUserIdInput.value = userId;
+    targetNewStatusInput.value = nextStatus;
+
+    if (nextStatus === "suspended") {
+        title.textContent = "Confirm Account Deactivation";
+        desc.innerHTML = `Are you sure you want to deactivate the account for <strong>${escapeHTML(userName)}</strong>? The user will be unable to log in until reactivated.`;
+        confirmBtn.textContent = "Deactivate Account";
+        confirmBtn.style.background = "#e11d48";
+        reasonInput.value = "Administrative suspension for review";
+    } else {
+        title.textContent = "Confirm Account Reactivation";
+        desc.innerHTML = `Are you sure you want to reactivate the account for <strong>${escapeHTML(userName)}</strong>? Full access to platform bookings and services will be restored.`;
+        confirmBtn.textContent = "Reactivate Account";
+        confirmBtn.style.background = "#087f5b";
+        reasonInput.value = "Account restored after administrative review";
+    }
+
+    modal.style.display = "flex";
+}
+
+function setupAccountFilters() {
+    // Role filter pills
+    document.querySelectorAll(".acc-role-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".acc-role-pill").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentAccRoleFilter = btn.getAttribute("data-role") || "all";
+            loadAdminAccounts();
+        });
+    });
+
+    // Status filter pills
+    document.querySelectorAll(".acc-status-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".acc-status-pill").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentAccStatusFilter = btn.getAttribute("data-status") || "all";
+            loadAdminAccounts();
+        });
+    });
+
+    // Search input debounce
+    const searchInput = document.getElementById("accSearchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            clearTimeout(accSearchDebounce);
+            accSearchDebounce = setTimeout(() => {
+                loadAdminAccounts();
+            }, 300);
+        });
+    }
+
+    // Modal close & submit
+    const modal = document.getElementById("accountStatusModal");
+    const closeBtn = document.getElementById("closeAccStatusModalBtn");
+    const cancelBtn = document.getElementById("cancelAccStatusBtn");
+    const form = document.getElementById("accStatusForm");
+
+    if (closeBtn) closeBtn.addEventListener("click", () => { if (modal) modal.style.display = "none"; });
+    if (cancelBtn) cancelBtn.addEventListener("click", () => { if (modal) modal.style.display = "none"; });
+    if (modal) {
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) modal.style.display = "none";
+        });
+    }
+
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const targetUserId = document.getElementById("accStatusTargetUserId")?.value;
+            const newStatus = document.getElementById("accStatusTargetNewStatus")?.value;
+            const reason = document.getElementById("accStatusReason")?.value;
+            const actionMsg = document.getElementById("accountsActionMsg");
+
+            try {
+                const res = await fetch(`${API_URL}/api/admin/accounts/${encodeURIComponent(user.id)}/${encodeURIComponent(targetUserId)}/status`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: newStatus, reason })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || "Failed to update status.");
+
+                if (modal) modal.style.display = "none";
+                if (actionMsg) {
+                    actionMsg.style.display = "block";
+                    actionMsg.style.background = "#ecfdf5";
+                    actionMsg.style.color = "#065f46";
+                    actionMsg.textContent = data.message;
+                    setTimeout(() => { actionMsg.style.display = "none"; }, 4000);
+                }
+                loadAdminAccounts();
+            } catch (err) {
+                alert("Error updating account status: " + err.message);
+            }
+        });
+    }
+}
+
+// ==========================================
+// PHASE 12: SECURITY MONITORING & ALERTS
+// ==========================================
+async function loadAdminSecurity() {
+    const alertsList = document.getElementById("securityAlertsList");
+    const logsTableBody = document.getElementById("securityLogsTableBody");
+
+    if (alertsList) alertsList.innerHTML = '<p style="color:#64748b; font-size:13px;">Loading security alerts...</p>';
+    if (logsTableBody) logsTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#64748b;">Loading audit logs...</td></tr>';
+
+    try {
+        const [alertsRes, logsRes] = await Promise.all([
+            fetch(`${API_URL}/api/admin/security-alerts/${encodeURIComponent(user.id)}`),
+            fetch(`${API_URL}/api/admin/security-logs/${encodeURIComponent(user.id)}`)
+        ]);
+
+        const alertsData = alertsRes.ok ? await alertsRes.json() : { alerts: [], lockedUsers: [] };
+        const logsData = logsRes.ok ? await logsRes.json() : { logs: [] };
+
+        const alerts = alertsData.alerts || [];
+        const lockedUsers = alertsData.lockedUsers || [];
+        const logs = logsData.logs || [];
+
+        // Update stats
+        const activeAlerts = alerts.filter(a => !a.isRead);
+        const elAlerts = document.getElementById("secStatAlerts");
+        const elLocked = document.getElementById("secStatLocked");
+        const elLogs = document.getElementById("secStatLogs");
+
+        if (elAlerts) elAlerts.textContent = activeAlerts.length;
+        if (elLocked) elLocked.textContent = lockedUsers.length;
+        if (elLogs) elLogs.textContent = logs.length;
+
+        // Render alerts list
+        if (alertsList) {
+            if (!alerts.length && !lockedUsers.length) {
+                alertsList.innerHTML = '<div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:14px; color:#166534; font-size:13px;">✅ Zero security warnings. No repeated failed logins detected.</div>';
+            } else {
+                alertsList.innerHTML = alerts.map(a => {
+                    const isUnresolved = !a.isRead;
+                    return `
+                        <div style="background:${isUnresolved ? '#fef2f2' : '#f8fafc'}; border:1px solid ${isUnresolved ? '#fecaca' : '#e2e8f0'}; border-radius:8px; padding:12px 16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                            <div>
+                                <strong style="color:${isUnresolved ? '#991b1b' : '#334155'}; font-size:13px;">⚠️ ${escapeHTML(a.title)}</strong>
+                                <p style="margin:4px 0 0; font-size:12px; color:#475569;">${escapeHTML(a.message)}</p>
+                                <small style="color:#94a3b8; font-size:10px;">${a.createdAt ? new Date(a.createdAt).toLocaleString() : ''}</small>
+                            </div>
+                            ${isUnresolved ? `<button type="button" class="btn-resolve-alert" data-id="${a.id}" style="padding:6px 12px; background:#087f5b; color:white; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Mark Resolved</button>` : '<span style="color:#166534; font-size:11px; font-weight:700;">Resolved</span>'}
+                        </div>
+                    `;
+                }).join("");
+
+                alertsList.querySelectorAll(".btn-resolve-alert").forEach(btn => {
+                    btn.addEventListener("click", async () => {
+                        const alertId = btn.getAttribute("data-id");
+                        await fetch(`${API_URL}/api/admin/security-alerts/${encodeURIComponent(user.id)}/${encodeURIComponent(alertId)}/resolve`, { method: "PUT" });
+                        loadAdminSecurity();
+                    });
+                });
+            }
+        }
+
+        // Render audit logs table
+        if (logsTableBody) {
+            if (!logs.length) {
+                logsTableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#64748b;">No security audit events recorded yet.</td></tr>';
+                return;
+            }
+
+            logsTableBody.innerHTML = logs.map(l => {
+                const timeStr = l.timestamp ? new Date(l.timestamp).toLocaleString() : "N/A";
+                let actionColor = "#0369a1";
+                if (l.action && l.action.includes("suspend")) actionColor = "#991b1b";
+                if (l.action && l.action.includes("reactivate")) actionColor = "#166534";
+                if (l.action && l.action.includes("reset")) actionColor = "#b45309";
+
+                return `
+                    <tr>
+                        <td style="font-size:12px; color:#64748b;">${timeStr}</td>
+                        <td><strong style="color:${actionColor}; font-size:12px;">${escapeHTML(l.action)}</strong></td>
+                        <td>${escapeHTML(l.targetUserId || l.email || "N/A")}</td>
+                        <td>${escapeHTML(l.performedBy || "System")}</td>
+                        <td style="font-size:12px; color:#475569;">${escapeHTML(l.reason || "-")}</td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+    } catch (err) {
+        console.error("Load security error:", err);
+    }
+}
+
 // Logout
 const adminLogoutBtn = document.getElementById("adminLogoutBtn");
 if (adminLogoutBtn) {
@@ -964,6 +1280,7 @@ if (adminLogoutBtn) {
 // Initialize
 function initAdmin() {
     setupTabs();
+    setupAccountFilters();
     loadAdminBookings();
 }
 

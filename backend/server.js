@@ -4,6 +4,13 @@ const express = require("express");
 const cors = require("cors");
 const { MongoClient, ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+let emailService;
+try {
+    emailService = require("./services/emailService");
+} catch (e) {
+    emailService = null;
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -596,6 +603,7 @@ app.post("/api/auth/login", async function (req, res) {
                 guideId: guideProfile ? guideProfile._id.toString() : null,
                 fullName: user.fullName || user.name || "User",
                 email: user.email,
+                avatar: user.avatar || (guideProfile && (guideProfile.photo || guideProfile.avatar)) || "",
                 userType: userType,
                 hotelName: user.hotelName || "",
                 operatorName: user.operatorName || "",
@@ -611,6 +619,145 @@ app.post("/api/auth/login", async function (req, res) {
             success: false,
             message: "Unable to log in right now."
         });
+    }
+});
+
+// ============================================
+// FORGOT PASSWORD API (Crypto Token + Gmail SMTP)
+// ============================================
+app.post("/api/auth/forgot-password", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const { email } = req.body;
+
+        if (typeof email !== "string" || !email.trim()) {
+            return res.status(400).json({ success: false, message: "Please provide a valid email address." });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+        const user = await db.collection("users").findOne({ email: normalizedEmail });
+
+        // Neutral generic response if user not found to prevent user enumeration
+        if (!user) {
+            return res.json({
+                success: true,
+                message: "If an account with that email exists, password reset instructions have been sent."
+            });
+        }
+
+        // Generate high-entropy 32-byte crypto token
+        const rawToken = crypto.randomBytes(32).toString("hex");
+        const hashedToken = crypto.createHash("sha256").update(rawToken).digest("hex");
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes expiry
+
+        await db.collection("users").updateOne(
+            { _id: user._id },
+            {
+                $set: {
+                    resetPasswordToken: hashedToken,
+                    resetPasswordExpires: expiresAt,
+                    updatedAt: new Date()
+                }
+            }
+        );
+
+        // Send email via emailService
+        let sendResult = { success: true };
+        if (emailService && typeof emailService.sendPasswordResetEmail === "function") {
+            sendResult = await emailService.sendPasswordResetEmail(
+                user.email,
+                rawToken,
+                user.fullName || user.name || "Traveler"
+            );
+        }
+
+        const responseData = {
+            success: true,
+            message: "If an account with that email exists, password reset instructions have been sent."
+        };
+        if (sendResult && (sendResult.sandbox || sendResult.resetUrl)) {
+            responseData.devResetUrl = sendResult.resetUrl;
+        }
+
+        res.json(responseData);
+    } catch (err) {
+        console.error("Forgot password error:", err.message);
+        res.status(500).json({ success: false, message: "Unable to process password reset request." });
+    }
+});
+
+// ============================================
+// RESET PASSWORD API (Token Verification & Bcrypt Update)
+// ============================================
+app.post("/api/auth/reset-password", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const { token, email, newPassword } = req.body;
+
+        if (!token || typeof token !== "string" || !email || typeof email !== "string" || !newPassword || typeof newPassword !== "string") {
+            return res.status(400).json({ success: false, message: "All fields are required." });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ success: false, message: "Password must be at least 6 characters long." });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+        const hashedToken = crypto.createHash("sha256").update(token.trim()).digest("hex");
+
+        const user = await db.collection("users").findOne({
+            email: normalizedEmail,
+            resetPasswordToken: hashedToken,
+            resetPasswordExpires: { $gt: new Date() }
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "Password reset link is invalid or has expired. Please request a new one."
+            });
+        }
+
+        // Hash new password using bcrypt
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update password and invalidate single-use token immediately
+        await db.collection("users").updateOne(
+            { _id: user._id },
+            {
+                $set: {
+                    password: hashedPassword,
+                    failedLoginAttempts: 0,
+                    isLocked: false,
+                    lockUntil: null,
+                    updatedAt: new Date()
+                },
+                $unset: {
+                    resetPasswordToken: "",
+                    resetPasswordExpires: ""
+                }
+            }
+        );
+
+        // Security audit log
+        try {
+            await db.collection("security_logs").insertOne({
+                action: "password_reset",
+                userId: user._id.toString(),
+                email: user.email,
+                ip: req.ip || req.headers["x-forwarded-for"] || "127.0.0.1",
+                timestamp: new Date()
+            });
+        } catch (e) {}
+
+        res.json({
+            success: true,
+            message: "Your password has been successfully reset! You can now log in with your new password."
+        });
+    } catch (err) {
+        console.error("Reset password error:", err.message);
+        res.status(500).json({ success: false, message: "Unable to reset password right now." });
     }
 });
 
@@ -936,7 +1083,9 @@ app.get("/api/tourguides", async function (req, res) {
                 dailyRate: Number(g.dailyRate) || 2000,
                 bio: g.bio || "Passionate local tour guide with extensive knowledge of history, culture and nature.",
                 phone: g.phone || "+8801700000000",
-                isAvailable: g.isAvailable !== false
+                isAvailable: g.isAvailable !== false,
+                photo: g.photo || g.avatar || g.image || "",
+                avatar: g.avatar || g.photo || g.image || ""
             }))
         });
     } catch (error) {
@@ -1067,11 +1216,33 @@ app.get("/api/tourguide-bookings/user/:userId", async function (req, res) {
         const reviewMap = new Map();
         existingReviews.forEach(r => reviewMap.set(r.bookingReference, r));
 
+        // Resolve guide photos from tourguides
+        const guideIds = bookings.map(b => b.guideId).filter(Boolean);
+        const guideNames = bookings.map(b => b.guideName).filter(Boolean);
+        const objGuideIds = guideIds.filter(id => ObjectId.isValid(id)).map(id => new ObjectId(id));
+        const matchedGuides = (objGuideIds.length > 0 || guideNames.length > 0)
+            ? await db.collection("tourguides").find({
+                $or: [
+                    { _id: { $in: objGuideIds } },
+                    { name: { $in: guideNames } }
+                ]
+            }).toArray()
+            : [];
+        const guidePhotoMap = new Map();
+        matchedGuides.forEach(g => {
+            const p = g.photo || g.avatar || "";
+            guidePhotoMap.set(g._id.toString(), p);
+            guidePhotoMap.set(g.name, p);
+        });
+
         const enriched = bookings.map(b => {
             const rev = reviewMap.get(b.reference);
+            const guidePhoto = guidePhotoMap.get(b.guideId ? b.guideId.toString() : "") || guidePhotoMap.get(b.guideName) || "";
             return {
                 ...b,
                 id: b._id.toString(),
+                guidePhoto: guidePhoto,
+                guideAvatar: guidePhoto,
                 isReviewed: Boolean(rev),
                 review: rev ? {
                     id: rev._id.toString(),
@@ -1141,6 +1312,8 @@ app.get("/api/guide/profile/:guideId", async function (req, res) {
                 name: guide.name,
                 email: guide.email || "",
                 phone: guide.phone || "",
+                photo: guide.photo || guide.avatar || "",
+                avatar: guide.avatar || guide.photo || "",
                 bio: guide.bio || "",
                 specialization: Array.isArray(guide.specialization) ? guide.specialization : [guide.specialization || "Bangladesh"],
                 languages: Array.isArray(guide.languages) ? guide.languages : ["Bengali", "English"],
@@ -1166,7 +1339,7 @@ app.put("/api/guide/profile/:guideId", async function (req, res) {
     try {
         if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
         const { guideId } = req.params;
-        const { bio, languages, experience, specialization, dailyRate, phone, isAvailable } = req.body;
+        const { bio, languages, experience, specialization, dailyRate, phone, isAvailable, photo, avatar } = req.body;
 
         let query = null;
         if (ObjectId.isValid(guideId)) {
@@ -1182,6 +1355,12 @@ app.put("/api/guide/profile/:guideId", async function (req, res) {
         if (experience !== undefined) updateFields.experience = Math.max(0, Number(experience) || 1);
         if (isAvailable !== undefined) updateFields.isAvailable = Boolean(isAvailable);
 
+        if (photo !== undefined || avatar !== undefined) {
+            const photoVal = (photo !== undefined ? photo : avatar) || "";
+            updateFields.photo = photoVal;
+            updateFields.avatar = photoVal;
+        }
+
         if (languages) {
             updateFields.languages = Array.isArray(languages)
                 ? languages
@@ -1193,16 +1372,116 @@ app.put("/api/guide/profile/:guideId", async function (req, res) {
                 : String(specialization).split(",").map(s => s.trim()).filter(Boolean);
         }
 
-        const result = await db.collection("tourguides").updateOne(query, { $set: updateFields });
-
-        if (result.matchedCount === 0) {
+        const existingGuide = await db.collection("tourguides").findOne(query);
+        if (!existingGuide) {
             return res.status(404).json({ success: false, message: "Guide profile not found." });
+        }
+
+        await db.collection("tourguides").updateOne({ _id: existingGuide._id }, { $set: updateFields });
+
+        // Synchronize avatar to users collection if photo updated
+        if ((photo !== undefined || avatar !== undefined) && existingGuide.userId) {
+            const photoVal = (photo !== undefined ? photo : avatar) || "";
+            await db.collection("users").updateOne(
+                { _id: existingGuide.userId },
+                { $set: { avatar: photoVal, updatedAt: new Date() } }
+            );
         }
 
         res.json({ success: true, message: "Guide profile updated successfully!" });
     } catch (error) {
         console.error("Update guide profile error:", error.message);
         res.status(500).json({ success: false, message: "Unable to update guide profile." });
+    }
+});
+
+// Dedicated Tour Guide Profile Photo Route
+app.put("/api/guide/profile/:guideId/photo", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const { guideId } = req.params;
+        const { photo, avatar, userId } = req.body;
+
+        if (!ObjectId.isValid(guideId)) {
+            return res.status(400).json({ success: false, message: "Invalid guide ID." });
+        }
+
+        // Find guide by _id or userId
+        const guide = await db.collection("tourguides").findOne({
+            $or: [{ _id: new ObjectId(guideId) }, { userId: new ObjectId(guideId) }]
+        });
+
+        if (!guide) {
+            return res.status(404).json({ success: false, message: "Tour guide profile not found." });
+        }
+
+        // Role / ownership check: if userId provided, verify match
+        if (userId && ObjectId.isValid(userId)) {
+            const userObjId = new ObjectId(userId);
+            if (guide.userId && !guide.userId.equals(userObjId) && !guide._id.equals(userObjId)) {
+                return res.status(403).json({ success: false, message: "Unauthorized. You can only update your own guide photo." });
+            }
+        }
+
+        const photoData = (photo !== undefined ? photo : avatar) || "";
+
+        // If photoData is provided, validate format and size
+        if (photoData) {
+            if (typeof photoData !== "string") {
+                return res.status(400).json({ success: false, message: "Invalid image format." });
+            }
+
+            const isDataUri = /^data:image\/(jpeg|jpg|png|webp);base64,/i.test(photoData);
+            const isHttpUrl = /^https?:\/\//i.test(photoData);
+            if (!isDataUri && !isHttpUrl) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Unsupported file format. Please upload JPG, JPEG, PNG, or WEBP image."
+                });
+            }
+
+            if (photoData.length > 7 * 1024 * 1024) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Image exceeds maximum allowed size of 5 MB."
+                });
+            }
+        }
+
+        // Persist photo in tourguides collection
+        await db.collection("tourguides").updateOne(
+            { _id: guide._id },
+            {
+                $set: {
+                    photo: photoData,
+                    avatar: photoData,
+                    updatedAt: new Date()
+                }
+            }
+        );
+
+        // Synchronize in users collection
+        if (guide.userId) {
+            await db.collection("users").updateOne(
+                { _id: guide.userId },
+                {
+                    $set: {
+                        avatar: photoData,
+                        updatedAt: new Date()
+                    }
+                }
+            );
+        }
+
+        res.json({
+            success: true,
+            message: photoData ? "Guide profile photo updated successfully!" : "Guide profile photo removed successfully.",
+            photo: photoData,
+            avatar: photoData
+        });
+    } catch (error) {
+        console.error("Guide photo upload error:", error.message);
+        res.status(500).json({ success: false, message: "Unable to update guide photo." });
     }
 });
 
@@ -2994,6 +3273,138 @@ app.get("/api/hotels", async function (req, res) {
     }
 });
 
+// =========================
+// SINGLE HOTEL DETAILS API (DYNAMIC)
+// =========================
+app.get("/api/hotels/:id", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const { id } = req.params;
+        let hotel = null;
+
+        if (ObjectId.isValid(id)) {
+            try {
+                hotel = await db.collection("hotels").findOne({ _id: new ObjectId(id) });
+            } catch (err) {}
+        }
+        if (!hotel) {
+            hotel = await db.collection("hotels").findOne({ _id: id });
+        }
+        if (!hotel) {
+            hotel = await db.collection("hotels").findOne({
+                name: new RegExp("^" + id.replace(/[-_]/g, " ").trim() + "$", "i")
+            });
+        }
+
+        if (!hotel) {
+            return res.status(404).json({ success: false, message: "Hotel not found." });
+        }
+
+        const checkInTime = hotel.checkInTime || "02:00 PM";
+        const checkOutTime = hotel.checkOutTime || "12:00 PM";
+
+        let guestReviews = [];
+        try {
+            const bookingsWithReviews = await db.collection("hotelBookings")
+                .find({
+                    $or: [
+                        { hotelId: hotel._id.toString() },
+                        { hotelName: hotel.name }
+                    ],
+                    review: { $exists: true, $ne: "" }
+                })
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .toArray();
+
+            guestReviews = bookingsWithReviews.map(b => ({
+                guestName: b.guestName || "Verified Guest",
+                rating: b.rating || 5,
+                comment: b.review || "Comfortable stay, polite staff and wonderful ambiance.",
+                date: b.createdAt ? new Date(b.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent Stay"
+            }));
+        } catch (e) {}
+
+        if (!guestReviews.length) {
+            guestReviews = [
+                {
+                    guestName: "Tanvir Ahmed",
+                    rating: 5,
+                    comment: "Excellent hospitality and sparkling clean rooms. The staff were remarkably courteous.",
+                    date: "Oct 2026"
+                },
+                {
+                    guestName: "Sadia Rahman",
+                    rating: 5,
+                    comment: "Breathtaking surroundings, peaceful location, and top-tier amenities. Highly recommended!",
+                    date: "Sep 2026"
+                }
+            ];
+        }
+
+        res.json({
+            success: true,
+            hotel: {
+                id: hotel._id.toString(),
+                name: hotel.name,
+                districtName: hotel.districtName || hotel.district || "Bangladesh",
+                address: hotel.address || hotel.location || "",
+                latitude: hotel.latitude || null,
+                longitude: hotel.longitude || null,
+                starRating: hotel.starRating || 5,
+                rating: hotel.rating || (hotel.starRating ? Number(hotel.starRating).toFixed(1) : "4.8"),
+                reviewCount: hotel.reviewCount || 128,
+                phone: hotel.phone || "",
+                email: hotel.email || "",
+                description: hotel.description || "",
+                image: hotel.image || null,
+                images: Array.isArray(hotel.images) && hotel.images.length ? hotel.images : (hotel.image ? [hotel.image] : []),
+                facilities: Array.isArray(hotel.facilities) && hotel.facilities.length
+                    ? hotel.facilities
+                    : ["Free High-Speed WiFi", "Air Conditioning", "Swimming Pool", "Complimentary Breakfast", "24/7 Room Service", "Secure Parking", "Fitness Center"],
+                checkInTime: checkInTime,
+                checkOutTime: checkOutTime,
+                packages: Array.isArray(hotel.packages) && hotel.packages.length ? hotel.packages.map(p => ({
+                    id: p._id ? p._id.toString() : p.name.toLowerCase().replace(/\s+/g, "-"),
+                    name: p.name,
+                    type: p.type || "standard",
+                    pricePerNight: p.pricePerNight || p.price || 3500,
+                    availableRooms: typeof p.availableRooms === "number" ? p.availableRooms : 6,
+                    capacity: p.capacity || 2,
+                    bedType: p.bedType || (p.capacity > 2 ? "2 King Beds" : (p.type === "standard" ? "1 Queen / Twin Bed" : "1 King Bed")),
+                    roomSize: p.roomSize || null,
+                    facilities: Array.isArray(p.facilities) ? p.facilities : []
+                })) : [
+                    {
+                        name: "Standard Deluxe Room",
+                        type: "standard",
+                        pricePerNight: hotel.priceStandard || 3500,
+                        availableRooms: 8,
+                        capacity: 2,
+                        bedType: "1 Queen Bed",
+                        roomSize: null,
+                        facilities: ["Free Breakfast", "AC", "WiFi"]
+                    },
+                    {
+                        name: "Executive Suite",
+                        type: "deluxe",
+                        pricePerNight: hotel.priceDeluxe || 6500,
+                        availableRooms: 4,
+                        capacity: 2,
+                        bedType: "1 King Bed",
+                        roomSize: null,
+                        facilities: ["Balcony View", "Free Breakfast", "AC", "WiFi", "Pool Access"]
+                    }
+                ],
+                reviews: guestReviews
+            }
+        });
+    } catch (error) {
+        console.error("Get hotel details error:", error.message);
+        res.status(500).json({ success: false, message: "Unable to load hotel details." });
+    }
+});
+
 app.post("/api/admin/hotels/:adminId", async function (req, res) {
     try {
         const { adminId } = req.params;
@@ -3126,16 +3537,35 @@ app.get("/api/transportations", async function (req, res) {
 
         res.json({
             success: true,
-            transportations: list.map(t => ({
-                id: t._id.toString(),
-                type: t.type ? t.type.charAt(0).toUpperCase() + t.type.slice(1).toLowerCase() : "Bus",
-                operator: t.operator || "Transport Operator",
-                from: t.from,
-                to: t.to,
-                fare: t.farePerSeat || t.fare || 800,
-                vehicleNumber: t.vehicleNumber || "",
-                departureTime: t.departureTime || "08:00 AM"
-            }))
+            transportations: list.map(t => {
+                const classStr = t.classType || t.category || "";
+                const isAcCoach = typeof t.isAc === "boolean"
+                    ? t.isAc
+                    : (/\bAC\b/i.test(classStr) || /\bAC\b/i.test(t.operator || "") || /Scania|Universe|Sleeper|Deluxe|Luxury/i.test(classStr)) && !/Non-AC/i.test(classStr);
+
+                return {
+                    id: t._id.toString(),
+                    type: t.type ? t.type.charAt(0).toUpperCase() + t.type.slice(1).toLowerCase() : "Bus",
+                    operator: t.operator || "Transport Operator",
+                    vesselName: t.vesselName || "",
+                    from: t.from,
+                    to: t.to,
+                    originTerminal: t.originTerminal || "",
+                    destinationTerminal: t.destinationTerminal || "",
+                    fare: t.farePerSeat || t.fare || 800,
+                    farePerSeat: t.farePerSeat || t.fare || 800,
+                    cabinFares: t.cabinFares || null,
+                    vehicleNumber: t.vehicleNumber || "",
+                    departureTime: t.departureTime || "08:00 AM",
+                    duration: t.duration || 360,
+                    availableSeats: typeof t.availableSeats === "number" ? t.availableSeats : 28,
+                    totalSeats: t.totalSeats || 36,
+                    classType: classStr || (isAcCoach ? "AC Luxury Coach" : "Non-AC Standard"),
+                    facilities: t.facilities || [],
+                    scheduleUrl: t.scheduleUrl || "",
+                    isAc: isAcCoach
+                };
+            })
         });
     } catch (error) {
         console.error("Get transportations error:", error.message);
@@ -3943,6 +4373,16 @@ app.post("/api/transport-bookings", async function (req, res) {
                     message: "Invalid flight seat."
                 });
             }
+        } else if (journey.type === "Ship") {
+            const validShipSeat = seat =>
+                /^(?:C|Cabin|D|Deck|VIP|Berth)?-?\d+$/i.test(seat) || /^[A-Z]\d+$/i.test(seat) || /^\d+$/.test(seat);
+
+            if (!seatNumbers.every(validShipSeat)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid ship cabin or deck berth."
+                });
+            }
         }
 
         const reference =
@@ -4705,6 +5145,253 @@ app.get("/api/admin/guide-reviews/:adminId", async function (req, res) {
     } catch (error) {
         console.error("Admin get guide reviews error:", error.message);
         res.status(500).json({ success: false, message: "Unable to load guide reviews." });
+    }
+});
+
+// ============================================
+// ADMIN ACCOUNT MANAGEMENT (Travelers, Hotels, Transport, Guides)
+// ============================================
+app.get("/api/admin/accounts/:adminId", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const admin = await verifyAdminUser(req.params.adminId);
+        if (!admin) return res.status(403).json({ success: false, message: "Admin access required." });
+
+        const { role, status, search } = req.query;
+        const query = {};
+
+        if (role && role !== "all") {
+            query.userType = role.toLowerCase();
+        }
+        if (status && status !== "all") {
+            if (status === "active") query.isActive = { $ne: false };
+            else if (status === "suspended") query.isActive = false;
+        }
+        if (search && search.trim()) {
+            const s = search.trim();
+            query.$or = [
+                { fullName: { $regex: s, $options: "i" } },
+                { name: { $regex: s, $options: "i" } },
+                { email: { $regex: s, $options: "i" } },
+                { phone: { $regex: s, $options: "i" } },
+                { hotelName: { $regex: s, $options: "i" } },
+                { operatorName: { $regex: s, $options: "i" } }
+            ];
+        }
+
+        const usersCol = db.collection("users");
+        const allUsers = await usersCol.find(query).sort({ createdAt: -1 }).toArray();
+
+        const [totalCount, travelerCount, hotelCount, transportCount, guideCount, activeCount, suspendedCount] = await Promise.all([
+            usersCol.countDocuments({}),
+            usersCol.countDocuments({ userType: "traveler" }),
+            usersCol.countDocuments({ userType: "hotel" }),
+            usersCol.countDocuments({ userType: "transport" }),
+            usersCol.countDocuments({ userType: "guide" }),
+            usersCol.countDocuments({ isActive: { $ne: false } }),
+            usersCol.countDocuments({ isActive: false })
+        ]);
+
+        const accounts = allUsers.map(u => ({
+            id: u._id.toString(),
+            fullName: u.fullName || u.name || "User",
+            email: u.email,
+            phone: u.phone || "N/A",
+            userType: u.userType || "traveler",
+            isActive: u.isActive !== false,
+            hotelName: u.hotelName || "",
+            operatorName: u.operatorName || "",
+            district: u.district || "",
+            statusReason: u.statusReason || "",
+            statusUpdatedAt: u.statusUpdatedAt || null,
+            statusUpdatedBy: u.statusUpdatedBy || "",
+            createdAt: u.createdAt || new Date()
+        }));
+
+        res.json({
+            success: true,
+            stats: {
+                total: totalCount,
+                travelers: travelerCount,
+                hotels: hotelCount,
+                transports: transportCount,
+                guides: guideCount,
+                active: activeCount,
+                suspended: suspendedCount
+            },
+            accounts
+        });
+    } catch (err) {
+        console.error("Admin get accounts error:", err.message);
+        res.status(500).json({ success: false, message: "Unable to load accounts." });
+    }
+});
+
+// Update Account Status (Deactivate / Reactivate with confirmation & reason)
+app.put("/api/admin/accounts/:adminId/:userId/status", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const admin = await verifyAdminUser(req.params.adminId);
+        if (!admin) return res.status(403).json({ success: false, message: "Admin access required." });
+
+        const { userId } = req.params;
+        const { status, reason } = req.body;
+
+        if (!ObjectId.isValid(userId)) {
+            return res.status(400).json({ success: false, message: "Invalid user ID." });
+        }
+
+        // Prevent admin from deactivating themselves
+        if (admin._id.toString() === userId) {
+            return res.status(400).json({ success: false, message: "You cannot deactivate your own admin account." });
+        }
+
+        const isActivating = status === "active";
+        const reasonText = (reason || "").trim() || (isActivating ? "Reactivated by admin" : "Administrative review");
+
+        const updateResult = await db.collection("users").updateOne(
+            { _id: new ObjectId(userId) },
+            {
+                $set: {
+                    isActive: isActivating,
+                    statusReason: reasonText,
+                    statusUpdatedAt: new Date(),
+                    statusUpdatedBy: admin.email,
+                    isLocked: false,
+                    failedLoginAttempts: 0,
+                    lockUntil: null
+                }
+            }
+        );
+
+        if (updateResult.matchedCount === 0) {
+            return res.status(404).json({ success: false, message: "Account not found." });
+        }
+
+        // Insert audit log in security_logs
+        await db.collection("security_logs").insertOne({
+            action: isActivating ? "account_reactivated" : "account_suspended",
+            targetUserId: userId,
+            reason: reasonText,
+            performedBy: admin.email,
+            adminId: admin._id.toString(),
+            timestamp: new Date()
+        });
+
+        // Insert notification for affected user
+        try {
+            await db.collection("notifications").insertOne({
+                userId: userId,
+                title: isActivating ? "Account Reactivated" : "Account Suspended",
+                message: isActivating
+                    ? "Your account has been reactivated by administrator. You now have full access to Travel Kori Bangladesh services."
+                    : `Your account was suspended by administrator. Reason: ${reasonText}`,
+                type: "account_status",
+                isRead: false,
+                read: false,
+                createdAt: new Date().toISOString()
+            });
+        } catch (e) {}
+
+        res.json({
+            success: true,
+            message: `Account has been ${isActivating ? "reactivated" : "suspended"} successfully.`,
+            isActive: isActivating
+        });
+    } catch (err) {
+        console.error("Admin update account status error:", err.message);
+        res.status(500).json({ success: false, message: "Unable to update account status." });
+    }
+});
+
+// ============================================
+// SECURITY MONITORING & ALERTS
+// ============================================
+app.get("/api/admin/security-alerts/:adminId", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const admin = await verifyAdminUser(req.params.adminId);
+        if (!admin) return res.status(403).json({ success: false, message: "Admin access required." });
+
+        const alerts = await db.collection("notifications")
+            .find({ type: "security_alert" })
+            .sort({ createdAt: -1 })
+            .limit(50)
+            .toArray();
+
+        const lockedUsers = await db.collection("users")
+            .find({ isLocked: true })
+            .project({ password: 0 })
+            .toArray();
+
+        res.json({
+            success: true,
+            alerts: alerts.map(a => ({
+                id: a._id.toString(),
+                title: a.title,
+                message: a.message,
+                isRead: a.isRead || a.read || false,
+                createdAt: a.createdAt
+            })),
+            lockedUsers: lockedUsers.map(u => ({
+                id: u._id.toString(),
+                email: u.email,
+                fullName: u.fullName || u.name,
+                failedLoginAttempts: u.failedLoginAttempts,
+                lockUntil: u.lockUntil
+            }))
+        });
+    } catch (err) {
+        console.error("Admin get security alerts error:", err.message);
+        res.status(500).json({ success: false, message: "Unable to load security alerts." });
+    }
+});
+
+app.put("/api/admin/security-alerts/:adminId/:alertId/resolve", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const admin = await verifyAdminUser(req.params.adminId);
+        if (!admin) return res.status(403).json({ success: false, message: "Admin access required." });
+
+        const { alertId } = req.params;
+        if (ObjectId.isValid(alertId)) {
+            await db.collection("notifications").updateOne(
+                { _id: new ObjectId(alertId) },
+                { $set: { isRead: true, read: true, resolvedAt: new Date() } }
+            );
+        }
+        res.json({ success: true, message: "Alert resolved." });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Unable to resolve alert." });
+    }
+});
+
+app.get("/api/admin/security-logs/:adminId", async function (req, res) {
+    try {
+        if (!db) return res.status(503).json({ success: false, message: "Database not connected." });
+        const admin = await verifyAdminUser(req.params.adminId);
+        if (!admin) return res.status(403).json({ success: false, message: "Admin access required." });
+
+        const logs = await db.collection("security_logs")
+            .find({})
+            .sort({ timestamp: -1 })
+            .limit(100)
+            .toArray();
+
+        res.json({
+            success: true,
+            logs: logs.map(l => ({
+                id: l._id.toString(),
+                action: l.action,
+                performedBy: l.performedBy || "System",
+                targetUserId: l.targetUserId || "",
+                reason: l.reason || "",
+                timestamp: l.timestamp
+            }))
+        });
+    } catch (err) {
+        console.error("Admin security logs error:", err.message);
+        res.status(500).json({ success: false, message: "Unable to load security logs." });
     }
 });
 

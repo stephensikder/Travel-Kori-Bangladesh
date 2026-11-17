@@ -1,0 +1,120 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="05_dfd_level_0" name="05_DFD_Level_0">
+    <mxGraphModel dx="2026" dy="1196" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1200" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=24;fontStyle=1;" value="Level 0 Data Flow Diagram (Subsystem Level DFD)" vertex="1">
+          <mxGeometry height="40" width="1600" x="50" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="c_4" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#333333;fontFamily=Times New Roman;fontSize=16;fontStyle=2;" value="&lt;span style=&quot;font-style: normal;&quot;&gt;Core Platform Processes and Database Stores&lt;/span&gt;" vertex="1">
+          <mxGeometry height="25" width="1600" x="50" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_e1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="&lt;b&gt;TRAVELER / VISITOR&lt;/b&gt;" vertex="1">
+          <mxGeometry height="90" width="240" x="260" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_e2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="&lt;b&gt;SERVICE PARTNERS&lt;/b&gt;&lt;br&gt;(Hotel, Transport, Guide)" vertex="1">
+          <mxGeometry height="90" width="240" x="280" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_e3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=17;fontStyle=1;" value="&lt;b&gt;SYSTEM ADMINISTRATOR&lt;/b&gt;" vertex="1">
+          <mxGeometry height="90" width="240" x="1280" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_p1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="1.0&lt;br&gt;&lt;b&gt;User Authentication&lt;br&gt;&amp; Profile Management&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="260" x="640" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_p2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="2.0&lt;br&gt;&lt;b&gt;Catalog &amp; Destination&lt;br&gt;Discovery Engine&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="260" x="590" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_p3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="3.0&lt;br&gt;&lt;b&gt;Multi-Service Reservation&lt;br&gt;&amp; Booking Engine&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="260" x="640" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_p4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="4.0&lt;br&gt;&lt;b&gt;Partner Operations &amp;&lt;br&gt;Fulfillment Subsystem&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="260" x="630" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="dfd0_p5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="5.0&lt;br&gt;&lt;b&gt;Administrative Governance&lt;br&gt;&amp; Security Auditing&lt;/b&gt;" vertex="1">
+          <mxGeometry height="120" width="280" x="1210" y="435" as="geometry" />
+        </mxCell>
+        <mxCell id="ds_u" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="D1: users" vertex="1">
+          <mxGeometry height="70" width="180" x="1030" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="ds_cat" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="D2: districts, attractions,&lt;br&gt;hotels, transportations" vertex="1">
+          <mxGeometry height="80" width="200" x="910" y="560" as="geometry" />
+        </mxCell>
+        <mxCell id="ds_bk" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="D3: bookings, hotelBookings,&lt;br&gt;transportBookings" vertex="1">
+          <mxGeometry height="80" width="200" x="1250" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="ds_nt" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=16;fontStyle=1;" value="D4: notifications, security_logs" vertex="1">
+          <mxGeometry height="80" width="200" x="1250" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="dfd0_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="dfd0_p1" value="Login /&amp;nbsp;&lt;div&gt;Profile&amp;nbsp;&lt;/div&gt;&lt;div&gt;Credentials&lt;/div&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="dfd0_p1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_u" value="Read /&amp;nbsp;&lt;div&gt;Write&amp;nbsp;&lt;/div&gt;&lt;div&gt;User&amp;nbsp;&lt;/div&gt;&lt;div&gt;Document&lt;/div&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="dfd0_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="dfd0_p2" value="District / Hotel / Travel Search">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="300" />
+              <mxPoint x="510" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="ds_cat" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="dfd0_p2" value="Retrieve Catalog Match">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="dfd0_e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;entryX=-0.015;entryY=0.327;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.293;exitY=1.021;exitDx=0;exitDy=0;exitPerimeter=0;" target="dfd0_p3" value="Submit Booking / Payment Details">
+          <mxGeometry relative="1" x="-0.0922" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="716" />
+            </Array>
+            <mxPoint x="210" y="295" as="sourcePoint" />
+            <mxPoint x="600" y="705" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="dfd0_p3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_bk" value="Store Reservation Record">
+          <mxGeometry relative="1" x="-0.0857" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="840" y="810" />
+              <mxPoint x="1200" y="810" />
+              <mxPoint x="1200" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_11" edge="1" parent="1" source="dfd0_p3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_nt" value="Dispatch Notification Alert">
+          <mxGeometry relative="1" x="0.08" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="700" />
+              <mxPoint x="1210" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_12" edge="1" parent="1" source="dfd0_e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="dfd0_p4" value="Status Confirmation / Rates">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_13" edge="1" parent="1" source="dfd0_p4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_bk" value="Update Booking Status">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_14" edge="1" parent="1" source="dfd0_e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="dfd0_p5" value="RBAC /&lt;div&gt;&amp;nbsp;Moderation&amp;nbsp;&lt;/div&gt;&lt;div&gt;Commands&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.0889" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1420" y="300" />
+              <mxPoint x="1420" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c_15" edge="1" parent="1" source="dfd0_p5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_u" value="Account Suspension / Update">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_16" edge="1" parent="1" source="dfd0_p5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_cat" value="Catalog&amp;nbsp;&lt;div&gt;CRUD&amp;nbsp;&lt;div&gt;Updates&lt;/div&gt;&lt;/div&gt;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_17" edge="1" parent="1" source="dfd0_p5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=15;" target="ds_nt" value="Audit Security Trail">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

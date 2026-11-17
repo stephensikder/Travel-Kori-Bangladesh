@@ -675,6 +675,7 @@ if (guideReviewForm) {
         if (type.includes("bus")) return "Bus";
         if (type.includes("train")) return "Train";
         if (type.includes("flight") || type.includes("plane")) return "Flight";
+        if (type.includes("ship") || type.includes("launch") || type.includes("boat") || type.includes("ferry")) return "Ship";
 
         return "Transport";
     }
@@ -683,7 +684,8 @@ if (guideReviewForm) {
         return {
             Bus: "🚌",
             Train: "🚆",
-            Flight: "✈️"
+            Flight: "✈️",
+            Ship: "🚢"
         }[type] || "🎫";
     }
 
@@ -1066,8 +1068,9 @@ async function loadGuideBookings() {
                     <span class="ticket-badge ${statusClass}">${escapeText(status)}</span>
                 </div>
                 <div class="ticket-body">
-                    <div class="ticket-route" style="margin-bottom:12px;">
-                        <span style="font-size:18px; font-weight:800; color:#123c35;">👤 ${escapeText(b.guideName || 'Tour Guide')}</span>
+                    <div class="ticket-route" style="margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+                        ${b.guidePhoto || b.guideAvatar ? `<img src="${escapeText(b.guidePhoto || b.guideAvatar)}" alt="Guide" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid #087f5b; flex-shrink:0;">` : `<span style="width:36px; height:36px; border-radius:50%; background:#e2e8f0; display:inline-flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;">🧭</span>`}
+                        <span style="font-size:18px; font-weight:800; color:#123c35;">${escapeText(b.guideName || 'Tour Guide')}</span>
                     </div>
                     <div class="ticket-details-grid">
                         <div class="ticket-meta-item">

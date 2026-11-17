@@ -1,0 +1,52 @@
+<mxfile host="Electron" agent="Mozilla/5.0">
+  <diagram id="28_role_based_access_control" name="28_Role_Based_Access_Control">
+    <mxGraphModel dx="1414" dy="841" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1150" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c_3" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;" value="Role-Based Access Control (RBAC) Architecture Matrix" vertex="1">
+          <mxGeometry height="40" width="1600" x="50" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_vis" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="&lt;b&gt;GUEST VISITOR&lt;/b&gt;&lt;br&gt;• index.html (Home)&lt;br&gt;• 64-districts.html&lt;br&gt;• hotel-booking.html&lt;br&gt;• transport.html&lt;br&gt;• guides.html&lt;br&gt;• route-map.html&lt;br&gt;• login.html / signup.html" vertex="1">
+          <mxGeometry height="220" width="280" x="80" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_trav" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="&lt;b&gt;AUTHENTICATED TRAVELER&lt;/b&gt;&lt;br&gt;(Inherits Visitor +)&lt;br&gt;• dashboard.html&lt;br&gt;• my-profile.html&lt;br&gt;• booking.html (Trip Planner)&lt;br&gt;• PDF Ticket Export&lt;br&gt;• Guide Reviews&lt;br&gt;• Universal Notifications" vertex="1">
+          <mxGeometry height="220" width="320" x="380" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_hotel" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="&lt;b&gt;HOTEL PARTNER&lt;/b&gt;&lt;br&gt;(Pending / Approved)&lt;br&gt;• hotel-portal.html&lt;br&gt;• Review Guest Bookings&lt;br&gt;• Confirm / Cancel Stays&lt;br&gt;• Property Rate Settings&lt;br&gt;• Partner Notifications" vertex="1">
+          <mxGeometry height="220" width="280" x="720" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_trans" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="&lt;b&gt;TRANSPORT OPERATOR&lt;/b&gt;&lt;br&gt;(Pending / Approved)&lt;br&gt;• transport-portal.html&lt;br&gt;• Fleet Trip Overview&lt;br&gt;• Passenger Manifest&lt;br&gt;• PNR Validation&lt;br&gt;• Partner Notifications" vertex="1">
+          <mxGeometry height="220" width="280" x="1040" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_guide" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" value="&lt;b&gt;TOUR GUIDE PARTNER&lt;/b&gt;&lt;br&gt;(Approved Status Required)&lt;br&gt;• guide-portal.html&lt;br&gt;• Photo &amp;amp; Rate Settings&lt;br&gt;• Accept Tour Requests&lt;br&gt;• Availability Toggle&lt;br&gt;• Guide Notifications" vertex="1">
+          <mxGeometry height="220" width="280" x="1360" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_admin" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;" value="&lt;b&gt;SYSTEM ADMINISTRATOR (Exclusive Root Interface)&lt;/b&gt;&lt;br&gt;• admin.html (Dedicated isolated navbar with TK Logo, Bell, Admin Profile, Panel, Logout ONLY)&lt;br&gt;• Master Tour Bookings Audit &amp;amp; Status Overrides&lt;br&gt;• User Account Management &amp;amp; Suspension (Active / Suspended Reason Logging)&lt;br&gt;• Tour Guide Verification &amp;amp; Verification Status Toggle&lt;br&gt;• Full Catalog Management (Districts, Spots, Hotels, Transportation Schedules)&lt;br&gt;• Real-time Security Monitoring &amp;amp; Immutable Security Audit Trail" vertex="1">
+          <mxGeometry height="220" width="1200" x="260" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac_guard" parent="1" style="rounded=1;whiteSpace=wrap;html=1;arcSize=14;fillColor=#ffffff;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;fontStyle=1;" value="&lt;b&gt;FRONTEND &amp;amp; BACKEND AUTHORIZATION ENFORCEMENT&lt;/b&gt;&lt;br&gt;• Client: sessionStorage.getItem(&#39;travelKoriUser&#39;) verifies role and redirects unauthenticated requests&lt;br&gt;• nav.js: Renders isolated admin bar for role==&#39;admin&#39;, renders public links for travelers/guests&lt;br&gt;• Backend: Route middleware checks user.userType==&#39;admin&#39; before mutating sensitive collections" vertex="1">
+          <mxGeometry height="130" width="1200" x="260" y="575" as="geometry" />
+        </mxCell>
+        <mxCell id="c_5" edge="1" parent="1" source="rbac_vis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="rbac_guard" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_6" edge="1" parent="1" source="rbac_trav" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="rbac_guard" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_7" edge="1" parent="1" source="rbac_hotel" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="rbac_guard" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_8" edge="1" parent="1" source="rbac_trans" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="rbac_guard" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_9" edge="1" parent="1" source="rbac_guide" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="rbac_guard" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c_10" edge="1" parent="1" source="rbac_admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=2;fontColor=#000000;fontFamily=Times New Roman;fontSize=19;" target="rbac_guard" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -524,6 +524,15 @@ const transportSeed = [
     { type: "bus", operator: "Shyamoli Paribahan", from: "Dhaka", to: "Bandarban", farePerSeat: 1400, departureTime: "10:00 PM", duration: 480, classType: "Hino RM2 AC", totalSeats: 32, availableSeats: 28 },
     { type: "bus", operator: "Hanif Enterprise", from: "Chattogram", to: "Cox's Bazar", farePerSeat: 600, departureTime: "08:30 AM", duration: 180, classType: "AC Chair Coach", totalSeats: 32, availableSeats: 30 },
     { type: "bus", operator: "Green Line Paribahan", from: "Chattogram", to: "Sylhet", farePerSeat: 1300, departureTime: "08:00 AM", duration: 420, classType: "Scania Multi-Axle", totalSeats: 32, availableSeats: 29 },
+    // Realistic Non-AC Buses
+    { type: "bus", operator: "Hanif Enterprise", from: "Dhaka", to: "Cox's Bazar", farePerSeat: 950, departureTime: "08:30 PM", duration: 630, classType: "Hino 1J Non-AC Chair Coach", totalSeats: 36, availableSeats: 31, isAc: false },
+    { type: "bus", operator: "Shyamoli Paribahan", from: "Dhaka", to: "Chattogram", farePerSeat: 680, departureTime: "09:00 AM", duration: 390, classType: "Hino AK1J Non-AC Economy", totalSeats: 36, availableSeats: 29, isAc: false },
+    { type: "bus", operator: "Ena Transport", from: "Dhaka", to: "Sylhet", farePerSeat: 570, departureTime: "07:30 AM", duration: 360, classType: "Non-AC Chair Coach", totalSeats: 36, availableSeats: 27, isAc: false },
+    { type: "bus", operator: "Nabil Paribahan", from: "Dhaka", to: "Rajshahi", farePerSeat: 720, departureTime: "08:00 AM", duration: 390, classType: "Hino 1J Non-AC Chair Coach", totalSeats: 36, availableSeats: 28, isAc: false },
+    { type: "bus", operator: "Sakura Paribahan", from: "Dhaka", to: "Barishal", farePerSeat: 550, departureTime: "08:15 AM", duration: 240, classType: "Non-AC Chair Coach (Padma Bridge)", totalSeats: 36, availableSeats: 25, isAc: false },
+    { type: "bus", operator: "Sakura Paribahan", from: "Barishal", to: "Dhaka", farePerSeat: 550, departureTime: "08:30 AM", duration: 240, classType: "Non-AC Chair Coach (Padma Bridge)", totalSeats: 36, availableSeats: 26, isAc: false },
+    { type: "bus", operator: "Sakura Paribahan (Via Padma Bridge)", from: "Barishal", to: "Dhaka", farePerSeat: 650, departureTime: "09:00 AM", duration: 225, classType: "AC Deluxe Coach", totalSeats: 36, availableSeats: 28, isAc: true },
+    { type: "bus", operator: "Saintmartin Paribahan", from: "Chattogram", to: "Cox's Bazar", farePerSeat: 420, departureTime: "09:30 AM", duration: 190, classType: "Non-AC Regular Coach", totalSeats: 36, availableSeats: 28, isAc: false },
 
     // Trains
     { type: "train", operator: "Cox's Bazar Express (TR-814)", from: "Dhaka", to: "Cox's Bazar", farePerSeat: 1250, departureTime: "10:30 PM", duration: 500, classType: "Snigdha AC Chair", totalSeats: 60, availableSeats: 52 },
@@ -712,6 +721,13 @@ async function seedDatabase() {
             }
         }
         console.log(`Inserted ${guidesInserted} tour guides.`);
+
+        // 6. Ensure Complete 64 Districts Hotels & Bus/Ship Transports
+        const { seed64DistrictsHotels } = require("./seed64DistrictsHotels");
+        const { seed64DistrictsTransport } = require("./seed64DistrictsTransport");
+        console.log("Seeding all 64 districts hotels and transport routes...");
+        await seed64DistrictsHotels();
+        await seed64DistrictsTransport();
 
         console.log("All collections seeded successfully!");
     } catch (err) {
