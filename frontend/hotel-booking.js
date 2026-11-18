@@ -1,4 +1,6 @@
-const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000";
 
 function escapeHTML(str) {
     return String(str || "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -350,28 +352,10 @@ searchDistrict.addEventListener("change", searchHotels);
 searchRoomType.addEventListener("change", searchHotels);
 searchGuests.addEventListener("change", searchHotels);
 
-// Update Active User Badge in Navbar
+// Clean up obsolete active user badge (handled universally by nav.js on the right)
 function updateActiveUserBadge() {
-    const navLinks = document.querySelector(".nav-links");
-    if (!navLinks) return;
-
     const existingBadge = document.getElementById("navActiveUserBadge");
     if (existingBadge) existingBadge.remove();
-
-    if (user && user.name) {
-        const badge = document.createElement("li");
-        badge.id = "navActiveUserBadge";
-        const isAdmin = (user.userType || "").toLowerCase() === "admin";
-        badge.className = "user-active-badge " + (isAdmin ? "admin" : "traveler");
-        badge.innerHTML = `<span class="status-dot"></span><span>${isAdmin ? "🛡️ " + user.name + " (Admin Active)" : "👤 " + user.name + " (Active)"}</span>`;
-        navLinks.prepend(badge);
-
-        const dashboardLink = navLinks.querySelector('a[href="dashboard.html"]');
-        if (dashboardLink && isAdmin) {
-            dashboardLink.setAttribute("href", "admin.html");
-            dashboardLink.textContent = "Admin Panel";
-        }
-    }
 }
 
 // Payment method listener

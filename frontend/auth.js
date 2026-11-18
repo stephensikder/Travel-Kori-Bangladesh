@@ -1,4 +1,8 @@
-const API_URL = ((window.location.origin && window.location.origin !== "null") ? window.location.origin : "") + "/api/auth";
+// Dynamic API Base URL: Automatically points to current origin on web/Render or falls back to http://localhost:5000 when opened via file://
+const API_BASE = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000";
+const API_URL = `${API_BASE}/api/auth`;
 
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");

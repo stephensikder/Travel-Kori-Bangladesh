@@ -492,10 +492,7 @@
 
     <!-- Universal Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
-            <span class="brand-mark">TK</span>
-            <span class="brand-name">Travel Kori Bangladesh</span>
-        </a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home"><img src="images/logo.png" alt="Travel Kori Bangladesh" class="navbar-logo-img"></a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
@@ -505,7 +502,7 @@
             <a href="guides.html">Guides</a>
             <a href="booking.html">Plan Trip</a>
             <a href="route-map.html">Route Map</a>
-            <div id="navUserArea"></div>
+            <div id="navUserArea" class="nav-user-container"></div>
         </div>
     </nav>
 
@@ -534,7 +531,7 @@
             <!-- 1. Hotel Gallery, Name, Star Category, Rating -->
             <article class="hotel-header-card">
                 <div class="hotel-gallery-wrapper">
-                    <img id="detailHeroImage" src="" alt="Hotel" class="hotel-gallery-img">
+                    <img id="detailHeroImage" src="images/hotels/pan-pacific-sonargaon.jpg" alt="Hotel" class="hotel-gallery-img" onerror="this.onerror=null; this.src='hotel-hero.png';">
                     <span class="hotel-gallery-badge" id="detailStarBadge">
                         ★ 5-Star Luxury
                     </span>

@@ -3,7 +3,9 @@
 // Handles transport ticket manifests, passenger departures, trip executions, and schedule tracking
 // ===================================================
 
-const API_BASE = ((window.location.origin && window.location.origin !== "null") ? window.location.origin : "") + "/api";
+const API_BASE = ((window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000") + "/api";
 
 let currentUser = null;
 let allTransportTickets = [];

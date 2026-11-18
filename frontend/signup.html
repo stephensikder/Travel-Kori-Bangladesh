@@ -535,13 +535,48 @@
             overflow-wrap: anywhere;
         }
 
+        @media (max-width: 640px) {
+            .modern-navbar {
+                padding: 12px 16px;
+            }
+            .modern-nav-link {
+                display: none;
+            }
+            .brand-text-title span {
+                display: none;
+            }
+            .brand-text-title {
+                font-size: 16px;
+            }
+        }
+
         @media (max-width: 500px) {
             .auth-card-modern {
-                padding: 30px 20px;
+                padding: 30px 18px;
                 border-radius: 18px;
             }
             .auth-title {
                 font-size: 24px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .modern-navbar {
+                padding: 10px 12px;
+            }
+            .brand-text-title {
+                font-size: 14.5px;
+            }
+            .brand-icon-badge {
+                font-size: 14px;
+                padding: 5px 9px;
+            }
+            .nav-btn-pill {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .auth-card-modern {
+                padding: 24px 14px;
             }
         }
     </style>
@@ -550,10 +585,7 @@
 
     <!-- Modern Glass Navbar -->
     <nav class="modern-navbar">
-        <a href="index.html" class="brand-logo-wrap">
-            <span class="brand-icon-badge">TK</span>
-            <span class="brand-text-title">Travel Kori <span>Bangladesh</span></span>
-        </a>
+        <a href="index.html" class="brand-logo-wrap" aria-label="Travel Kori Bangladesh Home"><img src="images/logo.png" alt="Travel Kori Bangladesh" class="navbar-logo-img"></a>
 
         <div class="modern-nav-links">
             <a href="index.html" class="modern-nav-link">Home</a>

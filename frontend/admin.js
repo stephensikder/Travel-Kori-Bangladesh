@@ -1,5 +1,7 @@
-// Dynamic API URL for localhost and Render
-const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+// Dynamic API URL for localhost and Render (with file:// fallback)
+const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000";
 
 // Security escape helpers
 function escapeHTML(value) {
@@ -66,7 +68,7 @@ let allAdminBookings = [];
 let currentBookingFilter = "all";
 
 async function loadAdminBookings() {
-    if (!adminMessage || !adminBookings) return;
+    if (!user || !user.id || !adminMessage || !adminBookings) return;
     adminMessage.textContent = "Loading bookings...";
 
     try {
@@ -1279,6 +1281,7 @@ if (adminLogoutBtn) {
 
 // Initialize
 function initAdmin() {
+    if (!user || !user.id || (user.userType || "").toLowerCase() !== "admin") return;
     setupTabs();
     setupAccountFilters();
     loadAdminBookings();

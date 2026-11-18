@@ -144,9 +144,7 @@
 
     <!-- Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            TK <span>Travel Kori Bangladesh</span>
-        </a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home"><img src="images/logo.png" alt="Travel Kori Bangladesh" class="navbar-logo-img"></a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
@@ -155,7 +153,7 @@
             <a href="transport.html">Transport</a>
             <a href="guides.html">Tour Guides</a>
             <a href="route-map.html" style="color: #087f5b; font-weight: 700;">Route Map</a>
-            <div id="navUserArea"></div>
+            <div id="navUserArea" class="nav-user-container"></div>
         </div>
     </nav>
 
@@ -327,6 +325,78 @@
         const bookTransportBtn = document.getElementById("bookTransportBtn");
         const externalGMapBtn = document.getElementById("externalGMapBtn");
 
+        const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+            ? (window.location.port === "5500" || window.location.port === "5501" || window.location.port === "3000" ? "http://localhost:5000" : window.location.origin)
+            : (window.API_BASE || "http://localhost:5000");
+
+        // Complete 64 Districts Dataset for Seamless Offline / Network Fallback
+        const FALLBACK_DISTRICTS = [
+            { name: "Bagerhat", division: "Khulna Division", latitude: 22.6516, longitude: 89.7859 },
+            { name: "Bandarban", division: "Chattogram Division", latitude: 22.1953, longitude: 92.2184 },
+            { name: "Barguna", division: "Barishal Division", latitude: 22.157, longitude: 90.1262 },
+            { name: "Barishal", division: "Barishal Division", latitude: 22.701, longitude: 90.3535 },
+            { name: "Bhola", division: "Barishal Division", latitude: 22.6859, longitude: 90.6482 },
+            { name: "Bogura", division: "Rajshahi Division", latitude: 24.8465, longitude: 89.3777 },
+            { name: "Brahmanbaria", division: "Chattogram Division", latitude: 23.9571, longitude: 91.1119 },
+            { name: "Chandpur", division: "Chattogram Division", latitude: 23.2333, longitude: 90.6667 },
+            { name: "Chapainawabganj", division: "Rajshahi Division", latitude: 24.5965, longitude: 88.2776 },
+            { name: "Chattogram", division: "Chattogram Division", latitude: 22.3569, longitude: 91.7832 },
+            { name: "Chuadanga", division: "Khulna Division", latitude: 23.6402, longitude: 88.8418 },
+            { name: "Cox's Bazar", division: "Chattogram Division", latitude: 21.4272, longitude: 92.0058 },
+            { name: "Cumilla", division: "Chattogram Division", latitude: 23.4682, longitude: 91.1788 },
+            { name: "Dhaka", division: "Dhaka Division", latitude: 23.8103, longitude: 90.4125 },
+            { name: "Dinajpur", division: "Rangpur Division", latitude: 25.6217, longitude: 88.6355 },
+            { name: "Faridpur", division: "Dhaka Division", latitude: 23.607, longitude: 89.8429 },
+            { name: "Feni", division: "Chattogram Division", latitude: 23.0159, longitude: 91.3976 },
+            { name: "Gaibandha", division: "Rangpur Division", latitude: 25.3288, longitude: 89.5407 },
+            { name: "Gazipur", division: "Dhaka Division", latitude: 24.0023, longitude: 90.4264 },
+            { name: "Gopalganj", division: "Dhaka Division", latitude: 23.0051, longitude: 89.8266 },
+            { name: "Habiganj", division: "Sylhet Division", latitude: 24.3749, longitude: 91.4155 },
+            { name: "Jamalpur", division: "Mymensingh Division", latitude: 24.9375, longitude: 89.9378 },
+            { name: "Jashore", division: "Khulna Division", latitude: 23.1664, longitude: 89.2182 },
+            { name: "Jhalokathi", division: "Barishal Division", latitude: 22.6406, longitude: 90.1987 },
+            { name: "Jhenaidah", division: "Khulna Division", latitude: 23.5448, longitude: 89.1539 },
+            { name: "Joypurhat", division: "Rajshahi Division", latitude: 25.1011, longitude: 89.0275 },
+            { name: "Khagrachhari", division: "Chattogram Division", latitude: 23.1193, longitude: 91.9847 },
+            { name: "Khulna", division: "Khulna Division", latitude: 22.8456, longitude: 89.5403 },
+            { name: "Kishoreganj", division: "Dhaka Division", latitude: 24.4449, longitude: 90.7766 },
+            { name: "Kurigram", division: "Rangpur Division", latitude: 25.8054, longitude: 89.6362 },
+            { name: "Kushtia", division: "Khulna Division", latitude: 23.9013, longitude: 89.1205 },
+            { name: "Lakshmipur", division: "Chattogram Division", latitude: 22.9425, longitude: 90.8412 },
+            { name: "Lalmonirhat", division: "Rangpur Division", latitude: 25.9923, longitude: 89.2847 },
+            { name: "Madaripur", division: "Dhaka Division", latitude: 23.1641, longitude: 90.1897 },
+            { name: "Magura", division: "Khulna Division", latitude: 23.4873, longitude: 89.4198 },
+            { name: "Manikganj", division: "Dhaka Division", latitude: 23.8644, longitude: 90.0047 },
+            { name: "Meherpur", division: "Khulna Division", latitude: 23.7622, longitude: 88.6318 },
+            { name: "Moulvibazar", division: "Sylhet Division", latitude: 24.4829, longitude: 91.7774 },
+            { name: "Munshiganj", division: "Dhaka Division", latitude: 23.5422, longitude: 90.5305 },
+            { name: "Mymensingh", division: "Mymensingh Division", latitude: 24.7471, longitude: 90.4203 },
+            { name: "Naogaon", division: "Rajshahi Division", latitude: 24.7936, longitude: 88.9318 },
+            { name: "Narail", division: "Khulna Division", latitude: 23.1725, longitude: 89.5127 },
+            { name: "Narayanganj", division: "Dhaka Division", latitude: 23.6337, longitude: 90.4965 },
+            { name: "Narsingdi", division: "Dhaka Division", latitude: 23.9193, longitude: 90.7202 },
+            { name: "Natore", division: "Rajshahi Division", latitude: 24.4206, longitude: 88.9322 },
+            { name: "Netrokona", division: "Mymensingh Division", latitude: 24.8709, longitude: 90.7279 },
+            { name: "Nilphamari", division: "Rangpur Division", latitude: 25.9318, longitude: 88.856 },
+            { name: "Noakhali", division: "Chattogram Division", latitude: 22.8696, longitude: 91.0994 },
+            { name: "Pabna", division: "Rajshahi Division", latitude: 24.0064, longitude: 89.2372 },
+            { name: "Panchagarh", division: "Rangpur Division", latitude: 26.3411, longitude: 88.5542 },
+            { name: "Patuakhali", division: "Barishal Division", latitude: 22.3596, longitude: 90.3299 },
+            { name: "Pirojpur", division: "Barishal Division", latitude: 22.5841, longitude: 89.972 },
+            { name: "Rajbari", division: "Dhaka Division", latitude: 23.7574, longitude: 89.6445 },
+            { name: "Rajshahi", division: "Rajshahi Division", latitude: 24.3636, longitude: 88.6241 },
+            { name: "Rangamati", division: "Chattogram Division", latitude: 22.6533, longitude: 92.1753 },
+            { name: "Rangpur", division: "Rangpur Division", latitude: 25.7439, longitude: 89.2752 },
+            { name: "Satkhira", division: "Khulna Division", latitude: 22.7185, longitude: 89.0705 },
+            { name: "Shariatpur", division: "Dhaka Division", latitude: 23.2423, longitude: 90.4348 },
+            { name: "Sherpur", division: "Mymensingh Division", latitude: 25.0205, longitude: 90.0153 },
+            { name: "Sirajganj", division: "Rajshahi Division", latitude: 24.4534, longitude: 89.7008 },
+            { name: "Sunamganj", division: "Sylhet Division", latitude: 25.0658, longitude: 91.395 },
+            { name: "Sylhet", division: "Sylhet Division", latitude: 24.8949, longitude: 91.8687 },
+            { name: "Tangail", division: "Dhaka Division", latitude: 24.2513, longitude: 89.9167 },
+            { name: "Thakurgaon", division: "Rangpur Division", latitude: 26.0337, longitude: 88.4617 }
+        ];
+
         // Initialize Map with Esri World Street Map tiles (100% reliable, no watermark, no 403 errors)
         function initMap() {
             // Centered on Bangladesh
@@ -366,42 +436,65 @@
             });
         }
 
-        // Load Districts from Backend
+        // Load Districts with multiple fallbacks so Origin/Destination always load perfectly
         async function loadDistricts() {
+            let districtsList = [];
             try {
-                const res = await fetch("/api/districts");
-                const data = await res.json();
-                if (data.success && Array.isArray(data.districts)) {
-                    // Sort alphabetically
-                    const sorted = data.districts.slice().sort((a, b) => a.name.localeCompare(b.name));
-
-                    sorted.forEach(d => {
-                        districtsMap[d.name] = d;
-
-                        const opt1 = document.createElement("option");
-                        opt1.value = d.name;
-                        opt1.textContent = `${d.name} (${d.division})`;
-                        originSelect.appendChild(opt1);
-
-                        const opt2 = document.createElement("option");
-                        opt2.value = d.name;
-                        opt2.textContent = `${d.name} (${d.division})`;
-                        destSelect.appendChild(opt2);
-                    });
-
-                    // Set default route: Dhaka -> Cox's Bazar
-                    originSelect.value = "Dhaka";
-                    destSelect.value = "Cox's Bazar";
-
-                    // Trigger initial calculation
-                    calculateAndDisplayRoute("Dhaka", "Cox's Bazar");
+                const res = await fetch(`${API_URL}/api/districts`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.success && Array.isArray(data.districts) && data.districts.length > 0) {
+                        districtsList = data.districts;
+                    }
                 }
             } catch (err) {
-                console.error("Failed to load districts:", err);
+                console.warn("Backend fetch failed, trying local relative endpoint:", err);
             }
+
+            if (!districtsList || districtsList.length === 0) {
+                try {
+                    const resLocal = await fetch("/api/districts");
+                    if (resLocal.ok) {
+                        const dataLocal = await resLocal.json();
+                        if (dataLocal && dataLocal.success && Array.isArray(dataLocal.districts) && dataLocal.districts.length > 0) {
+                            districtsList = dataLocal.districts;
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            if (!districtsList || districtsList.length === 0) {
+                districtsList = FALLBACK_DISTRICTS;
+            }
+
+            // Populate select elements
+            const sorted = districtsList.slice().sort((a, b) => a.name.localeCompare(b.name));
+            originSelect.innerHTML = '<option value="">Select Origin District</option>';
+            destSelect.innerHTML = '<option value="">Select Destination District</option>';
+
+            sorted.forEach(d => {
+                districtsMap[d.name] = d;
+
+                const opt1 = document.createElement("option");
+                opt1.value = d.name;
+                opt1.textContent = `${d.name} (${d.division})`;
+                originSelect.appendChild(opt1);
+
+                const opt2 = document.createElement("option");
+                opt2.value = d.name;
+                opt2.textContent = `${d.name} (${d.division})`;
+                destSelect.appendChild(opt2);
+            });
+
+            // Set default route: Dhaka -> Cox's Bazar
+            originSelect.value = "Dhaka";
+            destSelect.value = "Cox's Bazar";
+
+            // Trigger initial calculation
+            calculateAndDisplayRoute("Dhaka", "Cox's Bazar");
         }
 
-        // Calculate and Draw Route
+        // Calculate and Draw Route with Haversine Client Fallback
         async function calculateAndDisplayRoute(from, to) {
             if (!from || !to || from === to) {
                 alert("Please select two different districts to calculate a route.");
@@ -409,18 +502,65 @@
             }
 
             try {
-                const res = await fetch(`/api/routes?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
-                const data = await res.json();
+                let routeData = null;
+                try {
+                    const res = await fetch(`${API_URL}/api/routes?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.success) {
+                            routeData = data;
+                        }
+                    }
+                } catch (err) {
+                    console.warn("API route fetch failed, using client haversine calculation", err);
+                }
 
-                if (data.success) {
-                    metricDistance.textContent = `${data.distanceKm} km`;
-                    metricBus.textContent = data.durations.bus || "N/A";
-                    metricTrain.textContent = data.durations.train || "N/A";
-                    metricFlight.textContent = data.durations.flight || "N/A";
+                if (!routeData) {
+                    const distFrom = districtsMap[from];
+                    const distTo = districtsMap[to];
+                    if (distFrom && distTo && distFrom.latitude && distTo.latitude) {
+                        const R = 6371;
+                        const dLat = (distTo.latitude - distFrom.latitude) * Math.PI / 180;
+                        const dLon = (distTo.longitude - distFrom.longitude) * Math.PI / 180;
+                        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                  Math.cos(distFrom.latitude * Math.PI / 180) * Math.cos(distTo.latitude * Math.PI / 180) *
+                                  Math.sin(dLon/2) * Math.sin(dLon/2);
+                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        let dKm = Math.round(R * c * 1.25);
+                        if (dKm < 20) dKm = 25;
+                        const busMin = Math.round((dKm / 42) * 60);
+                        const trainMin = Math.round((dKm / 55) * 60) + 30;
+                        const formatDuration = (min) => {
+                            const h = Math.floor(min / 60);
+                            const m = min % 60;
+                            return h > 0 ? `${h}h ${m}m` : `${m}m`;
+                        };
+                        const airportDistricts = ["dhaka", "chattogram", "cox's bazar", "sylhet", "rajshahi", "jashore", "saidpur", "barishal"];
+                        const hasFlight = airportDistricts.includes(from.toLowerCase()) && airportDistricts.includes(to.toLowerCase());
+                        routeData = {
+                            success: true,
+                            from: from,
+                            to: to,
+                            distanceKm: dKm,
+                            durations: {
+                                bus: formatDuration(busMin),
+                                train: formatDuration(trainMin),
+                                flight: hasFlight ? "45m - 1h" : "No direct flight"
+                            },
+                            directionsUrl: `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from + ', Bangladesh')}&destination=${encodeURIComponent(to + ', Bangladesh')}`
+                        };
+                    }
+                }
 
-                    routeSummaryText.innerHTML = `Showing road route from <strong>${data.from}</strong> to <strong>${data.to}</strong> (approx. ${data.distanceKm} km).`;
-                    bookTransportBtn.href = `transport.html?from=${encodeURIComponent(data.from)}&to=${encodeURIComponent(data.to)}`;
-                    externalGMapBtn.href = data.directionsUrl || `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(data.from + ', Bangladesh')}&destination=${encodeURIComponent(data.to + ', Bangladesh')}`;
+                if (routeData) {
+                    metricDistance.textContent = `${routeData.distanceKm} km`;
+                    metricBus.textContent = (routeData.durations && routeData.durations.bus) || "N/A";
+                    metricTrain.textContent = (routeData.durations && routeData.durations.train) || "N/A";
+                    metricFlight.textContent = (routeData.durations && routeData.durations.flight) || "N/A";
+
+                    routeSummaryText.innerHTML = `Showing road route from <strong>${routeData.from}</strong> to <strong>${routeData.to}</strong> (approx. ${routeData.distanceKm} km).`;
+                    bookTransportBtn.href = `transport.html?from=${encodeURIComponent(routeData.from)}&to=${encodeURIComponent(routeData.to)}`;
+                    externalGMapBtn.href = routeData.directionsUrl || `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(routeData.from + ', Bangladesh')}&destination=${encodeURIComponent(routeData.to + ', Bangladesh')}`;
 
                     // Update Map Markers
                     const distFrom = districtsMap[from];
@@ -467,10 +607,16 @@
         });
 
         // Initialize
-        document.addEventListener("DOMContentLoaded", () => {
+        function start() {
             initMap();
             loadDistricts();
-        });
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", start);
+        } else {
+            start();
+        }
     })();
     </script>
 </body>

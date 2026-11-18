@@ -589,10 +589,23 @@
 
         @media (max-width: 768px) {
             .portal-header {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start;
-                padding: 16px 20px;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+                padding: 14px 16px !important;
+            }
+            .portal-user-area {
+                width: 100% !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: flex-start !important;
+                gap: 10px !important;
+            }
+            .portal-brand h1 {
+                font-size: 17px !important;
+            }
+            .portal-container {
+                padding: 0 12px !important;
             }
             .filter-controls-row {
                 flex-direction: column;
@@ -601,6 +614,22 @@
             .search-and-date-tools {
                 flex-direction: column;
                 align-items: stretch;
+            }
+        }
+        @media (max-width: 480px) {
+            .portal-user-area {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            .user-tag {
+                justify-content: center !important;
+                text-align: center !important;
+            }
+            .btn-portal-logout,
+            #transportExportReportBtn {
+                width: 100% !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
             }
         }
 
@@ -685,7 +714,7 @@
             </div>
         </a>
 
-        <div class="portal-user-area" style="display:flex; align-items:center; gap:10px;">
+        <div class="portal-user-area">
             <span class="user-tag" id="portalUserBadge">
                 🚌 Loading Operator Profile...
             </span>

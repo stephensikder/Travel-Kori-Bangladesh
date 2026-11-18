@@ -165,13 +165,10 @@
 
     <!-- Universal Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo">
-            <span class="brand-mark">TK</span>
-            <span class="brand-name">Travel Kori Bangladesh</span>
-        </a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home"><img src="images/logo.png" alt="Travel Kori Bangladesh" class="navbar-logo-img"></a>
 
         <div class="nav-links">
-            <div id="navUserArea"></div>
+            <div id="navUserArea" class="nav-user-container"></div>
         </div>
     </nav>
 
@@ -191,7 +188,7 @@
             <div class="profile-header-area">
                 <div class="avatar-circle-wrapper">
                     <div class="avatar-circle" id="avatarDisplayCircle">
-                        <img id="avatarImageElement" src="" alt="Profile Photo" style="display: none;">
+                        <img id="avatarImageElement" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E" alt="Profile Photo" style="display: none;">
                         <span id="avatarPlaceholderIcon" class="placeholder-icon">👤</span>
                     </div>
                     <label for="profilePhotoFileInput" class="avatar-edit-badge" title="Upload new photo" aria-label="Upload photo">
@@ -508,10 +505,14 @@
                 uploadStatusMsg.style.color = "#64748b";
             });
 
+            const API_BASE = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+                ? window.location.origin
+                : "http://localhost:5000";
+
             // Load profile from backend
             async function loadProfile() {
                 try {
-                    const res = await fetch(`/api/users/profile/${currentUser.id}`);
+                    const res = await fetch(`${API_BASE}/api/users/profile/${currentUser.id}`);
                     if (!res.ok) throw new Error("Could not load profile.");
                     const data = await res.json();
                     const p = data.profile;
@@ -552,7 +553,7 @@
                     const updatedAddress = document.getElementById("profAddress").value.trim();
                     const updatedBio = document.getElementById("profBio").value.trim();
 
-                    const res = await fetch(`/api/users/profile/${currentUser.id}`, {
+                    const res = await fetch(`${API_BASE}/api/users/profile/${currentUser.id}`, {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({

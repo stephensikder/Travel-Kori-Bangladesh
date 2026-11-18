@@ -1,4 +1,6 @@
-const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000";
 
 function escapeHTML(str) {
     return String(str || "").replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -755,11 +757,18 @@ async function updateRouteCalculation() {
                     const form = document.getElementById("transportSearchForm");
                     form.parentNode.insertBefore(b, form.nextSibling);
                 }
+                const shipDuration = (data.durations && data.durations.ship) ? data.durations.ship : (() => {
+                    const mins = Math.max(75, Math.round((data.distanceKm / 24) * 60) + 30);
+                    const h = Math.floor(mins / 60);
+                    const m = mins % 60;
+                    return h > 0 ? `${h}h ${m > 0 ? m + 'm' : ''}` : `${m} mins`;
+                })();
+
                 b.innerHTML = `
                     <div class="route-summary-info">
                         📍 <strong>${data.from} ➔ ${data.to}</strong>: ~${data.distanceKm} km (Road Distance)
                         <span style="margin: 0 8px; color: #cbd5e1;">|</span>
-                        🚌 Bus: ~${data.durations.bus} | 🚆 Train: ~${data.durations.train} | ✈️ Flight: ${data.durations.flight}
+                        🚌 Bus: ~${data.durations.bus} | 🚆 Train: ~${data.durations.train} | ✈️ Flight: ${data.durations.flight} | 🚢 Ship/Launch: ~${shipDuration}
                     </div>
                     <a href="${data.directionsUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 13px; font-weight: 700; color: #087f5b; text-decoration: underline;">
                         View Live Route on Google Maps ↗
@@ -1524,26 +1533,9 @@ try {
 }
 
 function updateActiveUserBadge() {
-    const navLinks = document.querySelector(".nav-links");
-    if (!navLinks) return;
-
+    // Universal navbar in nav.js handles the user profile badge on the right.
     const existingBadge = document.getElementById("navActiveUserBadge");
     if (existingBadge) existingBadge.remove();
-
-    if (user && user.name) {
-        const badge = document.createElement("li");
-        badge.id = "navActiveUserBadge";
-        const isAdmin = (user.userType || "").toLowerCase() === "admin";
-        badge.className = "user-active-badge " + (isAdmin ? "admin" : "traveler");
-        badge.innerHTML = `<span class="status-dot"></span><span>${isAdmin ? "🛡️ " + user.name + " (Admin Active)" : "👤 " + user.name + " (Active)"}</span>`;
-        navLinks.prepend(badge);
-
-        const dashboardLink = navLinks.querySelector('a[href="dashboard.html"]');
-        if (dashboardLink && isAdmin) {
-            dashboardLink.setAttribute("href", "admin.html");
-            dashboardLink.textContent = "Admin Panel";
-        }
-    }
 }
 
 function setupTransportPaymentListeners() {

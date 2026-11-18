@@ -34,12 +34,15 @@
     // ----------------------------------------------------
     // ROLE-BASED NOTIFICATION CONTROLLER
     // ----------------------------------------------------
+    const NAV_API_BASE = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+        ? window.location.origin
+        : "http://localhost:5000";
     let notifsPollInterval = null;
 
     async function fetchUserNotifications(userId) {
         if (!userId) return [];
         try {
-            const res = await fetch(`/api/notifications/${userId}`);
+            const res = await fetch(`${NAV_API_BASE}/api/notifications/${userId}`);
             if (!res.ok) return [];
             const data = await res.json();
             return data.notifications || [];
@@ -50,14 +53,14 @@
 
     async function markNotificationRead(id, userId) {
         try {
-            await fetch(`/api/notifications/${id}/read`, { method: "PUT" });
+            await fetch(`${NAV_API_BASE}/api/notifications/${id}/read`, { method: "PUT" });
             updateNotificationsUI(userId);
         } catch (e) {}
     }
 
     async function markAllNotificationsRead(userId) {
         try {
-            await fetch(`/api/notifications/${userId}/read-all`, { method: "PUT" });
+            await fetch(`${NAV_API_BASE}/api/notifications/${userId}/read-all`, { method: "PUT" });
             updateNotificationsUI(userId);
         } catch (e) {}
     }
@@ -191,9 +194,9 @@
         if (!authArea) {
             authArea = document.createElement("div");
             authArea.id = "navUserArea";
-            authArea.className = "nav-user-container";
             navLinks.appendChild(authArea);
         }
+        authArea.classList.add("nav-user-container");
 
         // Mobile Hamburger Menu Injection
         const navbar = document.querySelector(".navbar");
@@ -328,7 +331,7 @@
             // Background sync with database profile to always ensure latest photo
             if (user.id && !window.__navProfileSyncing) {
                 window.__navProfileSyncing = true;
-                fetch(`/api/users/profile/${user.id}`)
+                fetch(`${NAV_API_BASE}/api/users/profile/${user.id}`)
                     .then(r => r.ok ? r.json() : null)
                     .then(data => {
                         window.__navProfileSyncing = false;
@@ -399,18 +402,31 @@
     }
 
     function highlightActiveNavLink(navLinks) {
-        const currentPath = (window.location.pathname || "").toLowerCase();
+        const rawPath = (window.location.pathname || "").toLowerCase();
+        const currentPage = rawPath.substring(rawPath.lastIndexOf('/') + 1) || "index.html";
         const anchors = navLinks.querySelectorAll('a:not(#navProfileLink):not(.user-active-badge)');
         anchors.forEach(a => {
-            const href = (a.getAttribute('href') || '').toLowerCase();
+            const rawHref = (a.getAttribute('href') || '').toLowerCase();
+            const hrefPage = rawHref.substring(rawHref.lastIndexOf('/') + 1).split('?')[0].split('#')[0];
             let isActive = false;
-            if (currentPath.includes("booking.html") && href.includes("booking")) isActive = true;
-            else if (currentPath.includes("64-districts.html") && href.includes("64-districts")) isActive = true;
-            else if (currentPath.includes("hotel-booking.html") && href.includes("hotel-booking")) isActive = true;
-            else if (currentPath.includes("transport.html") && href.includes("transport")) isActive = true;
-            else if (currentPath.includes("guides.html") && href.includes("guides")) isActive = true;
-            else if (currentPath.includes("route-map.html") && href.includes("route-map")) isActive = true;
-            else if ((currentPath.endsWith("index.html") || currentPath.endsWith("/") || currentPath === "") && href === "index.html") isActive = true;
+
+            if (currentPage === "booking.html" && hrefPage === "booking.html") {
+                isActive = true;
+            } else if (currentPage === "hotel-booking.html" && hrefPage === "hotel-booking.html") {
+                isActive = true;
+            } else if (currentPage === "64-districts.html" && hrefPage === "64-districts.html") {
+                isActive = true;
+            } else if (currentPage === "transport.html" && hrefPage === "transport.html") {
+                isActive = true;
+            } else if (currentPage === "guides.html" && hrefPage === "guides.html") {
+                isActive = true;
+            } else if (currentPage === "route-map.html" && hrefPage === "route-map.html") {
+                isActive = true;
+            } else if ((currentPage === "index.html" || currentPage === "" || currentPage === "/") && (hrefPage === "index.html" || hrefPage === "" || hrefPage === "/")) {
+                isActive = true;
+            } else if (currentPage && hrefPage && currentPage === hrefPage) {
+                isActive = true;
+            }
 
             if (isActive) a.classList.add("active");
             else a.classList.remove("active");
@@ -428,7 +444,7 @@
         btn.setAttribute("type", "button");
         btn.setAttribute("aria-label", "Back to Top");
         btn.setAttribute("title", "Back to Top");
-        btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>`;
+        btn.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="4"></line><polyline points="5 11 12 4 19 11"></polyline></svg>`;
         document.body.appendChild(btn);
 
         window.addEventListener("scroll", () => {

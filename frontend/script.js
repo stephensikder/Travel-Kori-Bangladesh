@@ -86,7 +86,9 @@ const districtSpots = {
     "Thakurgaon": ["Baliadangi Surjapuri Mango Tree", "King Jangal", "Shalbagan"]
 };
 
-const API_URL = ((window.location.origin && window.location.origin !== "null") ? window.location.origin : "") + "/api/favorites";
+const API_URL = ((window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000") + "/api/favorites";
 
 const districtGrid = document.getElementById("districtGrid");
 const districtSearch = document.getElementById("districtSearch");

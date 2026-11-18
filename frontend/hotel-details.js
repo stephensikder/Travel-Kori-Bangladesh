@@ -6,7 +6,9 @@
 (function () {
     "use strict";
 
-    const API_BASE = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+    const API_BASE = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+        ? window.location.origin
+        : "http://localhost:5000";
 
     function getQueryParam(key) {
         const urlParams = new URLSearchParams(window.location.search);

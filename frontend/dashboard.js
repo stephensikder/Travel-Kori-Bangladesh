@@ -1,5 +1,17 @@
 // API URL
-const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+    ? window.location.origin
+    : "http://localhost:5000";
+
+function escapeAttr(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
 
 // Get logged-in user
 let user = null;
@@ -109,9 +121,8 @@ if (!user || !user.id) {
         });
     }
 
-    // Load favorites, tour bookings, hotel bookings, guide bookings, and notifications
+    // Load favorites, hotel bookings, guide bookings, and notifications
     loadFavorites();
-    loadBookings();
     loadHotelBookings();
     loadGuideBookings();
     loadNotifications();
@@ -329,7 +340,7 @@ async function loadHotelBookings() {
 
         bookings.forEach(function (booking) {
             const card = document.createElement("article");
-            card.className = "dashboard-ticket-card";
+            card.className = "hotel-booking-card transport-ticket-card";
 
             const paymentMethodLabel = {
                 bkash: "bKash (Demo)",
@@ -339,45 +350,64 @@ async function loadHotelBookings() {
             }[(booking.paymentMethod || "").toLowerCase()] || (booking.paymentMethod || "Pay at Hotel");
 
             const statusClass = (booking.status || "").toLowerCase() === "confirmed" ? "confirmed" : "pending";
+            const safeHotelName = escapeText(booking.hotelName || "Hotel Stay");
+            const safeDistrict = escapeText(booking.district || "Bangladesh");
+            const safeRoomType = escapeText(booking.roomType || "Standard Room");
 
             card.innerHTML = `
-                <div class="ticket-header">
-                    <span class="ticket-type">🏨 Hotel Reservation</span>
-                    <span class="ticket-badge ${statusClass}">${booking.status || "Pending"}</span>
-                </div>
-                <div class="ticket-body">
-                    <div class="ticket-route">
-                        <span>${booking.hotelName || "Hotel Stay"}</span>
-                    </div>
-                    <div class="ticket-details-grid">
-                        <div class="ticket-meta-item">
-                            <span class="meta-label">District</span>
-                            <span class="meta-value">📍 ${booking.district || "Bangladesh"}</span>
-                        </div>
-                        <div class="ticket-meta-item">
-                            <span class="meta-label">Duration</span>
-                            <span class="meta-value">📅 ${booking.checkIn} → ${booking.checkOut} (${booking.nights || 1} nights)</span>
-                        </div>
-                        <div class="ticket-meta-item">
-                            <span class="meta-label">Room & Guests</span>
-                            <span class="meta-value">🛏️ ${booking.roomType} (${booking.rooms} room, ${booking.guests} guests)</span>
-                        </div>
-                        <div class="ticket-meta-item">
-                            <span class="meta-label">Payment</span>
-                            <span class="meta-value">💳 ${paymentMethodLabel}</span>
+                <div class="transport-ticket-top">
+                    <div class="transport-operator">
+                        <span class="transport-ticket-icon">🏨</span>
+                        <div>
+                            <span class="transport-type-label">HOTEL RESERVATION</span>
+                            <h3 style="margin:2px 0 0; font-size:16px; font-weight:800; color:#0f172a;">${safeHotelName}</h3>
                         </div>
                     </div>
+                    <span class="transport-status ${statusClass}" style="padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; background:${statusClass === 'confirmed' ? '#dcfce7' : '#fef9c3'}; color:${statusClass === 'confirmed' ? '#15803d' : '#854d0e'}; border:1px solid ${statusClass === 'confirmed' ? '#86efac' : '#fde047'};">
+                        ${escapeText(booking.status || "Pending")}
+                    </span>
                 </div>
-                <div class="ticket-footer">
-                    <div class="ticket-price">
-                        <span class="price-amount">৳${Number(booking.totalPrice || 0).toLocaleString("en-BD")}</span>
-                        <small style="display:block; font-size:11px; color:#62766d;">Ref: ${booking.reference || 'N/A'}</small>
+
+                <div class="hotel-stay-banner" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 14px; margin:14px 0 12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span style="font-size:15px;">📍</span>
+                        <strong style="color:#0f172a; font-size:13px; font-weight:700;">${safeDistrict}</strong>
+                    </div>
+                    <div style="font-size:12.5px; color:#087f5b; font-weight:700; display:flex; align-items:center; gap:6px;">
+                        <span>📅 ${escapeText(booking.checkIn)} → ${escapeText(booking.checkOut)}</span>
+                        <span style="background:#e6f7f0; color:#087f5b; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:800;">${booking.nights || 1} NIGHTS</span>
+                    </div>
+                </div>
+
+                <div class="transport-ticket-details" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px 14px; margin-bottom:14px;">
+                    <div>
+                        <span style="display:block; font-size:11px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:0.4px;">Room & Guests</span>
+                        <strong style="display:block; font-size:13px; color:#1e293b; font-weight:700; margin-top:2px;">🛏️ ${safeRoomType} (${booking.rooms || 1} room, ${booking.guests || 2} guests)</strong>
+                    </div>
+                    <div>
+                        <span style="display:block; font-size:11px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:0.4px;">Payment Method</span>
+                        <strong style="display:block; font-size:13px; color:#1e293b; font-weight:700; margin-top:2px;">💳 ${escapeText(paymentMethodLabel)}</strong>
+                    </div>
+                    <div>
+                        <span style="display:block; font-size:11px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:0.4px;">Booking Reference</span>
+                        <strong class="ticket-reference" style="display:block; font-size:12px; color:#087f5b; font-weight:800; font-family:monospace; margin-top:2px;">${escapeText(booking.reference || 'N/A')}</strong>
+                    </div>
+                </div>
+
+                <div class="transport-ticket-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding-top:12px; border-top:1px solid #f1f5f9;">
+                    <div>
+                        <span style="display:block; font-size:11px; color:#64748b; text-transform:uppercase; font-weight:600; letter-spacing:0.4px;">Total Cost</span>
+                        <strong class="transport-total" style="display:block; font-size:18px; color:#087f5b; font-weight:900;">
+                            ৳${Number(booking.totalPrice || 0).toLocaleString("en-BD")}
+                        </strong>
                     </div>
                     <div class="ticket-actions" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
-                        <button type="button" class="btn-download-pdf dl-hotel-pdf-btn" style="padding:6px 12px; font-size:11px;">
+                        <button type="button" class="btn-download-pdf dl-hotel-pdf-btn" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; font-size:12px; font-weight:700; background:#087f5b; color:white; border:none; border-radius:8px; cursor:pointer; transition:all 0.2s;">
                             📥 Download Voucher (PDF)
                         </button>
-                        <a href="hotel-booking.html?district=${encodeURIComponent(booking.district || '')}&hotel=${encodeURIComponent(booking.hotelName || '')}" class="ticket-action-btn">Hotel Details →</a>
+                        <a href="hotel-booking.html?district=${encodeURIComponent(booking.district || '')}&hotel=${encodeURIComponent(booking.hotelName || '')}" class="ticket-action-btn" style="display:inline-flex; align-items:center; gap:4px; padding:8px 14px; font-size:12px; font-weight:700; background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; border-radius:8px; text-decoration:none; transition:all 0.2s;">
+                            Hotel Details →
+                        </a>
                     </div>
                 </div>
             `;
@@ -432,7 +462,7 @@ async function loadGuideBookings() {
     }
 
     try {
-        const response = await fetch(`/api/bookings/${user.id}`);
+        const response = await fetch(`${API_URL}/api/bookings/${encodeURIComponent(user.id)}`);
         const data = await response.json();
 
         if (!response.ok) throw new Error(data.message || "Failed to load bookings.");
@@ -559,7 +589,7 @@ if (guideReviewForm) {
         reviewSubmitMsg.textContent = "";
 
         try {
-            const res = await fetch("/api/guide-reviews", {
+            const res = await fetch(`${API_URL}/api/guide-reviews`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -598,7 +628,9 @@ if (guideReviewForm) {
 ========================================= */
 
 (function initTransportDashboard() {
-    const API_URL = (window.location.origin && window.location.origin !== "null") ? window.location.origin : "";
+    const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+        ? window.location.origin
+        : "http://localhost:5000";
 
     const container = document.getElementById("myTransportBookings");
     const message = document.getElementById("transportBookingsMessage");
@@ -944,7 +976,7 @@ async function loadNotifications() {
     if (!listEl || !msgEl || !user || !user.id) return;
 
     try {
-        const res = await fetch(`/api/notifications/${encodeURIComponent(user.id)}`);
+        const res = await fetch(`${API_URL}/api/notifications/${encodeURIComponent(user.id)}`);
         const data = await res.json();
 
         if (data.success && Array.isArray(data.notifications)) {
@@ -956,22 +988,26 @@ async function loadNotifications() {
             }
 
             msgEl.textContent = `${notifications.length} notification(s) found.`;
-            listEl.innerHTML = notifications.map(n => `
-                <div style="padding:14px 18px; background:${n.read ? '#f8fafc' : '#f0fdf4'}; border:1px solid ${n.read ? '#e2e8f0' : '#86efac'}; border-radius:10px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            listEl.innerHTML = notifications.map(n => {
+                const notifId = n.id || n._id;
+                const isRead = Boolean(n.read || n.isRead);
+                return `
+                <div style="padding:14px 18px; background:${isRead ? '#f8fafc' : '#f0fdf4'}; border:1px solid ${isRead ? '#e2e8f0' : '#86efac'}; border-radius:10px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
                     <div>
-                        <div style="font-weight:700; font-size:14px; color:${n.read ? '#334155' : '#087f5b'}; margin-bottom:4px;">
-                            ${n.read ? '✉️' : '📩 <span style="background:#087f5b; color:white; font-size:10px; padding:2px 6px; border-radius:10px; margin-right:4px;">NEW</span>'} ${escapeText(n.title)}
+                        <div style="font-weight:700; font-size:14px; color:${isRead ? '#334155' : '#087f5b'}; margin-bottom:4px;">
+                            ${isRead ? '✉️' : '📩 <span style="background:#087f5b; color:white; font-size:10px; padding:2px 6px; border-radius:10px; margin-right:4px;">NEW</span>'} ${escapeText(n.title)}
                         </div>
                         <div style="font-size:13px; color:#475569; margin-bottom:4px;">${escapeText(n.message)}</div>
                         <small style="font-size:11px; color:#94a3b8;">${new Date(n.createdAt).toLocaleString()}</small>
                     </div>
-                    ${!n.read ? `
-                        <button type="button" class="mark-notif-btn" data-id="${n._id}" style="padding:5px 12px; background:#087f5b; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;">
+                    ${!isRead ? `
+                        <button type="button" class="mark-notif-btn" data-id="${notifId}" style="padding:5px 12px; background:#087f5b; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;">
                             Mark Read
                         </button>
                     ` : '<span style="font-size:12px; color:#94a3b8;">Read</span>'}
                 </div>
-            `).join("");
+            `;
+            }).join("");
 
             listEl.querySelectorAll(".mark-notif-btn").forEach(b => {
                 b.addEventListener("click", async function() {
@@ -982,8 +1018,9 @@ async function loadNotifications() {
 
             if (markAllBtn) {
                 markAllBtn.onclick = async function() {
-                    for (const n of notifications.filter(x => !x.read)) {
-                        await fetch(`/api/notifications/${n._id}/read`, { method: "PUT" });
+                    for (const n of notifications.filter(x => !x.read && !x.isRead)) {
+                        const notifId = n.id || n._id;
+                        await fetch(`${API_URL}/api/notifications/${notifId}/read`, { method: "PUT" });
                     }
                     loadNotifications();
                 };
@@ -997,7 +1034,7 @@ async function loadNotifications() {
 
 async function markNotificationRead(id) {
     try {
-        const res = await fetch(`/api/notifications/${id}/read`, { method: "PUT" });
+        const res = await fetch(`${API_URL}/api/notifications/${id}/read`, { method: "PUT" });
         const data = await res.json();
         if (data.success) {
             loadNotifications();
@@ -1468,7 +1505,8 @@ function updateStarPickerVisuals(selectedRating) {
         currentUser = null;
     }
 
-    if (!currentUser || !currentUser.id) return;
+    const currentUserId = currentUser.id || currentUser._id;
+    if (!currentUserId) return;
 
     // 1. Export Travel History PDF
     const exportBtn = document.getElementById("exportHistoryPdfBtn");
@@ -1480,9 +1518,9 @@ function updateStarPickerVisuals(selectedRating) {
             try {
                 // Collect all bookings for this user
                 const [hotelRes, transportRes, guideRes] = await Promise.all([
-                    fetch(`/api/hotel-bookings/${currentUser.id}`).catch(() => null),
-                    fetch(`/api/transport-bookings/${currentUser.id}`).catch(() => null),
-                    fetch(`/api/my-guide-bookings/${currentUser.id}`).catch(() => null)
+                    fetch(`${API_URL}/api/hotel-bookings/${encodeURIComponent(currentUserId)}`).catch(() => null),
+                    fetch(`${API_URL}/api/transport-bookings/${encodeURIComponent(currentUserId)}`).catch(() => null),
+                    fetch(`${API_URL}/api/my-guide-bookings/${encodeURIComponent(currentUserId)}`).catch(() => null)
                 ]);
 
                 const hotels = hotelRes && hotelRes.ok ? (await hotelRes.json()).bookings || [] : [];
@@ -1517,7 +1555,7 @@ function updateStarPickerVisuals(selectedRating) {
         if (!grid) return;
 
         try {
-            const res = await fetch(`/api/trip-plans/${currentUser.id}`);
+            const res = await fetch(`${API_URL}/api/trip-plans/${encodeURIComponent(currentUserId)}`);
             if (!res.ok) throw new Error("Could not load trip plans.");
             const data = await res.json();
             const plans = data.plans || [];
@@ -1538,9 +1576,9 @@ function updateStarPickerVisuals(selectedRating) {
                     <div class="destination-card modern-fav-ticket-card" style="padding:18px;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
                             <span style="background:#e6f4ea; color:#087f5b; font-size:11px; font-weight:800; padding:2px 8px; border-radius:6px;">
-                                ${p.durationDays}-DAY ITINERARY
+                                ${escapeAttr(p.durationDays)}-DAY ITINERARY
                             </span>
-                            <span style="font-size:11px; color:#64748b; font-weight:600;">${createdDate}</span>
+                            <span style="font-size:11px; color:#64748b; font-weight:600;">${escapeAttr(createdDate)}</span>
                         </div>
                         <h4 style="margin:0 0 6px 0; font-size:16px; font-weight:800; color:#0f172a;">
                             ${escapeAttr(p.origin)} → ${escapeAttr(dests)}
@@ -1550,13 +1588,13 @@ function updateStarPickerVisuals(selectedRating) {
                         </p>
                         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:8px 12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                             <span style="font-size:11px; font-weight:700; color:#64748b;">ESTIMATED BUDGET:</span>
-                            <strong style="font-size:14px; color:#087f5b;">${totalCost}</strong>
+                            <strong style="font-size:14px; color:#087f5b;">${escapeAttr(totalCost)}</strong>
                         </div>
                         <div style="display:flex; gap:8px;">
                             <a href="booking.html" class="primary-btn" style="flex:1; text-align:center; padding:6px 10px; font-size:11px; text-decoration:none;">
                                 🗺️ Open Planner
                             </a>
-                            <button type="button" class="btn-delete-plan" data-id="${p.id}" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">
+                            <button type="button" class="btn-delete-plan" data-id="${escapeAttr(p.id)}" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:6px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;" title="Delete Plan">
                                 🗑️
                             </button>
                         </div>
@@ -1570,15 +1608,17 @@ function updateStarPickerVisuals(selectedRating) {
                     const planId = this.getAttribute("data-id");
                     if (!confirm("Are you sure you want to remove this saved trip plan?")) return;
                     try {
-                        await fetch(`/api/trip-plans/${planId}`, { method: "DELETE" });
+                        const delRes = await fetch(`${API_URL}/api/trip-plans/${encodeURIComponent(planId)}`, { method: "DELETE" });
+                        if (!delRes.ok) throw new Error("Could not remove plan.");
                         loadSavedTripPlans();
                     } catch (e) {
-                        alert("Could not remove plan.");
+                        alert("Could not remove plan: " + e.message);
                     }
                 });
             });
 
         } catch (e) {
+            console.error("Load saved trip plans error:", e);
             if (msg) msg.textContent = "Unable to load saved plans at this time.";
         }
     }

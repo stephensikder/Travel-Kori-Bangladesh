@@ -238,7 +238,10 @@
             savePlanBtn.textContent = "Saving Plan...";
 
             try {
-                const res = await fetch("/api/trip-plans", {
+                const apiBase = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+                    ? window.location.origin
+                    : "http://localhost:5000";
+                const res = await fetch(`${apiBase}/api/trip-plans`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

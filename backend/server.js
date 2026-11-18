@@ -1014,6 +1014,9 @@ app.get("/api/routes", async function (req, res) {
                           distanceKm > 100;
         const flightMinutes = hasFlight ? 50 : null;
 
+        // Realistic estimated ship/launch duration (river & coastal water routes)
+        const shipMinutes = Math.max(75, Math.round((distanceKm / 24) * 60) + 30);
+
         const formatHours = (mins) => {
             const h = Math.floor(mins / 60);
             const m = mins % 60;
@@ -1034,7 +1037,9 @@ app.get("/api/routes", async function (req, res) {
                 train: formatHours(trainMinutes),
                 trainMinutes: trainMinutes,
                 flight: flightMinutes ? `${flightMinutes} mins` : "No direct domestic flight",
-                flightAvailable: Boolean(hasFlight)
+                flightAvailable: Boolean(hasFlight),
+                ship: formatHours(shipMinutes),
+                shipMinutes: shipMinutes
             },
             directionsUrl: googleMapsDirUrl
         });

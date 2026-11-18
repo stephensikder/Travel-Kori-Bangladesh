@@ -8,6 +8,8 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 body {
@@ -15,6 +17,8 @@ body {
     font-family: Arial, sans-serif;
     color: #18332c;
     background-color: #ffffff;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 /* Navigation bar */
@@ -697,10 +701,26 @@ footer {
     margin: 30px 0;
 }
 
+.admin-booking-summary .dashboard-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 22px !important;
+}
+
+.admin-booking-summary .dashboard-card h3 {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    margin: 0 0 8px 0 !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+}
+
 .admin-booking-summary .dashboard-card p {
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: 10px;
+    font-size: 34px !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
 }
 
 #adminBookings .destination-card {
@@ -3989,16 +4009,25 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     color: #62766d;
 }
 
-/* Dashboard Ticket-Style Card Layout */
+/* Dashboard Modern Ticket & Hotel Booking Card Layout */
+.hotel-booking-card,
 .dashboard-ticket-card {
-    border: 1px solid #dce7e2;
-    border-radius: 14px;
-    padding: 22px;
-    background: #ffffff;
-    box-shadow: 0 5px 20px rgba(20, 50, 42, 0.055);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 22px !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    transition: all 0.25s ease !important;
+}
+
+.hotel-booking-card:hover,
+.dashboard-ticket-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 25px rgba(8, 127, 91, 0.12) !important;
+    border-color: #a7f3d0 !important;
 }
 .dashboard-ticket-top {
     display: flex;
@@ -4070,8 +4099,10 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(14, 34, 28, 0.6);
     display: flex;
     justify-content: center;
@@ -4797,10 +4828,38 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     text-decoration: none !important;
     flex-shrink: 0 !important;
     transition: transform 0.2s ease !important;
+    line-height: 1 !important;
 }
 
 .navbar .logo:hover {
     transform: translateY(-1px) !important;
+}
+
+.navbar-logo-img {
+    height: 48px !important;
+    width: auto !important;
+    max-width: 260px !important;
+    object-fit: contain !important;
+    display: block !important;
+    transition: transform 0.2s ease !important;
+}
+
+.navbar .logo:hover .navbar-logo-img,
+.brand-logo-wrap:hover .navbar-logo-img {
+    transform: scale(1.02) !important;
+}
+
+.brand-logo-wrap {
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    line-height: 1 !important;
+}
+
+.brand-logo-wrap .navbar-logo-img {
+    height: 48px !important;
+    width: auto !important;
+    max-width: 260px !important;
 }
 
 .navbar .brand-mark {
@@ -4869,6 +4928,7 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
 }
 
 /* Auth Area container */
+#navUserArea,
 .nav-user-container {
     display: flex !important;
     align-items: center !important;
@@ -4879,6 +4939,12 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     padding-left: 10px !important;
     border-left: 1.5px solid #e2e8f0 !important;
     flex-shrink: 0 !important;
+}
+
+#navUserArea > *,
+.nav-user-container > * {
+    align-self: center !important;
+    vertical-align: middle !important;
 }
 
 /* Modern Auth Buttons */
@@ -5132,6 +5198,7 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     justify-content: space-between;
     align-items: flex-start;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .operator-info {
@@ -5381,6 +5448,23 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
 
 .btn-arrow {
     transition: transform 0.2s ease;
+}
+
+@media (max-width: 480px) {
+    .card-transport-bottom {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .transport-card-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .modern-select-journey-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 9px 14px !important;
+        font-size: 13px !important;
+    }
 }
 
 .modern-select-journey-btn:hover .btn-arrow {
@@ -5641,13 +5725,15 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     top: calc(100% + 12px);
     right: 0;
     width: 360px;
-    max-width: 90vw;
+    max-width: min(360px, calc(100vw - 32px)) !important;
     background: white;
     border-radius: 16px;
     box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
     z-index: 1000;
-    overflow: hidden;
+    overflow: hidden !important;
+    white-space: normal !important;
     animation: notifSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box !important;
 }
 
 @keyframes notifSlideDown {
@@ -5662,6 +5748,8 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     padding: 14px 18px;
     background: #f8fafc;
     border-bottom: 1px solid #e2e8f0;
+    white-space: normal !important;
+    box-sizing: border-box !important;
 }
 
 .notif-mark-all-btn {
@@ -5674,6 +5762,7 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     padding: 4px 8px;
     border-radius: 6px;
     transition: background 0.15s;
+    white-space: nowrap !important;
 }
 
 .notif-mark-all-btn:hover {
@@ -5681,17 +5770,25 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
 }
 
 .nav-notif-list {
-    max-height: 380px;
-    overflow-y: auto;
+    max-height: 380px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .notif-item {
-    display: flex;
-    gap: 12px;
-    padding: 14px 18px;
-    border-bottom: 1px solid #f1f5f9;
-    align-items: flex-start;
-    transition: background 0.15s;
+    display: flex !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    align-items: flex-start !important;
+    transition: background 0.15s !important;
+    white-space: normal !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
 }
 
 .notif-item:hover {
@@ -5706,32 +5803,41 @@ body:has(.dashboard-main) .dashboard-features .dashboard-card {
     font-size: 20px;
     line-height: 1;
     flex-shrink: 0;
+    margin-top: 2px;
 }
 
 .notif-item-content {
-    flex: 1;
-    min-width: 0;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
 }
 
 .notif-item-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 3px;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    margin-bottom: 3px !important;
+    white-space: normal !important;
+    line-height: 1.3 !important;
 }
 
 .notif-item-msg {
-    font-size: 12px;
-    color: #475569;
-    line-height: 1.4;
-    word-break: break-word;
+    font-size: 12px !important;
+    color: #475569 !important;
+    line-height: 1.4 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
 }
 
 .notif-item-time {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-top: 5px;
-    font-weight: 600;
+    font-size: 10.5px !important;
+    color: #94a3b8 !important;
+    margin-top: 5px !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
 }
 
 .btn-mark-read {
@@ -6701,6 +6807,18 @@ button, .primary-btn, .signup-btn, .modern-pop-btn, .modern-select-journey-btn, 
         flex-wrap: wrap !important;
         width: 100% !important;
     }
+
+    .nav-notif-dropdown {
+        position: fixed !important;
+        top: 68px !important;
+        left: 16px !important;
+        right: 16px !important;
+        width: auto !important;
+        max-width: 420px !important;
+        margin: 0 auto !important;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1) !important;
+        z-index: 10001 !important;
+    }
 }
 
 @keyframes navSlideDown {
@@ -6749,7 +6867,7 @@ button, .primary-btn, .signup-btn, .modern-pop-btn, .modern-select-journey-btn, 
     color: #f8fafc !important;
 }
 
-[data-theme="dark"] .nav-user-container, body.dark-theme .nav-user-container {
+[data-theme="dark"] #navUserArea, [data-theme="dark"] .nav-user-container, body.dark-theme #navUserArea, body.dark-theme .nav-user-container {
     border-left-color: #334155 !important;
     border-top-color: #334155 !important;
 }
@@ -7236,8 +7354,8 @@ section.features .feature-card a:hover, #features .feature-card a:hover {
     position: fixed !important;
     bottom: 24px !important;
     right: 24px !important;
-    width: 46px !important;
-    height: 46px !important;
+    width: 52px !important;
+    height: 52px !important;
     border-radius: 50% !important;
     background: #087f5b !important;
     color: #ffffff !important;
@@ -7267,10 +7385,10 @@ section.features .feature-card a:hover, #features .feature-card a:hover {
 }
 
 .back-to-top-btn svg {
-    width: 22px !important;
-    height: 22px !important;
+    width: 32px !important;
+    height: 32px !important;
     stroke: #ffffff !important;
-    stroke-width: 2.4 !important;
+    stroke-width: 3.5 !important;
     fill: none !important;
     display: block !important;
 }
@@ -7279,7 +7397,12 @@ section.features .feature-card a:hover, #features .feature-card a:hover {
     .back-to-top-btn {
         bottom: 18px !important;
         right: 18px !important;
-        width: 42px !important;
-        height: 42px !important;
+        width: 48px !important;
+        height: 48px !important;
+    }
+    .back-to-top-btn svg {
+        width: 28px !important;
+        height: 28px !important;
+        stroke-width: 3.5 !important;
     }
 }

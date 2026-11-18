@@ -544,6 +544,146 @@
             }
         }
 
+        /* ── Profile / Guide Rating Modal ── */
+        .profile-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .profile-modal-overlay[hidden] {
+            display: none !important;
+        }
+
+        .profile-modal-box {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 24px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            overflow-y: auto;
+            max-height: calc(100vh - 32px);
+        }
+
+        .profile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 10px;
+        }
+
+        .profile-modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--travel-dark);
+        }
+
+        .close-modal-btn {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #334155;
+        }
+
+        /* ── Dashboard Header Buttons ── */
+        .btn-profile-green {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: var(--travel-green);
+            color: #fff;
+            border: 1px solid var(--travel-green);
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-profile-green:hover {
+            background: #066653;
+            border-color: #066653;
+            transform: translateY(-1px);
+        }
+
+        .primary-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: #0284c7;
+            color: #fff;
+            border: 1px solid #0284c7;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .primary-btn:hover {
+            background: #0369a1;
+            border-color: #0369a1;
+            transform: translateY(-1px);
+        }
+
+        /* ── PDF Download Buttons touch-friendly ── */
+        .btn-download-pdf {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 44px;
+            padding: 10px 16px;
+            background: var(--travel-green);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-download-pdf:hover {
+            background: #066653;
+        }
+
+        /* ── Transport empty state ── */
+        .transport-empty-state {
+            padding: 32px 20px;
+            text-align: center;
+            color: var(--travel-muted);
+            font-size: 14px;
+        }
+
+        .transport-empty-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
         /* Mobile */
         @media (max-width: 600px) {
             .navbar {
@@ -631,6 +771,57 @@
             .dashboard-card {
                 padding: 20px;
             }
+
+            /* Welcome banner buttons stack on mobile */
+            .dashboard-header-actions {
+                width: 100%;
+            }
+
+            .dashboard-header-actions > a,
+            .dashboard-header-actions > button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Profile modal full-width on small screens */
+            .profile-modal-box {
+                padding: 20px 16px 18px;
+                border-radius: 12px;
+            }
+
+            /* Modal action buttons wrap on mobile */
+            .modal-actions-row {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .modal-actions-row > button {
+                flex: 1;
+                min-width: 100px;
+                justify-content: center;
+            }
+
+            /* PDF buttons full-width on mobile */
+            .btn-download-pdf {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Notification items wrap on mobile */
+            .notif-item {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            /* Guide reviews grid: single column on mobile */
+            #myGuideReviewsList {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Saved trip plans grid: single column */
+            #savedTripPlansGrid {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
 </head>
@@ -639,16 +830,13 @@
 
     <!-- Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
-            <span class="brand-mark">TK</span>
-            <span class="brand-name">Travel Kori Bangladesh</span>
-        </a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home"><img src="images/logo.png" alt="Travel Kori Bangladesh" class="navbar-logo-img"></a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="hotel-booking.html">Hotels</a>
             <a href="transport.html">Transport</a>
-            <div id="navUserArea"></div>
+            <div id="navUserArea" class="nav-user-container"></div>
         </div>
     </nav>
 
@@ -730,19 +918,6 @@
             </p>
         </section>
 
-        <!-- My Bookings -->
-        <section class="dashboard-bookings">
-            <h2>My Bookings</h2>
-            <p>View and track your travel booking requests.</p>
-
-            <div id="myBookings" class="destination-grid"></div>
-
-            <p id="bookingListMessage" aria-live="polite">
-                Loading your bookings...
-            </p>
-
-            <a href="booking.html" class="signup-btn">Book a Trip</a>
-        </section>
 
         <!-- My Hotel Bookings -->
         <section class="dashboard-bookings">

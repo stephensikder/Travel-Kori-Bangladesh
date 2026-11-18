@@ -223,16 +223,51 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             position: relative;
         }
+
+        @media (max-width: 600px) {
+            .guides-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .filter-inputs {
+                flex-direction: column;
+            }
+            .filter-inputs input,
+            .filter-inputs select {
+                width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+            .guides-hero {
+                padding: 40px 16px;
+            }
+            .guide-modal-content {
+                padding: 20px 16px;
+                width: 95%;
+            }
+        }
+        @media (max-width: 380px) {
+            .guide-card-header,
+            .guide-card-body,
+            .guide-card-footer {
+                padding: 14px;
+            }
+            .guide-card-footer {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .btn-book-guide {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
 
     <!-- Universal Navigation -->
     <nav class="navbar">
-        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home">
-            <span class="brand-mark">TK</span>
-            <span class="brand-name">Travel Kori Bangladesh</span>
-        </a>
+        <a href="index.html" class="logo" aria-label="Travel Kori Bangladesh Home"><img src="images/logo.png" alt="Travel Kori Bangladesh" class="navbar-logo-img"></a>
 
         <div class="nav-links">
             <a href="index.html">Home</a>
@@ -241,7 +276,7 @@
             <a href="transport.html">Transport</a>
             <a href="guides.html" style="color: #087f5b; font-weight: 700;">Tour Guides</a>
             <a href="route-map.html">Route Map</a>
-            <div id="navUserArea"></div>
+            <div id="navUserArea" class="nav-user-container"></div>
         </div>
     </nav>
 
@@ -444,6 +479,10 @@
 
     <script>
     (function () {
+        const API_URL = (window.location.origin && window.location.origin !== "null" && window.location.protocol !== "file:")
+            ? window.location.origin
+            : "http://localhost:5000";
+
         let allGuides = [];
         let selectedGuide = null;
 
@@ -486,7 +525,7 @@
         // Load 64 Districts for Selectors
         async function loadDistrictsList() {
             try {
-                const res = await fetch("/api/districts");
+                const res = await fetch(`${API_URL}/api/districts`);
                 const data = await res.json();
                 if (data.success && Array.isArray(data.districts)) {
                     const sorted = data.districts.slice().sort((a, b) => a.name.localeCompare(b.name));
@@ -510,7 +549,7 @@
         // Load Guides from Backend
         async function loadGuides() {
             try {
-                const res = await fetch("/api/tourguides");
+                const res = await fetch(`${API_URL}/api/tourguides`);
                 const data = await res.json();
                 if (data.success && Array.isArray(data.guides)) {
                     allGuides = data.guides;
@@ -675,7 +714,7 @@
             reviewsModal.style.display = "flex";
 
             try {
-                const res = await fetch(`/api/guide-reviews/${encodeURIComponent(guideId)}`);
+                const res = await fetch(`${API_URL}/api/guide-reviews/${encodeURIComponent(guideId)}`);
                 const data = await res.json();
 
                 if (data.success && Array.isArray(data.reviews) && data.reviews.length > 0) {
@@ -815,7 +854,7 @@
             const paymentMethod = document.querySelector('input[name="guidePayment"]:checked')?.value || "cash";
 
             try {
-                const res = await fetch("/api/tourguide-bookings", {
+                const res = await fetch(`${API_URL}/api/tourguide-bookings`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
